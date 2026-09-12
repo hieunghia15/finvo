@@ -1,0 +1,61 @@
+name: CI - Lint & Code Style
+
+on:
+  pull_request:
+    branches:
+      - master
+      - development
+    types: [opened, synchronize, reopened]
+
+jobs:
+  lint:
+    name: Lint & Code Style Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Setup PHP 8.5
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, dom, fileinfo, mysql, pdo, pdo_mysql
+          coverage: none
+          tools: composer:v2
+
+      # Cache Composer
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            composer-${{ runner.os }}-
+
+      # Install Composer dependencies
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader
+
+      # Setup Node.js 26
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: npm
+
+      # Install Node dependencies
+      - name: Install Node dependencies
+        run: npm ci
+
+      # Run Prettier
+      - name: Prettier Check
+        run: npm run format:check
+
+      # Run Laravel Pint
+      - name: Laravel Pint Check
+        run: ./vendor/bin/pint --test
