@@ -6,9 +6,7 @@ export default function Welcome() {
             <Head title="Welcome" />
 
             <main>
-                <h1>
-                    Laravel 13 + Inertia + React + TypeScript
-                </h1>
+                <h1>Laravel 13 + Inertia + React + TypeScript</h1>
             </main>
         </>
     );
