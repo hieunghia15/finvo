@@ -3,7 +3,7 @@ name: CI - Lint & Code Style
 on:
   pull_request:
     branches:
-      - master
+      - main
       - development
     types: [opened, synchronize, reopened]
 
