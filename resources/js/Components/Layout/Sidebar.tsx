@@ -26,20 +26,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar
         if (hasSubItems) {
             return (
                 <li key={item.id} className={`menu-item ${isOpenMenu ? 'open' : ''} ${isNested ? 'after-sub-menu' : ''}`}>
-                    <button
-                        type="button"
-                        className={`menu-link menu-toggle w-100 text-start border-0 ${isOpenMenu ? 'active' : ''}`}
-                        onClick={() => toggleMenu(item.id)}
-                    >
+                    <button type="button" className={`menu-link menu-toggle w-100 text-start border-0 ${isOpenMenu ? 'active' : ''}`} onClick={() => toggleMenu(item.id)}>
                         {item.icon && <span className="material-symbols-outlined menu-icon">{item.icon}</span>}
                         <span className="title">{item.title}</span>
                     </button>
 
-                    {isOpenMenu && item.subItems && (
-                        <ul className="menu-sub">
-                            {item.subItems.map((subItem) => renderMenuItem(subItem, true))}
-                        </ul>
-                    )}
+                    {isOpenMenu && item.subItems && <ul className="menu-sub">{item.subItems.map((subItem) => renderMenuItem(subItem, true))}</ul>}
                 </li>
             );
         }
@@ -47,12 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar
         return (
             <li key={item.id} className="menu-item">
                 {item.method ? (
-                    <Link
-                        href={item.url || '#'}
-                        method={item.method}
-                        as="button"
-                        className="menu-link border-0 w-100 text-start"
-                    >
+                    <Link href={item.url || '#'} method={item.method} as="button" className="menu-link border-0 w-100 text-start">
                         {item.icon && <span className="material-symbols-outlined menu-icon">{item.icon}</span>}
                         <span className="title">{item.title}</span>
                     </Link>

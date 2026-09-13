@@ -89,7 +89,7 @@ Theme Settings Style
             height: 11px;
             position: absolute;
             background: #f1f0f3;
-            border: 1px solid #F1F0F3;
+            border: 1px solid #f1f0f3;
         }
         &:nth-child(9) {
             top: 35px;
@@ -98,7 +98,7 @@ Theme Settings Style
             height: 11px;
             position: absolute;
             background: #f1f0f3;
-            border: 1px solid #F1F0F3;
+            border: 1px solid #f1f0f3;
         }
         &:nth-child(10) {
             top: 35px;
@@ -107,7 +107,7 @@ Theme Settings Style
             height: 11px;
             position: absolute;
             background: #f1f0f3;
-            border: 1px solid #F1F0F3;
+            border: 1px solid #f1f0f3;
         }
         &:nth-child(11) {
             top: 55px;
@@ -116,7 +116,7 @@ Theme Settings Style
             height: 11px;
             position: absolute;
             background: #f1f0f3;
-            border: 1px solid #F1F0F3;
+            border: 1px solid #f1f0f3;
         }
         &:nth-child(12) {
             top: 55px;
@@ -125,7 +125,7 @@ Theme Settings Style
             height: 11px;
             position: absolute;
             background: #f1f0f3;
-            border: 1px solid #F1F0F3;
+            border: 1px solid #f1f0f3;
         }
         &:nth-child(13) {
             top: 55px;
@@ -134,7 +134,7 @@ Theme Settings Style
             height: 11px;
             position: absolute;
             background: #f1f0f3;
-            border: 1px solid #F1F0F3;
+            border: 1px solid #f1f0f3;
         }
     }
     &.for-rtl {
@@ -285,13 +285,11 @@ Theme Settings Style
             }
         }
     }
-    
 }
 
 /* Only Sidebar dark Area Style
 ============================================*/
-[sidebar-dark-light-data-theme=sidebar-dark] {
-
+[sidebar-dark-light-data-theme='sidebar-dark'] {
     .settings-box-wrap {
         &.for-sidebar-dark {
             .active-wrap2 {
@@ -318,13 +316,11 @@ Theme Settings Style
             }
         }
     }
-
 }
 
 /* Only Header dark Area Style
 ============================================*/
-[header-dark-light-data-theme=header-dark] {
-
+[header-dark-light-data-theme='header-dark'] {
     .settings-box-wrap {
         &.for-header-dark {
             .active-wrap2 {
@@ -351,13 +347,11 @@ Theme Settings Style
             }
         }
     }
-
 }
 
 /* Only Footer dark Area Style
 ============================================*/
-[footer-dark-light-data-theme=footer-dark] {
-
+[footer-dark-light-data-theme='footer-dark'] {
     .settings-box-wrap {
         &.for-footer-dark {
             .active-wrap2 {
@@ -384,13 +378,11 @@ Theme Settings Style
             }
         }
     }
-
 }
 
 /* Only Radius Square Area Style
 ============================================*/
-[card-radius-square-data-theme=card-radius] {
-
+[card-radius-square-data-theme='card-radius'] {
     .settings-box-wrap {
         &.for-card-radius {
             .active-wrap2 {
@@ -448,12 +440,11 @@ Theme Settings Style
     .menu-vertical .menu-item .menu-link {
         border-radius: 0;
     }
-
 }
 
 /* Only Card Background Area Style
 ============================================*/
-[card-bg-data-theme=card-bg-gray] {
+[card-bg-data-theme='card-bg-gray'] {
     background-color: $white !important;
     .settings-box-wrap {
         &.for-card-bg-gray {

@@ -83,7 +83,7 @@
     }
     .btn {
         &:hover {
-            color:  $white !important;
+            color: $white !important;
         }
     }
     .navbar-nav {
@@ -128,8 +128,9 @@
     position: relative;
     transform: rotate(-6.536deg);
     margin-bottom: 10px;
-    &::before, &::after {
-        content: "";
+    &::before,
+    &::after {
+        content: '';
         position: absolute;
         top: -4px;
         right: -4px;
@@ -142,8 +143,9 @@
         left: -4px;
     }
     span {
-        &::before, &::after {
-            content: "";
+        &::before,
+        &::after {
+            content: '';
             position: absolute;
             bottom: -4px;
             right: -4px;
@@ -208,58 +210,58 @@
     }
 }
 .masonrow {
-	-moz-column-width: 25em;
-	-webkit-column-width: 25em;
-	-moz-column-gap: 1.6em;
-	-webkit-column-gap: 1.6em; 
-	.item {
-		width:  100%; 
-		margin-bottom: 25px;
-		display: inline-block;
-	}
-	&.style-two {
-		-moz-column-width: 22em;
-		-webkit-column-width: 22em;
-		-moz-column-gap: 1.6em;
-		-webkit-column-gap: 1.6em; 
-		.item {
-			width:  100%; 
-			margin-bottom: 30px;
-			display: inline-block;
-		}
-	}
+    -moz-column-width: 25em;
+    -webkit-column-width: 25em;
+    -moz-column-gap: 1.6em;
+    -webkit-column-gap: 1.6em;
+    .item {
+        width: 100%;
+        margin-bottom: 25px;
+        display: inline-block;
+    }
+    &.style-two {
+        -moz-column-width: 22em;
+        -webkit-column-width: 22em;
+        -moz-column-gap: 1.6em;
+        -webkit-column-gap: 1.6em;
+        .item {
+            width: 100%;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+    }
 }
-.single-testimonials { 
-	background-color: $white;
-	border-radius: 10px;
-	padding: 40px;
-	position:relative;
-	display: block;
-	.reating {
-		margin-bottom: 22px;
-		li {
-			display: inline-block;
-			i {
-				color: $warning;
+.single-testimonials {
+    background-color: $white;
+    border-radius: 10px;
+    padding: 40px;
+    position: relative;
+    display: block;
+    .reating {
+        margin-bottom: 22px;
+        li {
+            display: inline-block;
+            i {
+                color: $warning;
                 font-size: 20px;
-			}
-		}
-	}
-	p {
-		margin-bottom: 22px;
-		font-weight: 500;
-		font-size: 16px;
+            }
+        }
+    }
+    p {
+        margin-bottom: 22px;
+        font-weight: 500;
+        font-size: 16px;
         line-height: 1.9;
-	}
-	.review-info {
-		h4 {
-			font-size: 16px;
-			margin-bottom: 5px;
-		}
-		span {
-			font-size: 14px;
-		}
-	}
+    }
+    .review-info {
+        h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        span {
+            font-size: 14px;
+        }
+    }
 }
 .our-team-single-item {
     .team-img {
@@ -287,7 +289,7 @@
         height: 64px;
         line-height: 64px;
         text-align: center;
-        background-color: #ECF0FF;
+        background-color: #ecf0ff;
         display: inline-block;
         font-size: 20px;
         border-radius: 100px;
@@ -331,18 +333,18 @@
     }
 }
 #backtotop {
-	position: fixed;
-	top: 100%;
-	right: 30px;
+    position: fixed;
+    top: 100%;
+    right: 30px;
     bottom: 30px;
-	margin: auto;
-	width: 40px;
-	height: 40px;
-	border: none;
-	background-color: $primary;
-	transform: translateY(-100%);
-	z-index: 2;
-	transition: $transition;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: $primary;
+    transform: translateY(-100%);
+    z-index: 2;
+    transition: $transition;
     font-size: 20px;
     border-radius: 4px;
     i {
@@ -354,8 +356,7 @@
 }
 
 /* Max width 767px */
-@media only screen and (max-width : 767px) {
-
+@media only screen and (max-width: 767px) {
     .ptb-150 {
         padding-top: 60px;
         padding-bottom: 60px;
@@ -464,8 +465,7 @@
 }
 
 /* Min width 768px to Max width 992px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {
-
+@media only screen and (min-width: 768px) and (max-width: 991px) {
     .ptb-150 {
         padding-top: 60px;
         padding-bottom: 60px;
@@ -568,28 +568,23 @@
 }
 
 /* Min width 992px to Max width 1199px */
-@media only screen and (min-width : 992px) and (max-width : 1199px)  {
-
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
     .contact-us-form {
         h2 {
             font-size: 35px;
         }
     }
-
 }
 
-@media only screen and (max-width : 991px) {
-
+@media only screen and (max-width: 991px) {
     .navbar {
         &.bg-opacity-25 {
             --bs-bg-opacity: 1 !important;
         }
-        
     }
     .navbar-toggler {
         &:focus {
             box-shadow: none;
         }
     }
-
 }

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  *
  *
@@ -8,17 +8,22 @@
  *
  */
 class RdataTB {
-    constructor(IdTable, Options = { RenderJSON: null,
-        ShowSearch: true,
-        ShowSelect: true,
-        ShowPaginate: true,
-        SelectionNumber: [5, 15, 20, 50],
-        HideColumn: [],
-        ShowHighlight: false,
-        fixedTable: false,
-        sortAnimate: true,
-        ShowTfoot: false,
-        ExcludeColumnExport: [] }) {
+    constructor(
+        IdTable,
+        Options = {
+            RenderJSON: null,
+            ShowSearch: true,
+            ShowSelect: true,
+            ShowPaginate: true,
+            SelectionNumber: [5, 15, 20, 50],
+            HideColumn: [],
+            ShowHighlight: false,
+            fixedTable: false,
+            sortAnimate: true,
+            ShowTfoot: false,
+            ExcludeColumnExport: [],
+        }
+    ) {
         var _a, _b, _c, _d;
         this.HeaderDataTable = []; // header table to array
         this.RowDataTable = []; // get Table to json
@@ -33,8 +38,7 @@ class RdataTB {
         this.DataTableRaw = [];
         this.searchValue = '';
         this.ListHiding = [];
-        this.SelectionNumber = [10, 15, 20, 50],
-        this.SelectElementString = '';
+        ((this.SelectionNumber = [10, 15, 20, 50]), (this.SelectElementString = ''));
         this.ShowHighlight = false;
         this.listTypeDate = [];
         this.PageNow = 1;
@@ -57,10 +61,9 @@ class RdataTB {
         }
         this.ShowHighlight = Options === null || Options === void 0 ? void 0 : Options.ShowHighlight;
         if (Options.fixedTable && Options.hasOwnProperty('fixedTable')) {
-            (_b = this.TableElement) === null || _b === void 0 ? void 0 : _b.classList.add("table_layout_fixed");
-        }
-        else {
-            (_c = this.TableElement) === null || _c === void 0 ? void 0 : _c.classList.remove("table_layout_fixed");
+            (_b = this.TableElement) === null || _b === void 0 ? void 0 : _b.classList.add('table_layout_fixed');
+        } else {
+            (_c = this.TableElement) === null || _c === void 0 ? void 0 : _c.classList.remove('table_layout_fixed');
         }
         if (!Options.ShowSearch && Options.hasOwnProperty('ShowSearch')) {
             (_d = document.getElementById('SearchControl')) === null || _d === void 0 ? void 0 : _d.remove();
@@ -82,7 +85,7 @@ class RdataTB {
             if (getHead[z].attributes['type-date']) {
                 this.listTypeDate.push({
                     HeaderIndex: z,
-                    dateVal: true
+                    dateVal: true,
                 });
             }
         }
@@ -133,7 +136,7 @@ class RdataTB {
         for (let x = 0; x < this.SelectionNumber.length; x++) {
             this.SelectElementString += `<option value="${this.SelectionNumber[x]}">${this.SelectionNumber[x]}</option>`;
         }
-        let ElSelect = document.getElementById("my-select");
+        let ElSelect = document.getElementById('my-select');
         if (ElSelect) {
             ElSelect.innerHTML = this.SelectElementString;
         }
@@ -162,9 +165,11 @@ class RdataTB {
             this.RenderToHTML();
         };
         let selectEl = document.getElementById('my-select');
-        selectEl === null || selectEl === void 0 ? void 0 : selectEl.addEventListener('change', function () {
-            ChangeV(this.value);
-        });
+        selectEl === null || selectEl === void 0
+            ? void 0
+            : selectEl.addEventListener('change', function () {
+                  ChangeV(this.value);
+              });
         document.getElementById('x__NEXT__X').onclick = () => {
             this.nextItem();
             this.highlight(this.searchValue);
@@ -184,7 +189,8 @@ class RdataTB {
         this.PageNow = this.i + 1;
     }
     prevItem() {
-        if (this.i === 0) { // i would become 0
+        if (this.i === 0) {
+            // i would become 0
             this.i = this.Divide().length; // so put it at the other end of the array
         }
         this.i = this.i - 1; // decrease by one
@@ -223,27 +229,29 @@ class RdataTB {
     PaginateUpdate() {
         if (document.getElementById('PF') != null) {
             document.getElementById('PF').innerHTML = `
-            <a style="">Page ${this.i + 1} to ${this.Divide().length} of ${(this.DataTable === undefined) ? 0 : this.DataTable.length} Entries</a>`;
+            <a style="">Page ${this.i + 1} to ${this.Divide().length} of ${this.DataTable === undefined ? 0 : this.DataTable.length} Entries</a>`;
         }
     }
     search() {
         var _a;
         this.DataSearch = this.DataTable;
-        (_a = document.getElementById('SearchControl')) === null || _a === void 0 ? void 0 : _a.addEventListener('input', (evt) => {
-            this.searchValue = evt.target.value;
-            this.DataTable = this.DataSearch.filter((element) => {
-                for (let index = 0; index < this.HeaderDataTable.length; index++) {
-                    const fg = element[this.HeaderDataTable[index]].toString().toLowerCase().includes(evt.target.value.toLowerCase());
-                    if (fg) {
-                        return fg;
-                    }
-                }
-            });
-            this.RenderToHTML();
-            this.i = 0;
-            this.PaginateUpdate();
-            this.highlight(evt.target.value);
-        });
+        (_a = document.getElementById('SearchControl')) === null || _a === void 0
+            ? void 0
+            : _a.addEventListener('input', (evt) => {
+                  this.searchValue = evt.target.value;
+                  this.DataTable = this.DataSearch.filter((element) => {
+                      for (let index = 0; index < this.HeaderDataTable.length; index++) {
+                          const fg = element[this.HeaderDataTable[index]].toString().toLowerCase().includes(evt.target.value.toLowerCase());
+                          if (fg) {
+                              return fg;
+                          }
+                      }
+                  });
+                  this.RenderToHTML();
+                  this.i = 0;
+                  this.PaginateUpdate();
+                  this.highlight(evt.target.value);
+              });
     }
     ConvertToJson() {
         var _a, _b, _c;
@@ -254,7 +262,7 @@ class RdataTB {
         }
         //get row data
         const getbody = (_c = this.TableElement) === null || _c === void 0 ? void 0 : _c.getElementsByTagName('tbody');
-        for (let row = 0; row < ((getbody[0] === undefined) ? 0 : getbody[0].rows.length); row++) {
+        for (let row = 0; row < (getbody[0] === undefined ? 0 : getbody[0].rows.length); row++) {
             const cellsD = [];
             for (let cellsIndex = 0; cellsIndex < getbody[0].rows[row].cells.length; cellsIndex++) {
                 cellsD.push(getbody[0].rows[row].cells[cellsIndex].innerHTML);
@@ -263,10 +271,12 @@ class RdataTB {
         }
         // to key value Json
         this.DataTable = this.RowDataTable.reduce((akumulasi, e) => {
-            akumulasi.push(this.HeaderDataTable.reduce((x, y, i) => {
-                x[y] = e[i];
-                return x;
-            }, {}));
+            akumulasi.push(
+                this.HeaderDataTable.reduce((x, y, i) => {
+                    x[y] = e[i];
+                    return x;
+                }, {})
+            );
             return akumulasi;
         }, []);
         this.DataTableRaw = this.DataTable;
@@ -274,19 +284,17 @@ class RdataTB {
     }
     Divide() {
         const gh = [];
-        const h = (typeof this.PageSize === "string") ? parseInt(this.PageSize) : this.PageSize;
-        for (let i = 0; i < ((this.DataTable === undefined) ? 0 : this.DataTable.length); i += h) {
+        const h = typeof this.PageSize === 'string' ? parseInt(this.PageSize) : this.PageSize;
+        for (let i = 0; i < (this.DataTable === undefined ? 0 : this.DataTable.length); i += h) {
             gh.push(this.DataTable.slice(i, i + h));
         }
         return gh;
     }
     RenderToHTML(SlecTloaf = null) {
-        //clear 
+        //clear
         this.TableElement.innerHTML = '';
         // check if is sorted
-        const CheckIFSorted = (this.DataSorted === null || this.DataSorted === [] || this.DataSorted === undefined) ?
-            this.Divide()[0]
-            : this.Divide()[0];
+        const CheckIFSorted = this.DataSorted === null || this.DataSorted === [] || this.DataSorted === undefined ? this.Divide()[0] : this.Divide()[0];
         this.DataToRender = CheckIFSorted;
         // HeaderDataTable To Element
         let header = '';
@@ -296,7 +304,7 @@ class RdataTB {
             footer += `<th style="cursor: pointer;" id="${this.HeaderDataTable[I]}_footer" class="columns tablesorter-header">${this.HeaderDataTable[I]}</th>\n`;
         }
         // RowDataTable To Element
-        const ifUndefinded = (this.DataToRender === undefined) ? 0 : this.DataToRender.length;
+        const ifUndefinded = this.DataToRender === undefined ? 0 : this.DataToRender.length;
         let row = '';
         if (SlecTloaf === null) {
             for (let ___row = 0; ___row < ifUndefinded; ___row++) {
@@ -306,8 +314,7 @@ class RdataTB {
                 }
                 row += `<tr>${ToCell}</tr>\n`;
             }
-        }
-        else {
+        } else {
             for (let ___row = 0; ___row < SlecTloaf.length; ___row++) {
                 let ToCell = '';
                 for (let ___cell = 0; ___cell < this.HeaderDataTable.length; ___cell++) {
@@ -333,8 +340,7 @@ class RdataTB {
                 if (this.Assc) {
                     GetElsHeaderList.classList.remove('tablesorter-header-asc');
                     GetElsHeaderList.classList.add('tablesorter-header-desc');
-                }
-                else {
+                } else {
                     GetElsHeaderList.classList.remove('tablesorter-header-desc');
                     GetElsHeaderList.classList.add('tablesorter-header-asc');
                 }
@@ -360,19 +366,26 @@ class RdataTB {
         function naturalCompare(a, b) {
             const ax = [];
             const bx = [];
-            a.toString().replace(/(^\$|,)/g, '').replace(/(\d+)|(\D+)/g, function (_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]); });
-            b.toString().replace(/(^\$|,)/g, '').replace(/(\d+)|(\D+)/g, function (_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]); });
+            a.toString()
+                .replace(/(^\$|,)/g, '')
+                .replace(/(\d+)|(\D+)/g, function (_, $1, $2) {
+                    ax.push([$1 || Infinity, $2 || '']);
+                });
+            b.toString()
+                .replace(/(^\$|,)/g, '')
+                .replace(/(\d+)|(\D+)/g, function (_, $1, $2) {
+                    bx.push([$1 || Infinity, $2 || '']);
+                });
             for (let index = 0; ax.length && bx.length; index++) {
                 const an = ax.shift();
                 const bn = bx.shift();
-                const nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
-                if (nn)
-                    return nn;
+                const nn = an[0] - bn[0] || an[1].localeCompare(bn[1]);
+                if (nn) return nn;
             }
             return ax.length - bx.length;
         }
         const IndexHead = this.HeaderDataTable.indexOf(column);
-        const listDated = this.listTypeDate.find(x => x.HeaderIndex === IndexHead);
+        const listDated = this.listTypeDate.find((x) => x.HeaderIndex === IndexHead);
         const isDate = (listDated === null || listDated === void 0 ? void 0 : listDated.HeaderIndex) === IndexHead;
         const data = this.DataTable;
         if (this.Assc) {
@@ -381,21 +394,18 @@ class RdataTB {
                 data.sort((a, b) => {
                     return naturalCompare(a[column], b[column]);
                 });
-            }
-            else {
+            } else {
                 data.sort((a, b) => {
                     return Date.parse(a[column]) - Date.parse(b[column]);
                 });
             }
-        }
-        else {
+        } else {
             this.Assc = !this.Assc;
             if (!isDate) {
                 data.sort((a, b) => {
                     return naturalCompare(b[column], a[column]);
                 });
-            }
-            else {
+            } else {
                 data.sort((a, b) => {
                     return Date.parse(b[column]) - Date.parse(a[column]);
                 });
@@ -405,7 +415,7 @@ class RdataTB {
         this.i = 0;
         this.RenderToHTML();
         const t1 = performance.now();
-        this.timeSort = Math.round((t1 - t0) / 1000 * 10000) / 10000;
+        this.timeSort = Math.round(((t1 - t0) / 1000) * 10000) / 10000;
         return this.DataSorted;
     }
     MExcludeColumnExport() {
@@ -424,8 +434,8 @@ class RdataTB {
             }
         }
         return {
-            "header": head,
-            "data": DataTable
+            header: head,
+            data: DataTable,
         };
     }
     /**
@@ -441,8 +451,7 @@ class RdataTB {
         for (let i = 0; i < data.data.length; i++) {
             let line = '';
             for (const index in data.data[i]) {
-                if (line != '')
-                    line += ',';
+                if (line != '') line += ',';
                 line += data.data[i][index];
             }
             str += line + '\r\n';
@@ -480,7 +489,12 @@ class RdataTB {
                     let innerHTML = getbody[0].rows[row].cells[cellsIndex].innerHTML;
                     const index = innerHTML.indexOf(text);
                     if (index >= 0) {
-                        innerHTML = innerHTML.substring(0, index) + "<span style='background-color: yellow;'>" + innerHTML.substring(index, index + text.length) + "</span>" + innerHTML.substring(index + text.length);
+                        innerHTML =
+                            innerHTML.substring(0, index) +
+                            "<span style='background-color: yellow;'>" +
+                            innerHTML.substring(index, index + text.length) +
+                            '</span>' +
+                            innerHTML.substring(index + text.length);
                         getbody[0].rows[row].cells[cellsIndex].innerHTML = innerHTML;
                         getbody[0].rows[row].cells[cellsIndex].classList.add(`${this.HeaderDataTable[cellsIndex].replace(/\s/g, '_')}__row`);
                     }
@@ -505,28 +519,28 @@ class RdataTB {
     HideCol(column) {
         const Classes = document.getElementsByClassName(`${column}__row`);
         for (let O = 0; O < Classes.length; O++) {
-            Classes[O].style.display = "none";
+            Classes[O].style.display = 'none';
         }
         let ColmnHeader = document.getElementById(`${column}_header`);
         let ColmnFotter = document.getElementById(`${column}_footer`);
         if (ColmnHeader) {
-            ColmnHeader.style.display = "none";
+            ColmnHeader.style.display = 'none';
             if (ColmnFotter) {
-                ColmnFotter.style.display = "none";
+                ColmnFotter.style.display = 'none';
             }
         }
     }
     ShowCol(column) {
         const Classes = document.getElementsByClassName(`${column}__row`);
         for (let O = 0; O < Classes.length; O++) {
-            Classes[O].style.display = "";
+            Classes[O].style.display = '';
         }
         let ColmnHeader = document.getElementById(`${column}_header`);
         let ColmnFotter = document.getElementById(`${column}_footer`);
         if (ColmnHeader) {
-            ColmnHeader.style.display = "";
+            ColmnHeader.style.display = '';
             if (ColmnFotter) {
-                ColmnFotter.style.display = "";
+                ColmnFotter.style.display = '';
             }
         }
     }

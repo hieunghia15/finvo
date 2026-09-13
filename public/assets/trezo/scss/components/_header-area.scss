@@ -32,20 +32,20 @@
     }
 }
 @keyframes fadeInDown {
-	0% {
-	  opacity: 0;
-	  transform: translate3d(0, -100%, 0);
-	}
-	to {
-	  opacity: 1;
-	  transform: translateZ(0);
-	}
+    0% {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translateZ(0);
+    }
 }
 .left-header-content {
     ul {
         li {
             margin-right: 25px;
-            
+
             .header-burger-menu {
                 .material-symbols-outlined {
                     transition: $transition;
@@ -61,8 +61,8 @@
             .src-form {
                 .form-control {
                     height: 46px;
-                    background-color: #F6F7F9;
-                    border-color: #F6F7F9;
+                    background-color: #f6f7f9;
+                    border-color: #f6f7f9;
                     padding: 10px 20px;
                     border-radius: 7px;
                     width: 282px;
@@ -87,7 +87,7 @@
                         line-height: 1;
                         .material-symbols-outlined {
                             font-size: 24px;
-                            color: #64748B;
+                            color: #64748b;
                             position: relative;
                             top: 2px;
                             transition: $transition;
@@ -102,7 +102,7 @@
                         width: 240px;
                         border-radius: 7px;
                         background: $white;
-                        box-shadow: 0px 4px 45px 0px rgba(0, 0, 0, 0.10);
+                        box-shadow: 0px 4px 45px 0px rgba(0, 0, 0, 0.1);
                         transform: translate(0px, 30px) !important;
                         left: auto !important;
                         right: 0 !important;
@@ -136,7 +136,7 @@
         .light-dark {
             .material-symbols-outlined {
                 font-size: 24px;
-                color: #FE7A36;
+                color: #fe7a36;
                 cursor: pointer;
             }
         }
@@ -151,20 +151,20 @@
                     &.badge {
                         position: relative;
                         &::before {
-                            content: "";
+                            content: '';
                             position: absolute;
                             top: 3px;
                             right: 3px;
                             width: 7px;
                             height: 7px;
-                            background-color: #FD5812;
+                            background-color: #fd5812;
                             border-radius: 50px;
                         }
                     }
                     &.dropdown-toggle {
                         padding-right: 16px !important;
                         &::after {
-                            content: "";
+                            content: '';
                             position: absolute;
                             background-image: url(../images/down.svg);
                             background-position: center center;
@@ -183,7 +183,7 @@
                     width: 240px;
                     border-radius: 7px;
                     background: $white;
-                    box-shadow: 0px 4px 45px 0px rgba(0, 0, 0, 0.10);
+                    box-shadow: 0px 4px 45px 0px rgba(0, 0, 0, 0.1);
                     transform: translate(0px, 30px) !important;
                     .title {
                         padding: 12px 20px;
@@ -200,7 +200,7 @@
                         &.unseen {
                             position: relative;
                             &::before {
-                                content: "";
+                                content: '';
                                 position: absolute;
                                 top: 50%;
                                 transform: translateY(-50%);
@@ -247,7 +247,7 @@
                             display: inline-block;
                             padding-bottom: 1px;
                             &::before {
-                                content: "";
+                                content: '';
                                 position: absolute;
                                 bottom: 0;
                                 left: 0;
@@ -274,7 +274,6 @@
                         width: 350px;
                     }
                 }
-                
             }
         }
         .fullscreen-btn {
@@ -284,7 +283,7 @@
                     opacity: 0;
                 }
                 &::before {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -305,13 +304,13 @@
                 margin-bottom: 0;
             }
             .administrator {
-                border: 2px solid #C2CDFF;
+                border: 2px solid #c2cdff;
                 display: block;
             }
             .dropdown-toggle {
                 padding-right: 16px !important;
                 &::after {
-                    content: "";
+                    content: '';
                     position: absolute;
                     background-image: url(../images/down.svg);
                     background-position: center center;
@@ -330,11 +329,11 @@
                 width: 195px;
                 border-radius: 7px;
                 background: $white;
-                box-shadow: 0px 4px 45px 0px rgba(0, 0, 0, 0.10);
+                box-shadow: 0px 4px 45px 0px rgba(0, 0, 0, 0.1);
                 transform: translate(0px, 55px) !important;
                 padding: 20px;
                 .admin-link {
-                    border-top: 1px solid #F6F7F9;
+                    border-top: 1px solid #f6f7f9;
                     margin-top: 10px;
                     padding-top: 10px;
                     li {
@@ -343,7 +342,7 @@
                             padding: 7.5px 0;
                             position: relative;
                             &::before {
-                                content: "";
+                                content: '';
                                 position: absolute;
                                 top: 0;
                                 left: -20px;
@@ -401,10 +400,10 @@
         }
         @keyframes rotation {
             from {
-              transform: rotate(0deg);
+                transform: rotate(0deg);
             }
             to {
-              transform: rotate(359deg);
+                transform: rotate(359deg);
             }
         }
         &:last-child {
@@ -414,8 +413,7 @@
 }
 
 /* Max width 767px */
-@media only screen and (max-width : 767px) {
-    
+@media only screen and (max-width: 767px) {
     .left-header-content {
         ul {
             li {
@@ -432,11 +430,9 @@
             margin-right: 16px;
         }
     }
-
 }
 
-@media only screen and (max-width : 575px) {
-
+@media only screen and (max-width: 575px) {
     .right-header-content {
         .header-right-item {
             .notifications {
@@ -451,21 +447,17 @@
             }
         }
     }
-
 }
 
-@media only screen and (min-width : 576px) and (max-width : 767px) {
-
+@media only screen and (min-width: 576px) and (max-width: 767px) {
     .right-header-content {
         .header-right-item {
             margin-right: 10px;
         }
     }
-
 }
 
-@media only screen and (min-width : 479px) and (max-width : 575px) {
-
+@media only screen and (min-width: 479px) and (max-width: 575px) {
     .right-header-content {
         .header-right-item {
             .dropdown {
@@ -478,13 +470,10 @@
             }
         }
     }
-    
-
 }
 
 /* Min width 768px to Max width 992px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {
-
+@media only screen and (min-width: 768px) and (max-width: 991px) {
     .left-header-content {
         ul {
             li {
@@ -496,12 +485,10 @@
             }
         }
     }
-
 }
 
 /* Max width 1199px */
-@media only screen and (max-width : 1199px) {
-
+@media only screen and (max-width: 1199px) {
     .header-area {
         padding: 12px;
         &.sticky {
@@ -518,5 +505,4 @@
             }
         }
     }
-
 }

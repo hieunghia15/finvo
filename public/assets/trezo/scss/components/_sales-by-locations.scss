@@ -12,7 +12,7 @@
             overflow: unset;
             border-radius: 50px;
             height: 5px;
-            background-color: #ECF0FF;
+            background-color: #ecf0ff;
         }
         .progress-bar {
             border-radius: 50px;
@@ -40,17 +40,17 @@
     height: 160px;
     text-align: center;
 }
-  
+
 @media (max-width: 768px) {
     #map {
-      width: 450px;
-      height: 250px;
+        width: 450px;
+        height: 250px;
     }
 }
-  
+
 @media (max-width: 500px) {
     #map {
-      width: 375px;
-      height: 200px;
+        width: 375px;
+        height: 200px;
     }
 }

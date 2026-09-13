@@ -1,6 +1,6 @@
 /* Only Header dark Area Style
 ============================================*/
-[header-dark-light-data-theme=header-dark] {
+[header-dark-light-data-theme='header-dark'] {
     .header-area {
         background-color: $dark-card-bg !important;
     }
@@ -47,12 +47,12 @@
                             border-color: #1b212a !important;
                         }
                         .title {
-                            color: $white !important; 
+                            color: $white !important;
                             span {
-                                color: $white !important; 
+                                color: $white !important;
                             }
                             button {
-                                color: $white !important; 
+                                color: $white !important;
                             }
                         }
                         .dropdown-item {
@@ -131,8 +131,8 @@
                 }
                 .src-form {
                     .form-control {
-                        background-color: #3A4252;
-                        border-color: #3A4252;
+                        background-color: #3a4252;
+                        border-color: #3a4252;
                         color: $white !important;
                         &::placeholder {
                             color: $body-color-60;
@@ -160,12 +160,12 @@
                             border-color: #1b212a !important;
                         }
                         .title {
-                            color: $white !important; 
+                            color: $white !important;
                             span {
-                                color: $white !important; 
+                                color: $white !important;
                             }
                             button {
-                                color: $white !important; 
+                                color: $white !important;
                             }
                         }
                         .dropdown-item {
@@ -221,15 +221,14 @@
 }
 
 /* Max width 767px */
-@media only screen and (max-width : 992px) {
+@media only screen and (max-width: 992px) {
     .only-dark-header {
         .left-header-content ul li {
             margin-right: 20px;
         }
         .left-header-content ul li .src-form .src-btn .material-symbols-outlined {
             right: -13px;
-            background-color: #3A4252;
+            background-color: #3a4252;
         }
     }
-    
 }

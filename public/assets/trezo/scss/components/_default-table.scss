@@ -60,7 +60,7 @@
                     }
                 }
             }
-        } 
+        }
     }
     &.top-selling-products {
         .table-responsive {
@@ -130,7 +130,7 @@
                 thead {
                     tr {
                         th {
-                            background-color: #ECF0FF;
+                            background-color: #ecf0ff;
                             font-size: 14px;
                             padding: 15px 8px;
                             border: none !important;
@@ -240,7 +240,6 @@
                 }
             }
         }
-        
     }
     &.deals-table {
         .table-responsive {
@@ -268,7 +267,7 @@
                             &.pe-0 {
                                 padding-right: 0 !important;
                             }
-                            border: 0 !important; 
+                            border: 0 !important;
                         }
                     }
                 }
@@ -351,7 +350,7 @@
                 .table {
                     thead {
                         tr {
-                            border-color: #757DFF !important;
+                            border-color: #757dff !important;
                             th {
                                 &:first-child {
                                     padding-left: 0 !important;
@@ -365,7 +364,7 @@
                     tbody {
                         tr {
                             td {
-                                border-color: #757DFF;
+                                border-color: #757dff;
                                 padding-top: 11px;
                                 padding-bottom: 11px;
                                 &:first-child {
@@ -391,7 +390,7 @@
                                 &:first-child {
                                     padding-left: 0 !important;
                                 }
-                                &:last-child {   
+                                &:last-child {
                                     padding-right: 0 !important;
                                 }
                             }
@@ -677,7 +676,7 @@
                                 border-left: none;
                                 border-right: none;
                                 border: 0;
-                                background-color: #F6F7F9;
+                                background-color: #f6f7f9;
                                 border-radius: 0 !important;
                                 &:first-child {
                                     border-radius: 7px 0 0 7px !important;
@@ -697,8 +696,8 @@
             background-color: transparent !important;
             position: relative;
             &::after {
-                content: "\f326";
-                font-family: remixicon!important;
+                content: '\f326';
+                font-family: remixicon !important;
                 margin-left: 4px;
             }
         }
@@ -716,7 +715,7 @@
                 tbody {
                     tr {
                         td {
-                            border-color: #F6F7F9;
+                            border-color: #f6f7f9;
                             padding-left: 12px;
                             padding-right: 12px;
                         }
@@ -736,7 +735,7 @@
                 tbody {
                     tr {
                         td {
-                            border-color: #F6F7F9;
+                            border-color: #f6f7f9;
                             padding: 12px 12px;
                         }
                         &:last-child {
@@ -763,7 +762,7 @@
                 tbody {
                     tr {
                         td {
-                            border-color: #F6F7F9;
+                            border-color: #f6f7f9;
                             padding-left: 18px;
                             padding-right: 18px;
                         }
@@ -796,7 +795,7 @@
     }
     &.teachers-table {
         &.style-three {
-            .table-responsive .table tbody tr  {
+            .table-responsive .table tbody tr {
                 &:last-child {
                     td {
                         border: none;
@@ -914,8 +913,8 @@
                     tbody {
                         tr {
                             td {
-                               padding-top: 12px;
-                               padding-bottom: 12px;
+                                padding-top: 12px;
+                                padding-bottom: 12px;
                             }
                         }
                     }
@@ -937,7 +936,7 @@
                     tbody {
                         tr {
                             td {
-                               padding: 18.24px 20px;
+                                padding: 18.24px 20px;
                             }
                         }
                     }
@@ -1103,7 +1102,7 @@
     }
     .form-control {
         padding-left: 40px;
-        background-color: #F6F7F9;
+        background-color: #f6f7f9;
         height: 35px;
         width: 240px;
         padding-top: 5px;
@@ -1111,10 +1110,8 @@
     }
 }
 
-
 /* Max width 767px */
 @media only screen and (max-width: 767px) {
-
     .default-table-area {
         &.to-do-list {
             .table {
@@ -1142,9 +1139,9 @@
                     .table-responsive {
                         .table {
                             width: 742px;
-                        } 
+                        }
                     }
-                } 
+                }
             }
         }
         &.style-three {
@@ -1182,7 +1179,7 @@
                 .table-responsive {
                     .table {
                         width: 741px !important;
-                    } 
+                    }
                 }
             }
         }
@@ -1191,7 +1188,7 @@
                 .table-responsive {
                     .table {
                         width: 693px !important;
-                    } 
+                    }
                 }
             }
         }
@@ -1200,7 +1197,6 @@
 
 /* Max width 418px */
 @media only screen and (max-width: 418px) {
-
     /* Analytics Dashboard CSS */
     .default-table-area {
         &.browser-leads {
@@ -1240,7 +1236,6 @@
 
 /* Max width 490px */
 @media only screen and (max-width: 490px) {
-
     /* Analytics Dashboard CSS */
     .default-table-area {
         &.top-nfts-table {
@@ -1269,12 +1264,10 @@
             }
         }
     }
-
 }
 
 /* Max width 650px */
 @media only screen and (max-width: 650px) {
-
     /* Analytics Dashboard CSS */
     .default-table-area {
         &.browser-leads {
@@ -1321,12 +1314,10 @@
             }
         }
     }
-    
 }
 
 /* Max width 860px */
 @media only screen and (max-width: 860px) {
-
     /* Crypto Dashboard CSS */
     .default-table-area {
         &.rankings-table {
@@ -1375,12 +1366,10 @@
             }
         }
     }
-    
 }
 
 /* Max width 1340px */
 @media only screen and (max-width: 1340px) {
-
     /* Crypto Dashboard CSS */
     .default-table-area {
         &.patient-table {
@@ -1396,7 +1385,7 @@
             &.style-two {
                 .table-responsive {
                     .table {
-                       width: 1003px;
+                        width: 1003px;
                     }
                 }
             }
@@ -1405,17 +1394,15 @@
             &.style-three {
                 .table-responsive {
                     .table {
-                       width: 1042px;
+                        width: 1042px;
                     }
                 }
             }
         }
     }
-    
 }
 
 @media only screen and (max-width: 768px) {
-
     .only-for-responsive-table {
         table {
             width: 704px !important;
@@ -1433,18 +1420,15 @@
                     .table-responsive {
                         .table {
                             width: 704px !important;
-                        } 
+                        }
                     }
                 }
             }
         }
     }
-    
-
 }
 
 @media only screen and (max-width: 380px) {
-
     .default-table-area {
         &.team-members {
             .table {
@@ -1462,11 +1446,9 @@
             }
         }
     }
-
 }
 
-@media only screen and (max-width : 576px) {
-
+@media only screen and (max-width: 576px) {
     .default-table-area {
         &.top-selling-products {
             .table {
@@ -1503,7 +1485,7 @@
                 width: 525px;
             }
         }
-        &.connected-table  {
+        &.connected-table {
             .table {
                 width: 522px;
             }
@@ -1525,11 +1507,9 @@
             width: 140px;
         }
     }
-    
 }
 
-@media only screen and (max-width : 685px) {
-
+@media only screen and (max-width: 685px) {
     .default-table-area {
         &.recent-orders {
             .table {
@@ -1552,7 +1532,7 @@
                 .table-responsive {
                     .table {
                         width: 685px;
-                    } 
+                    }
                 }
             }
         }
@@ -1561,15 +1541,14 @@
                 .table-responsive {
                     .table {
                         width: 660px !important;
-                    } 
+                    }
                 }
             }
         }
     }
-
 }
 
-@media only screen and (max-width : 900px) {
+@media only screen and (max-width: 900px) {
     .default-table-area {
         &.campaigns-table {
             &.style-two {
@@ -1583,8 +1562,7 @@
     }
 }
 
-@media only screen and (min-width : 992px) and (max-width : 1405px) {
-
+@media only screen and (min-width: 992px) and (max-width: 1405px) {
     .default-table-area {
         &.style-three {
             &.recently-played {
@@ -1594,22 +1572,20 @@
             }
         }
     }
-    
 }
 
 @media only screen and (min-width: 1400px) and (max-width: 1550px) {
     .default-table-area {
         &.tickets-table {
             .table {
-               width: 353px; 
-            }     
+                width: 353px;
+            }
         }
     }
 }
 
 /* Max width 1550px */
 @media only screen and (max-width: 1550px) {
-
     .default-table-area {
         &.campaigns-table {
             &.latest-transaction-table {
@@ -1623,36 +1599,32 @@
         &.real-estate-customers {
             &.style-two {
                 .table-responsive {
-                    .table  {
+                    .table {
                         width: 1252px;
                     }
                 }
             }
         }
     }
-
 }
 
 /* Max width 1100px */
 @media only screen and (max-width: 1100px) {
-
     .default-table-area {
         &.individual-asset-performance {
             &.style-two {
                 .table-responsive {
-                    .table  {
+                    .table {
                         width: 1075px;
                     }
                 }
             }
         }
     }
-
 }
 
 /* Min width 768px to Max width 992px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {
-
+@media only screen and (min-width: 768px) and (max-width: 991px) {
     .default-table-area {
         &.to-do-list {
             .table {
@@ -1710,14 +1682,10 @@
             }
         }
     }
-    
-
 }
 
 /* Min width 992px to Max width 1199px */
-@media only screen and (min-width : 992px) and (max-width : 1199px)  {
-
-   
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
     .default-table-area {
         &.top-selling-products {
             .table {
@@ -1769,17 +1737,15 @@
                 .table-responsive {
                     .table {
                         width: 725px !important;
-                    } 
+                    }
                 }
             }
         }
     }
-
 }
 
 /* Min width 1200px to Max width 1399px */
-@media only screen and (min-width : 1200px) and (max-width : 1399px) {
-
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
     .default-table-area {
         &.top-selling-products {
             .table {
@@ -1861,7 +1827,7 @@
                 .table-responsive {
                     .table {
                         width: 676px !important;
-                    } 
+                    }
                 }
             }
         }
@@ -1870,7 +1836,7 @@
                 .table-responsive {
                     .table {
                         width: 779px !important;
-                    } 
+                    }
                 }
             }
         }
@@ -1879,16 +1845,14 @@
                 .table-responsive {
                     .table {
                         width: 725px !important;
-                    } 
+                    }
                 }
             }
         }
     }
-
 }
 
 @media only screen and (max-width: 1399px) {
-
     .default-table-area {
         &.all-projects {
             .table {
@@ -1936,12 +1900,9 @@
             }
         }
     }
-    
-
 }
 
 @media only screen and (max-width: 1550px) {
-
     .default-table-area {
         &.all-products {
             .table {
@@ -1957,11 +1918,9 @@
             }
         }
     }
-
 }
 
 @media only screen and (max-width: 1565px) {
-
     .default-table-area {
         &.customer-ratings-table {
             &.style-two {
@@ -1991,6 +1950,4 @@
             }
         }
     }
-    
-
 }

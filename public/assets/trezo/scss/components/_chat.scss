@@ -39,7 +39,7 @@
         max-width: 800px;
         p {
             border-radius: 0px 15px 15px 15px;
-            background-color: #F5F6FA;
+            background-color: #f5f6fa;
             margin-bottom: 0;
             padding: 15px 20px;
             margin-bottom: 5px;
@@ -69,8 +69,7 @@
 }
 
 /* Max width 767px */
-@media only screen and (max-width : 767px) {
-    
+@media only screen and (max-width: 767px) {
     .chat-details {
         li {
             p {
@@ -78,13 +77,10 @@
             }
         }
     }
-
 }
 
 /* Min width 768px to Max width 992px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {
-
-    
+@media only screen and (min-width: 768px) and (max-width: 991px) {
     .chat-details {
         li {
             p {
@@ -92,12 +88,8 @@
             }
         }
     }
-
 }
 
 /* Min width 1400px to Max width 1799px */
-@media only screen and (min-width : 1400px) and (max-width : 1799px) {
-
-    
-
+@media only screen and (min-width: 1400px) and (max-width: 1799px) {
 }

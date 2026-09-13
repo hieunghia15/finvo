@@ -78,4 +78,3 @@ export const sidebarMenuConfig: MenuGroup[] = [
 ];
 
 export default sidebarMenuConfig;
-

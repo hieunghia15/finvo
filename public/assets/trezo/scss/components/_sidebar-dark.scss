@@ -1,7 +1,7 @@
 /* Only Sidebar dark Area Style
 ============================================*/
-[sidebar-dark-light-data-theme=sidebar-dark] {
-    .sidebar-burger-menu  {
+[sidebar-dark-light-data-theme='sidebar-dark'] {
+    .sidebar-burger-menu {
         svg {
             stroke: $white;
         }
@@ -80,7 +80,7 @@
     }
 }
 .only-dark-sidebar-menu {
-    .sidebar-burger-menu  {
+    .sidebar-burger-menu {
         svg {
             stroke: $white;
         }

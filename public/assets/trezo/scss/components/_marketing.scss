@@ -12,7 +12,7 @@
             padding-bottom: 5px;
             letter-spacing: 2px;
             &::before {
-                content: "";
+                content: '';
                 position: absolute;
                 bottom: 0;
                 right: 0;
@@ -38,7 +38,7 @@
     width: 100%;
     position: relative;
     cursor: pointer;
-    input[type="radio"] {
+    input[type='radio'] {
         position: absolute;
         left: 20px;
         top: 50%;
@@ -48,7 +48,7 @@
         height: 20px;
         margin-top: 2px;
         &:checked + .radio-content:after {
-            content: "";
+            content: '';
             position: absolute;
             height: 20px;
             width: 20px;
@@ -59,10 +59,10 @@
             border-radius: 100%;
             border: 3px solid $white;
             box-shadow: 0px 0px 0px 2px $primary;
-          }
-          &:checked + .radio-content {
+        }
+        &:checked + .radio-content {
             border: 2px dashed $primary;
-            background: #ECEEF2;
+            background: #eceef2;
             transition: ease-in 0.3s;
         }
         &:focus {
@@ -77,7 +77,7 @@
         padding-left: 55px;
     }
     &.style-two {
-        input[type="radio"] {
+        input[type='radio'] {
             left: 0;
             width: 30px;
             height: 30px;
@@ -109,7 +109,7 @@
         &.back-none {
             position: relative;
             &::before {
-                content: "";
+                content: '';
                 position: absolute;
                 bottom: -88px;
                 left: -560px;
@@ -123,7 +123,7 @@
         &.continue-none {
             position: relative;
             &::before {
-                content: "";
+                content: '';
                 position: absolute;
                 bottom: -42px;
                 right: -560px;
@@ -137,46 +137,8 @@
     }
 }
 
-
-
-
-
-
-
-  
-
-  
-
-  
- 
-  
-
-  
-
-
-  
- 
-  
-
-  
-
-  
-  
-  
-  
-  
-  
-  
- 
-  
-
-
-
-
-
-
 /* Max width 767px */
-@media only screen and (max-width : 767px) {
+@media only screen and (max-width: 767px) {
     .create-campaigns-tabs {
         margin-bottom: 25px;
     }

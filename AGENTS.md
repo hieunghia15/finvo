@@ -69,3 +69,4 @@ public function store(StoreUserRequest $request)
 
     return redirect()->route('users.index');
 }
+```

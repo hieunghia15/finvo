@@ -1,6 +1,6 @@
 /* Dark Mode Area Style
-============================================*/ 
-[data-theme=dark] {
+============================================*/
+[data-theme='dark'] {
     background-color: $dark-body-bg !important;
     p {
         color: $dark-body-color !important;
@@ -15,7 +15,18 @@
             color: $dark-body-color !important;
         }
     }
-    .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         color: $white;
     }
     .text-secondary {
@@ -110,12 +121,12 @@
                             border-color: #1b212a !important;
                         }
                         .title {
-                            color: $white !important; 
+                            color: $white !important;
                             span {
-                                color: $white !important; 
+                                color: $white !important;
                             }
                             button {
-                                color: $white !important; 
+                                color: $white !important;
                             }
                         }
                         .dropdown-item {
@@ -156,7 +167,7 @@
             }
         }
     }
-    .sidebar-burger-menu  {
+    .sidebar-burger-menu {
         svg {
             stroke: $white;
         }
@@ -428,7 +439,8 @@
             }
         }
         .fc-theme-standard {
-            td, .calendar-wrap .fc-theme-standard th {
+            td,
+            .calendar-wrap .fc-theme-standard th {
                 border-color: $dark-border;
             }
             .fc-scrollgrid {
@@ -438,7 +450,6 @@
         .fc-daygrid-day-number {
             color: $dark-body-color;
         }
-        
     }
     .chat-details {
         li {
@@ -449,7 +460,7 @@
                 p {
                     background-color: $primary;
                     color: $white !important;
-                } 
+                }
             }
         }
     }
@@ -478,7 +489,7 @@
     .ql-snow .ql-picker.ql-expanded .ql-picker-label {
         color: $white !important;
         &::before {
-            color: $white !important; 
+            color: $white !important;
         }
     }
     .ql-snow .ql-stroke {
@@ -514,7 +525,8 @@
     }
     .product-quantity {
         border-color: #1d2127;
-        .add-to-cart-counter .minusBtn, .product-quantity .add-to-cart-counter .plusBtn {
+        .add-to-cart-counter .minusBtn,
+        .product-quantity .add-to-cart-counter .plusBtn {
             background-color: $dark-input-bg !important;
             &:hover {
                 background-color: $primary !important;
@@ -531,13 +543,15 @@
             background-color: transparent;
         }
     }
-    .product-quantity.bg-e2e8f0 .add-to-cart-counter .minusBtn, .product-quantity.bg-e2e8f0 .add-to-cart-counter .plusBtn {
+    .product-quantity.bg-e2e8f0 .add-to-cart-counter .minusBtn,
+    .product-quantity.bg-e2e8f0 .add-to-cart-counter .plusBtn {
         background-color: $dark-input-bg;
         &:hover {
             background-color: $primary;
         }
     }
-    .product-quantity .add-to-cart-counter .minusBtn, .product-quantity .add-to-cart-counter .plusBtn {
+    .product-quantity .add-to-cart-counter .minusBtn,
+    .product-quantity .add-to-cart-counter .plusBtn {
         background-color: $dark-input-bg;
         &:hover {
             background-color: $primary;
@@ -611,16 +625,19 @@
                 border: none;
             }
         }
-        .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+        .nav-link.active,
+        .nav-tabs .nav-item.show .nav-link {
             background-color: $dark-input-bg;
             border-color: $dark-border;
             color: $white;
         }
     }
-    :not(pre)>code[class*=language-], pre[class*=language-] {
+    :not(pre) > code[class*='language-'],
+    pre[class*='language-'] {
         background: $dark-input-bg;
     }
-    code[class*=language-], pre[class*=language-] {
+    code[class*='language-'],
+    pre[class*='language-'] {
         text-shadow: none;
         color: $white;
     }
@@ -630,7 +647,6 @@
     }
     .modal-content {
         background-color: $dark-card-bg;
-        
     }
     .modal-header {
         border-color: $dark-border;
@@ -656,7 +672,8 @@
             border-radius: 50px;
         }
     }
-    .calendar-content th, .calendar-content td {
+    .calendar-content th,
+    .calendar-content td {
         background-color: $dark-input-bg;
         color: $dark-body-color;
     }
@@ -697,9 +714,7 @@
                     }
                 }
             }
-           
         }
-        
     }
     .for-light-logo {
         display: none;
@@ -732,7 +747,7 @@
     }
     .welcome-box {
         .border-bottom {
-            border-color: #757DFF !important;
+            border-color: #757dff !important;
         }
     }
     .light {
@@ -746,7 +761,7 @@
     }
     nav.navbar {
         &.navbar-expand-lg.bg-white.bg-opacity-25.fixed-top {
-            .nav-link  {
+            .nav-link {
                 color: #fff !important;
                 &.active {
                     color: $primary !important;
@@ -763,7 +778,7 @@
         }
     }
     nav.navbar.navbar-expand-lg.bg-transparent.bg-opacity-25.fixed-top {
-        .nav-link  {
+        .nav-link {
             color: #fff !important;
             &.active {
                 color: $primary !important;
@@ -797,7 +812,7 @@
         &.bg-white {
             &.text-center {
                 &.py-4 {
-                    background-color: $dark-card-bg !important
+                    background-color: $dark-card-bg !important;
                 }
             }
         }
@@ -869,7 +884,7 @@
         background-color: $dark-card-bg !important;
     }
     .for-dark-read {
-        background-color: #15203c  !important;
+        background-color: #15203c !important;
         color: $white !important;
         &:hover {
             background-color: $primary !important;
@@ -924,13 +939,13 @@
         background-color: #202a43;
     }
     .custom-radio {
-        input[type=radio]:checked + .radio-content {
+        input[type='radio']:checked + .radio-content {
             background-color: #202a43;
         }
         .radio-content {
             border: 2px dashed #212c47;
         }
-        input[type=radio] {
+        input[type='radio'] {
             background: #202a43;
             border-color: #202a43;
             &:checked + .radio-content:after {
@@ -975,7 +990,8 @@
             }
         }
     }
-    .progress, .progress-stacked {
+    .progress,
+    .progress-stacked {
         background-color: #202a43;
     }
     .for-dark-digital-date {
@@ -1057,7 +1073,7 @@
                 border: double;
                 &.active {
                     border-color: $primary !important;
-                }           
+                }
             }
         }
     }
@@ -1066,7 +1082,11 @@
             background-color: $dark-body-bg !important;
             border-color: $dark-border !important;
         }
-        .btn-check:checked + .btn, .payment-method :not(.btn-check) + .btn:active, .payment-method .btn:first-child:active, .payment-method .btn.active, .payment-method .btn.show {
+        .btn-check:checked + .btn,
+        .payment-method :not(.btn-check) + .btn:active,
+        .payment-method .btn:first-child:active,
+        .payment-method .btn.active,
+        .payment-method .btn.show {
             background-color: $dark-border !important;
         }
     }
@@ -1137,7 +1157,7 @@
         .dropdown-menu {
             background-color: $dark-input-bg !important;
             border-color: $dark-input-bg !important;
-            .dropdown-item  {
+            .dropdown-item {
                 &:hover {
                     background-color: $primary;
                 }
@@ -1277,9 +1297,9 @@
     }
     .top-channels-for-dark {
         .ms-auto {
-            background: conic-gradient(#6f77f3 80%, #0C1427  80%) !important;
+            background: conic-gradient(#6f77f3 80%, #0c1427 80%) !important;
             div {
-                background-color: #0C1427 !important;
+                background-color: #0c1427 !important;
             }
         }
     }

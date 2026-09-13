@@ -1,25 +1,26 @@
 /* Calendar Style
 ============================================*/
 .calendar-wrap {
-	background-color: $white;
-	border-radius: 0;
-	.fc {
-		.fc-non-business {
-			background-color: transparent;
-		}
-		.fc-toolbar-title {
-			font-size: 18px;
+    background-color: $white;
+    border-radius: 0;
+    .fc {
+        .fc-non-business {
+            background-color: transparent;
+        }
+        .fc-toolbar-title {
+            font-size: 18px;
             font-weight: 700;
-		}
-		.fc-button-primary {
-			background-color: $body-color;
-			color: $white;
-			border: none;
-			text-transform: capitalize;
-			border-radius: 5px !important;
-		}
-        .fc-prev-button, .fc-next-button {
-            border-color: #ECEEF2;
+        }
+        .fc-button-primary {
+            background-color: $body-color;
+            color: $white;
+            border: none;
+            text-transform: capitalize;
+            border-radius: 5px !important;
+        }
+        .fc-prev-button,
+        .fc-next-button {
+            border-color: #eceef2;
             background-color: transparent;
             color: $secondary;
             border: 1px solid $secondary;
@@ -34,14 +35,16 @@
                 border-color: $primary;
             }
         }
-		.fc-button-group > .fc-button:focus, .fc .fc-button-group > .fc-button:active, .fc .fc-button-group > .fc-button.fc-button-active {
-			border: none;
-			outline: none;
-			box-shadow: none;
-		}
-		.fc-prev-button.fc-button.fc-button-primary {
-			margin-right: 13px;
-		}
+        .fc-button-group > .fc-button:focus,
+        .fc .fc-button-group > .fc-button:active,
+        .fc .fc-button-group > .fc-button.fc-button-active {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+        .fc-prev-button.fc-button.fc-button-primary {
+            margin-right: 13px;
+        }
         .fc-today-button {
             background-color: transparent;
             font-size: 14px;
@@ -53,39 +56,40 @@
                 color: $secondary;
             }
         }
-		tbody {
-			tr {
-				th {
+        tbody {
+            tr {
+                th {
                     padding-top: 5px;
                     padding-bottom: 5px;
-					border-color: #ECF0FF;
-                    background-color: #ECF0FF;
-				}
-			}
-		}
-		.fc-col-header-cell-cushion {
-			color: $secondary;
-			font-size: 14px;
+                    border-color: #ecf0ff;
+                    background-color: #ecf0ff;
+                }
+            }
+        }
+        .fc-col-header-cell-cushion {
+            color: $secondary;
+            font-size: 14px;
             text-decoration: none;
             font-weight: 500;
-		}
-		.fc-daygrid-day-top {
-			justify-content: center;
-		}
-	}
-	.fc-theme-standard {
-		.fc-scrollgrid {
-			border-top: none;
-			border-color: $gray-div;
-		}
-	}
-	.fc-theme-standard td, .fc-theme-standard th {
-		border-color: $gray-div;
-	}
-	.fc-h-event {
-		border: none;
-		text-align: center;
-		font-size: 10px;
+        }
+        .fc-daygrid-day-top {
+            justify-content: center;
+        }
+    }
+    .fc-theme-standard {
+        .fc-scrollgrid {
+            border-top: none;
+            border-color: $gray-div;
+        }
+    }
+    .fc-theme-standard td,
+    .fc-theme-standard th {
+        border-color: $gray-div;
+    }
+    .fc-h-event {
+        border: none;
+        text-align: center;
+        font-size: 10px;
         padding: 4px;
         &.success {
             background-color: $success !important;
@@ -96,11 +100,11 @@
         &.primary-div {
             background-color: $primary-div !important;
         }
-        &.danger{
+        &.danger {
             background-color: $danger !important;
         }
-	}
-	.fc-daygrid-day-number {
+    }
+    .fc-daygrid-day-number {
         text-decoration: none;
         color: $secondary;
         padding: 20px 0;
@@ -110,7 +114,7 @@
         }
     }
     .fc-theme-standard .fc-scrollgrid {
-        border-top: 1px solid #ECF0FF;
+        border-top: 1px solid #ecf0ff;
     }
     .fc-button {
         cursor: pointer;
@@ -120,7 +124,8 @@
             opacity: 1;
         }
     }
-    .fc-daygrid-block-event .fc-event-time, .fc-daygrid-block-event .fc-event-title {
+    .fc-daygrid-block-event .fc-event-time,
+    .fc-daygrid-block-event .fc-event-title {
         white-space: break-spaces;
         text-align: left;
         font-size: 10px;
@@ -133,8 +138,8 @@
         overflow: auto;
     }
     th.fc-col-header-cell {
-        border-color: #ECF0FF;
-        background-color: #ECF0FF;
+        border-color: #ecf0ff;
+        background-color: #ecf0ff;
         padding: 5px 4px;
     }
     table.fc-scrollgrid-sync-table {
@@ -152,7 +157,6 @@
         height: 275px;
         width: 100%;
         font-size: 14px;
-        
     }
     table {
         border-collapse: collapse;
@@ -162,17 +166,16 @@
         top: 0;
         left: 0;
         transform: translateX(0);
-     
     }
     td {
         text-align: center;
         &:last-child {
             border-right: none;
-            >span {
+            > span {
                 color: $danger;
             }
         }
-        >span {
+        > span {
             color: $secondary;
             display: block;
             border: 2px solid transparent;
@@ -191,15 +194,15 @@
             }
         }
         &:nth-child(6) {
-            >span {
+            > span {
                 color: $danger;
             }
         }
     }
     th {
         text-align: center;
-		padding: 20px 0;
-		padding-top: 0;
+        padding: 20px 0;
+        padding-top: 0;
         font-weight: normal;
         color: $secondary;
         font-size: 14px;
@@ -233,28 +236,29 @@
     }
     td {
         &.avui {
-            >span {
+            > span {
                 font-weight: 400;
                 background-color: $primary;
                 color: $white;
             }
         }
         &.fora {
-            >span {
+            > span {
                 opacity: 0.2;
             }
         }
     }
-    .boto-next, .boto-prev {
+    .boto-next,
+    .boto-prev {
         position: absolute;
         top: 0;
         right: 5px;
         border: none;
-		padding: 0;
-		background-color: transparent;
+        padding: 0;
+        background-color: transparent;
         &::before {
             content: url(../../assets/images/chevron-right.svg);
-			width: 40px;
+            width: 40px;
         }
     }
     .boto-prev {
@@ -269,14 +273,14 @@
 /* Calendar Area Style
 ============================================*/
 .calendar-container {
-	width: 100%;
-	border: none;
-	padding: 0;
-	box-shadow: none;
-	border-radius: 0;
+    width: 100%;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
     position: relative;
     &.border-bottom-1 {
-        border-bottom: 1px dashed #B9C1CD;
+        border-bottom: 1px dashed #b9c1cd;
         padding-bottom: 20px;
         margin-bottom: 20px;
     }
@@ -308,7 +312,7 @@
         border-collapse: collapse;
         th {
             text-align: center;
-            color: #7A799B;
+            color: #7a799b;
             font-size: 12px;
             letter-spacing: 0.72px;
             text-transform: capitalize;
@@ -329,7 +333,7 @@
             position: relative;
             z-index: 1;
             &::after {
-                content: "";
+                content: '';
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);
@@ -338,21 +342,21 @@
                 margin: auto;
                 width: 100%;
                 height: 100%;
-                background-color: #E6EFF2;
+                background-color: #e6eff2;
                 z-index: -2;
                 border-radius: 10px;
             }
             &.prev-month {
                 background-color: $white;
-                color: #ACC1C9;
+                color: #acc1c9;
                 &::after {
                     background-color: transparent;
-                    border: 1px solid #E6EFF2;
+                    border: 1px solid #e6eff2;
                 }
             }
             &.next-month {
                 background-color: $white;
-                color: #ACC1C9;
+                color: #acc1c9;
             }
             &.current-day {
                 color: $white;
@@ -360,7 +364,7 @@
                 position: relative;
                 z-index: 1;
                 &::before {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
@@ -381,7 +385,7 @@
                 position: relative;
                 z-index: 1;
                 &::before {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
@@ -402,7 +406,7 @@
                 position: relative;
                 z-index: 1;
                 &::before {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
@@ -435,7 +439,7 @@
                     border-radius: 100px;
                     transition: $transition;
                     i {
-                        transition: $transition;  
+                        transition: $transition;
                     }
                     &:hover {
                         background-color: $primary;
@@ -495,7 +499,7 @@
                     border-radius: 100px;
                     transition: $transition;
                     i {
-                        transition: $transition;  
+                        transition: $transition;
                     }
                     &:hover {
                         background-color: $primary;
@@ -512,7 +516,7 @@
             }
         }
         .prev-month {
-           opacity: 0;
+            opacity: 0;
         }
         .next-month {
             opacity: 0;
@@ -522,7 +526,7 @@
             td {
                 font-size: 14px;
                 font-weight: 500;
-                height: 50px
+                height: 50px;
             }
         }
     }
@@ -538,17 +542,18 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        background-color: #F4F5FA;
+        background-color: #f4f5fa;
     }
-    th, td {
+    th,
+    td {
         padding: 12.6px 8px;
         text-align: center;
-        background-color: #F4F5FA;
+        background-color: #f4f5fa;
         color: $dark;
         font-size: 16px;
     }
     th {
-        background-color: #F4F5FA;
+        background-color: #f4f5fa;
         font-size: 16px;
         font-weight: 600;
     }
@@ -566,12 +571,12 @@
 .datepicker-wrap {
     #date-input {
         border: none;
-        background-color: #ECEEF2;
+        background-color: #eceef2;
         width: 125px;
         height: 36px;
         border-radius: 7px;
         padding: 0 14px;
-        color: #64748B;
+        color: #64748b;
         &:focus {
             box-shadow: none;
             border: none;
@@ -630,23 +635,10 @@
             color: #fff;
         }
     }
-    
-   
-
-     
-
-    
-
-    
-
-    
-    
 }
 
 @media only screen and (max-width: 991px) {
-
     table.fc-scrollgrid.fc-scrollgrid-liquid {
         width: 691px !important;
     }
-
 }

@@ -38,9 +38,15 @@
     }
 }
 @keyframes rotateAndReverse {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(180deg); }
-    100% { transform: rotate(0deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
 }
 .revenue-card {
     padding: 22px 24px;
@@ -53,10 +59,8 @@
     }
 }
 
-
 /* Max width 767px */
-@media only screen and (max-width : 767px) {
-
+@media only screen and (max-width: 767px) {
     .welcome-restaurant {
         padding: 20px;
         h2 {
@@ -65,40 +69,34 @@
             margin-bottom: 15px;
         }
     }
-
 }
 
-@media only screen and (max-width : 520px) {
+@media only screen and (max-width: 520px) {
     .dish-wrap {
         display: none;
     }
 }
 
 /* Min width 768px to Max width 992px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {
-
+@media only screen and (min-width: 768px) and (max-width: 991px) {
 }
 
 /* Min width 992px to Max width 1199px */
-@media only screen and (min-width : 992px) and (max-width : 1199px)  {
-
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
 }
 
 /* Min width 1200px to Max width 1399px */
-@media only screen and (min-width : 1200px) and (max-width : 1399px) {
-
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
 }
 
 /* Min width 1400px to Max width 1799px */
-@media only screen and (min-width : 1400px) and (max-width : 1799px) {
-
+@media only screen and (min-width: 1400px) and (max-width: 1799px) {
 }
 
-@media only screen and (max-width : 1199px) {
-
+@media only screen and (max-width: 1199px) {
 }
 
-[data-theme=dark] {
+[data-theme='dark'] {
     .welcome-restaurant {
         background-color: $rating-color !important;
     }

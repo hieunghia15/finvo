@@ -5,15 +5,15 @@
     background-color: $white;
     position: relative;
     padding: {
-        top: 0; 
+        top: 0;
         bottom: 0;
-    };
+    }
     .navbar-nav {
         .nav-item {
             margin: {
                 left: 10px;
                 right: 10px;
-            };
+            }
             .nav-link {
                 color: $body-color;
                 transition: $transition;
@@ -31,9 +31,9 @@
                 font: {
                     size: 14px;
                     weight: 500;
-                };
+                }
                 .count {
-                    background-color: #FFF5ED;
+                    background-color: #fff5ed;
                     width: 22px;
                     height: 22px;
                     line-height: 22px;
@@ -50,26 +50,26 @@
                     &::after {
                         position: absolute;
                         vertical-align: 0;
-                        content: "\ea4e";
+                        content: '\ea4e';
                         margin-left: 0;
                         right: 0;
                         border: 0;
                         top: 50%;
                         transform: translateY(-39%);
-                        font-family: remixicon!important;
+                        font-family: remixicon !important;
                         font-size: 18px;
                         transition: $transition;
-                        color: #B1BBC8;
+                        color: #b1bbc8;
                     }
                 }
                 &.active {
                     color: $secondary;
                     position: relative;
-                    background-color: #F6F7F9;
+                    background-color: #f6f7f9;
                     border-radius: 4px;
                     &.dropdown-toggle {
                         &::after {
-                            color: #B1BBC8;
+                            color: #b1bbc8;
                         }
                     }
                 }
@@ -77,7 +77,7 @@
                     color: $secondary !important;
                     &.dropdown-toggle {
                         &::after {
-                            color: #B1BBC8 !important;
+                            color: #b1bbc8 !important;
                         }
                     }
                 }
@@ -93,8 +93,10 @@
                 visibility: hidden;
                 display: block !important;
                 background-color: $white;
-                transition: all .2s ease-in-out;
-                box-shadow: 0 0.275rem 1.25rem rgba(11, 15, 25, 0.05), 0 0.25rem 0.5625rem rgba(11, 15, 25, 0.03);
+                transition: all 0.2s ease-in-out;
+                box-shadow:
+                    0 0.275rem 1.25rem rgba(11, 15, 25, 0.05),
+                    0 0.25rem 0.5625rem rgba(11, 15, 25, 0.03);
                 pointer-events: none;
                 transform: unset !important;
                 inset: unset !important;
@@ -109,7 +111,7 @@
                         background-color: transparent !important;
                         white-space: normal;
                         &::before {
-                            content: "";
+                            content: '';
                             position: absolute;
                             top: 50%;
                             left: 20px;
@@ -123,14 +125,14 @@
                         font: {
                             size: 14px;
                             weight: 500;
-                        };
+                        }
                         &.dropdown-toggle {
                             padding-right: 18px;
-                            
+
                             &::after {
                                 position: absolute;
                                 vertical-align: 0;
-                                content: "\ea4e";
+                                content: '\ea4e';
                                 margin-left: 0;
                                 right: 19px;
                                 border: 0;
@@ -140,7 +142,7 @@
                                 font: {
                                     size: 18px;
                                     family: remixicon !important;
-                                };
+                                }
                             }
                         }
                         &.active {
@@ -156,7 +158,7 @@
                             }
                         }
                         .tag {
-                            background-color: #FFE8D4;
+                            background-color: #ffe8d4;
                             width: 32px;
                             height: 16px;
                             font-size: 10px;
@@ -167,27 +169,27 @@
                             position: relative;
                             margin-left: 12px;
                             &::before {
-                                content: "";
+                                content: '';
                                 position: absolute;
                                 top: 4px;
                                 left: -3px;
                                 width: 8px;
                                 height: 8px;
-                                background-color: #FFE8D4;
+                                background-color: #ffe8d4;
                                 border-radius: 1px;
                                 transform: rotate(45deg);
                             }
                             &.new {
-                                background-color: #D8FFC8;
+                                background-color: #d8ffc8;
                                 color: $success;
                                 &::before {
-                                    background-color: #D8FFC8;
+                                    background-color: #d8ffc8;
                                 }
                             }
                         }
                         .count {
-                            background-color: #FFF5ED;
-                            color: #FD5812;
+                            background-color: #fff5ed;
+                            color: #fd5812;
                             border-radius: 50px;
                             color: $danger;
                             font-size: 11px;
@@ -228,7 +230,6 @@
                                 }
                             }
                         }
-                        
                     }
                     &.sub-dropdown-menu {
                         &:hover {
@@ -266,10 +267,10 @@
             }
             &:hover {
                 .nav-link {
-                   color: $secondary;
+                    color: $secondary;
                     &.dropdown-toggle {
                         &::after {
-                            color: #B1BBC8 !important;
+                            color: #b1bbc8 !important;
                         }
                     }
                 }
@@ -279,7 +280,7 @@
                     pointer-events: auto;
                 }
                 &.mega-menu {
-                    .dropdown-menu { 
+                    .dropdown-menu {
                         pointer-events: auto;
                     }
                 }
@@ -294,7 +295,7 @@
                     padding: 25px 0;
                     margin-top: 0;
                     position: absolute;
-                    transform: unset!important;
+                    transform: unset !important;
                     pointer-events: none;
                     .menu-img {
                         height: 100%;
@@ -385,7 +386,7 @@
             color: $white;
             font-size: 20px;
         }
-        &:disabled  {
+        &:disabled {
             opacity: 0;
             visibility: hidden;
         }
@@ -393,7 +394,7 @@
             left: auto;
             right: 12px;
             &::before {
-                content: "";
+                content: '';
                 position: absolute;
                 top: 0;
                 right: -200px;
@@ -403,7 +404,6 @@
             }
         }
     }
-    
 }
 .menu-row {
     --bs-gutter-x: 1.5rem;

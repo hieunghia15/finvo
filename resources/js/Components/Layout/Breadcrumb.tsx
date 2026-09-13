@@ -26,11 +26,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
                         const isActive = item.active || index === items.length - 1;
 
                         return (
-                            <li
-                                key={index}
-                                className={`breadcrumb-item ${isActive ? 'active' : ''}`}
-                                aria-current={isActive ? 'page' : undefined}
-                            >
+                            <li key={index} className={`breadcrumb-item ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
                                 {!isActive && item.url ? (
                                     <Link href={item.url} className="d-flex align-items-center text-decoration-none">
                                         {isFirst && <i className="ri-home-4-line fs-18 text-primary me-1"></i>}
@@ -49,4 +45,3 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
 };
 
 export default Breadcrumb;
-

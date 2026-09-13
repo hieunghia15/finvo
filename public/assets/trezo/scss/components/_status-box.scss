@@ -2,12 +2,12 @@
 ============================================*/
 .welcome-box {
     .border-bottom {
-        border-color:#757DFF !important;
+        border-color: #757dff !important;
         padding-bottom: 37px;
         margin-bottom: 37px;
     }
     &.style-two {
-        background: linear-gradient(81deg, #605DFF 3.39%, #9747FF 93.3%);
+        background: linear-gradient(81deg, #605dff 3.39%, #9747ff 93.3%);
         .welcome-2 {
             position: absolute;
             top: 0;
@@ -15,7 +15,7 @@
             width: 230px;
         }
         p {
-            color: #F6F7F9 !important;
+            color: #f6f7f9 !important;
         }
     }
 }
@@ -26,36 +26,34 @@
         line-height: 42px;
         text-align: center;
         border-radius: 7px;
-        background-color: #ECF0FF;
+        background-color: #ecf0ff;
         color: $primary;
         position: relative;
         top: -3px;
         font-size: 24px;
         &.icon-bg {
-            background-color: #FFE8D4;
+            background-color: #ffe8d4;
             color: $danger;
         }
     }
     &.style-two {
         i {
-            background-color: #FFC8C0;
-            color: #EE3E08;
+            background-color: #ffc8c0;
+            color: #ee3e08;
             &.icon-bg {
                 &.two {
-                    background-color: #D8FFC8;
-                    color: #25B003;
+                    background-color: #d8ffc8;
+                    color: #25b003;
                 }
             }
-            
         }
-        
     }
 }
 .stats-box {
     .count {
-        background-color: #FFE1DD;
+        background-color: #ffe1dd;
         color: $danger;
-        border: 1px solid #FFCEA9;
+        border: 1px solid #ffcea9;
         display: inline-block;
         border-radius: 50px;
         font-size: 12px;
@@ -66,9 +64,9 @@
         text-align: center;
         margin-left: 7px;
         &.up {
-            background-color: #D8FFC8;
-            border-color: #82FC5A;
-            color: #1E8308;
+            background-color: #d8ffc8;
+            border-color: #82fc5a;
+            color: #1e8308;
         }
     }
     .stats-list {
@@ -78,7 +76,7 @@
                 position: relative;
                 padding-left: 30px;
                 &::before {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
@@ -93,7 +91,7 @@
                 margin-bottom: 0;
                 .title {
                     &::before {
-                        background-color: #C2CDFF;
+                        background-color: #c2cdff;
                     }
                 }
             }
@@ -112,20 +110,17 @@
 }
 
 /* Max width 767px */
-@media only screen and (max-width : 767px) {
-
+@media only screen and (max-width: 767px) {
     .welcome-box {
         .border-bottom {
             padding-bottom: 25px;
             margin-bottom: 25px;
         }
     }
-
 }
 
 /* Min width 768px to Max width 992px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {
-
+@media only screen and (min-width: 768px) and (max-width: 991px) {
     .stats-box {
         &.style-three {
             .p-4 {
@@ -133,12 +128,10 @@
             }
         }
     }
-
 }
 
 /* Min width 992px to Max width 1199px */
-@media only screen and (min-width : 992px) and (max-width : 1199px)  {
-
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
     .stats-box {
         &.style-three {
             .p-4 {
@@ -146,11 +139,9 @@
             }
         }
     }
-
 }
 
-@media only screen and (min-width : 1200px) and (max-width : 1399px) {
-    
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
     .stats-box {
         &.style-three {
             .p-4 {
@@ -165,16 +156,11 @@
             }
         }
     }
-    
 }
-
-
 
 /* Min width 1400px to Max width 1799px */
-@media only screen and (min-width : 1400px) and (max-width : 1799px) {
-    
+@media only screen and (min-width: 1400px) and (max-width: 1799px) {
 }
 
-@media only screen and (max-width : 1199px) {
-    
+@media only screen and (max-width: 1199px) {
 }

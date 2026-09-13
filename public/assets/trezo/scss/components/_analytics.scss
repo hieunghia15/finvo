@@ -10,10 +10,10 @@
             background-color: transparent;
             color: $body-color;
             &.active {
-                background-color: #ECF0FF;
+                background-color: #ecf0ff;
             }
             &:hover {
-                background-color: #ECF0FF;
+                background-color: #ecf0ff;
             }
         }
         &:nth-child(2) {
@@ -30,7 +30,7 @@
         height: 30px;
         line-height: 29px;
         text-align: center;
-        border: 1px solid #ECEEF2;
+        border: 1px solid #eceef2;
         display: inline-block;
         font-size: 17px;
         border-radius: 4px;
@@ -43,8 +43,7 @@
 }
 
 /* Max width 767px */
-@media only screen and (max-width : 767px) {
-
+@media only screen and (max-width: 767px) {
     .analytics-tabs {
         li {
             button {
@@ -52,12 +51,10 @@
             }
         }
     }
-
 }
 
 /* Min width 1400px to Max width 1799px */
-@media only screen and (min-width : 1400px) and (max-width : 1799px) {
-
+@media only screen and (min-width: 1400px) and (max-width: 1799px) {
     .ms-minus-27 {
         margin-left: -27px;
     }
@@ -67,11 +64,10 @@
     .ms-plus-21 {
         margin-left: 21px;
     }
-
 }
 
 /* Min width 992px to Max width 1199px */
-@media only screen and (min-width : 992px) and (max-width : 1199px)  {
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
     .analytics-tabs {
         li {
             button {

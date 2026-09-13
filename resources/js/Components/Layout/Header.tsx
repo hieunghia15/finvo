@@ -76,13 +76,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                     <div className="left-header-content">
                         <ul className="d-flex align-items-center ps-0 mb-0 list-unstyled justify-content-center justify-content-sm-start">
                             <li>
-                                <button
-                                    type="button"
-                                    className="header-burger-menu bg-transparent p-0 border-0"
-                                    id="header-burger-menu"
-                                    onClick={onToggleSidebar}
-                                    aria-label="Toggle Navigation"
-                                >
+                                <button type="button" className="header-burger-menu bg-transparent p-0 border-0" id="header-burger-menu" onClick={onToggleSidebar} aria-label="Toggle Navigation">
                                     <span className="material-symbols-outlined">menu</span>
                                 </button>
                             </li>
@@ -138,10 +132,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                                                 ))}
                                             </div>
 
-                                            <Link
-                                                href="/notification"
-                                                className="dropdown-item text-center text-primary d-block view-all fw-medium rounded-bottom-3 p-3 text-decoration-none"
-                                            >
+                                            <Link href="/notification" className="dropdown-item text-center text-primary d-block view-all fw-medium rounded-bottom-3 p-3 text-decoration-none">
                                                 <span>See All Notifications</span>
                                             </Link>
                                         </div>

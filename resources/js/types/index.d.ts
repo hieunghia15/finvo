@@ -38,4 +38,3 @@ export interface NotificationItem {
     read?: boolean;
     url?: string;
 }
-

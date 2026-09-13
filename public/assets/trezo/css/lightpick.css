@@ -3,7 +3,7 @@
     z-index: 99999;
     padding: 4px;
     border-radius: 4px;
-    background-color: #FFF;
+    background-color: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     color: #000;
     font-family: system-ui, Roboto, Helvetica, Arial, sans-serif;
@@ -28,7 +28,7 @@
 
 .lightpick__months {
     display: grid;
-    background-color: #EEE;
+    background-color: #eee;
     grid-template-columns: auto;
     grid-gap: 1px;
 }
@@ -52,7 +52,7 @@
 .lightpick__month {
     padding: 4px;
     width: 288px;
-    background-color: #FFF;
+    background-color: #fff;
 }
 
 .lightpick__month-title-bar {
@@ -89,7 +89,7 @@
 .lightpick__month-title > .lightpick__select-months {
     font-weight: bold;
     font-size: 1em;
-    margin-right: .5em;
+    margin-right: 0.5em;
 }
 
 .lightpick__toolbar {
@@ -108,7 +108,7 @@
     outline: none;
     border: none;
     border-radius: 50%;
-    background-color: #DDD;
+    background-color: #ddd;
     justify-content: center;
     align-items: center;
 }
@@ -163,13 +163,13 @@
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle fill='rgba(220, 50, 47, .5)' cx='16' cy='16' r='16'/%3E%3C/svg%3E");
     background-size: 18.8% auto;
     background-position: center bottom;
-    color: #DC322F;
+    color: #dc322f;
 }
 
 .lightpick__day:not(.is-disabled):hover {
     background-size: contain;
-    background-color: #605DFF;
-    color: #FFF;
+    background-color: #605dff;
+    color: #fff;
 }
 
 .lightpick__day.is-disabled {
@@ -205,7 +205,7 @@
 }
 
 .lightpick__day.is-in-range:hover {
-    background-color: #605DFF;
+    background-color: #605dff;
 }
 
 .lightpick__day.is-start-date.is-in-range,
@@ -214,7 +214,7 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 50%;
-    background-color: #605DFF;
+    background-color: #605dff;
     background-image: none;
 }
 
@@ -224,23 +224,22 @@
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
     border-bottom-left-radius: 0;
-    background-color: #605DFF;
+    background-color: #605dff;
     background-image: none;
 }
 
 .lightpick__day.is-start-date.is-end-date {
     background-color: transparent;
-    
 }
 
 .lightpick__day.is-start-date,
 .lightpick__day.is-end-date,
 .lightpick__day.is-start-date:hover,
 .lightpick__day.is-end-date:hover {
-    background-color: #605DFF;
+    background-color: #605dff;
     background-size: auto;
     background-position: center;
-    color: #FFF;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -249,7 +248,7 @@
     margin-top: -4px;
     padding: 4px 8px;
     border-radius: 4px;
-    background-color: #FFF;
+    background-color: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     white-space: nowrap;
     font-size: 11px;
@@ -263,17 +262,17 @@
     border-top: 5px solid rgba(0, 0, 0, 0.12);
     border-right: 5px solid transparent;
     border-left: 5px solid transparent;
-    content: "";
+    content: '';
 }
 
 .lightpick__tooltip::after {
     position: absolute;
     bottom: -4px;
     left: calc(50% - 4px);
-    border-top: 4px solid #FFF;
+    border-top: 4px solid #fff;
     border-right: 4px solid transparent;
     border-left: 4px solid transparent;
-    content: "";
+    content: '';
 }
 .lightpick__footer {
     display: flex;
@@ -291,5 +290,5 @@
 }
 .lightpick__apply-action {
     color: #fff;
-    background-color: #605DFF;
+    background-color: #605dff;
 }
