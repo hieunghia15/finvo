@@ -2,16 +2,18 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 
+const appName = import.meta.env.VITE_APP_NAME || 'Finvo';
+
 createInertiaApp({
-    title: (title) => `${title} - Laravel`,
-
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**/*.tsx')),
-
+    title: (title) => (title ? `${title} - ${appName}` : appName),
+    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')) as any,
     setup({ el, App, props }) {
-        createRoot(el).render(<App {...props} />);
+        const container = el || document.getElementById('app');
+        if (container) {
+            createRoot(container).render(<App {...props} />);
+        }
     },
-
     progress: {
-        color: '#4B5563',
+        color: '#3368FC',
     },
 });
