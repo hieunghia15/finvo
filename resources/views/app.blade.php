@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title inertia>{{ config('app.name', 'Finvo') }}</title>
+    <title inertia>Finvo</title>
 
     <!-- Links Of CSS File -->
     <link rel="stylesheet" href="assets/trezo/css/sidebar-menu.css">
@@ -25,7 +25,7 @@
     @vite(['resources/js/app.tsx'])
     @inertiaHead
 </head>
-<body class="boxed-size">
+<body>
     @inertia
     <!-- Link Of JS File -->
     <script src="assets/trezo/js/bootstrap.bundle.min.js"></script>

@@ -8,7 +8,7 @@ interface IndexProps extends PageProps {
     pageTitle?: string;
 }
 
-export default function Index({ pageTitle = 'Blank Page' }: IndexProps) {
+export default function Index({ pageTitle = 'Dashboard' }: IndexProps) {
     return (
         <MainLayout>
             <Head title={pageTitle} />
