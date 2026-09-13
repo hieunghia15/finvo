@@ -30,7 +30,7 @@ export const MainLayout: React.FC<PropsWithChildren> = ({ children }) => {
     }, [isSidebarHidden]);
 
     return (
-        <div className="layout-wrapper">
+        <div className="boxed-size layout-wrapper">
             {/* Sidebar Component */}
             <Sidebar isOpen={!isSidebarHidden} onToggleSidebar={toggleSidebar} />
 

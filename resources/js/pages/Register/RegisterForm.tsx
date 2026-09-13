@@ -1,23 +1,7 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
-import { z } from 'zod';
-
-const registerSchema = z.object({
-    name: z
-        .string()
-        .min(1, 'Full name is required'),
-    email: z
-        .string()
-        .min(1, 'Email is required')
-        .email('Please enter a valid email address'),
-    password: z
-        .string()
-        .min(1, 'Password is required')
-        .min(6, 'Password must be at least 6 characters'),
-});
-
-type RegisterFormValues = z.infer<typeof registerSchema>;
+import { registerSchema, RegisterFormValues } from '@/Schemas';
 
 export default function RegisterForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -72,9 +56,7 @@ export default function RegisterForm() {
                 }}
             >
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length
-                        ? field.state.meta.errors.join(', ')
-                        : serverErrors.name;
+                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.name;
 
                     return (
                         <div className="form-group mb-3">
@@ -95,9 +77,7 @@ export default function RegisterForm() {
                                     field.handleChange(e.target.value);
                                 }}
                             />
-                            {fieldError && (
-                                <div className="invalid-feedback">{fieldError}</div>
-                            )}
+                            {fieldError && <div className="invalid-feedback">{fieldError}</div>}
                         </div>
                     );
                 }}
@@ -113,9 +93,7 @@ export default function RegisterForm() {
                 }}
             >
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length
-                        ? field.state.meta.errors.join(', ')
-                        : serverErrors.email;
+                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.email;
 
                     return (
                         <div className="form-group mb-3">
@@ -136,9 +114,7 @@ export default function RegisterForm() {
                                     field.handleChange(e.target.value);
                                 }}
                             />
-                            {fieldError && (
-                                <div className="invalid-feedback">{fieldError}</div>
-                            )}
+                            {fieldError && <div className="invalid-feedback">{fieldError}</div>}
                         </div>
                     );
                 }}
@@ -154,9 +130,7 @@ export default function RegisterForm() {
                 }}
             >
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length
-                        ? field.state.meta.errors.join(', ')
-                        : serverErrors.password;
+                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.password;
 
                     return (
                         <div className="form-group mb-3">
@@ -185,29 +159,19 @@ export default function RegisterForm() {
                                     tabIndex={-1}
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                 >
-                                    <i className="material-symbols-outlined fs-20">
-                                        {showPassword ? 'visibility_off' : 'visibility'}
-                                    </i>
+                                    <i className="material-symbols-outlined fs-20">{showPassword ? 'visibility_off' : 'visibility'}</i>
                                 </button>
                             </div>
-                            {fieldError && (
-                                <div className="invalid-feedback d-block">{fieldError}</div>
-                            )}
+                            {fieldError && <div className="invalid-feedback d-block">{fieldError}</div>}
                         </div>
                     );
                 }}
             </form.Field>
 
-            <form.Subscribe
-                selector={(state) => [state.isSubmitting, state.canSubmit]}
-            >
+            <form.Subscribe selector={(state) => [state.isSubmitting, state.canSubmit]}>
                 {([isSubmitting]) => (
                     <div className="form-group mb-3">
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="btn btn-primary fw-medium py-2 px-3 w-100"
-                        >
+                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
                             <div className="d-flex align-items-center justify-content-center py-1">
                                 <i className="material-symbols-outlined text-white fs-20 me-2">person_4</i>
                                 <span>{isSubmitting ? 'Registering…' : 'Register'}</span>
@@ -231,7 +195,7 @@ export default function RegisterForm() {
                 </p>
                 <p>
                     Already have an account.{' '}
-                    <Link href="/login" className="fw-medium text-primary text-decoration-none">
+                    <Link href="/" className="fw-medium text-primary text-decoration-none">
                         Log In
                     </Link>
                 </p>

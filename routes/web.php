@@ -8,10 +8,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Home/Index');
+    return Inertia::render('Dashboard/Index');
 })->name('dashboard');
 
 Route::get('/register', function () {
     return Inertia::render('Register/Index');
 })->name('register');
-

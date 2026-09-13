@@ -1,20 +1,7 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
-import { z } from 'zod';
-
-const loginSchema = z.object({
-    email: z
-        .string()
-        .min(1, 'Email is required')
-        .email('Please enter a valid email address'),
-    password: z
-        .string()
-        .min(1, 'Password is required'),
-    remember: z.boolean(),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { loginSchema, LoginFormValues } from '@/Schemas';
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -69,9 +56,7 @@ export default function LoginForm() {
                 }}
             >
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length
-                        ? field.state.meta.errors.join(', ')
-                        : serverErrors.email;
+                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.email;
 
                     return (
                         <div className="form-group mb-4">
@@ -92,9 +77,7 @@ export default function LoginForm() {
                                     field.handleChange(e.target.value);
                                 }}
                             />
-                            {fieldError && (
-                                <div className="invalid-feedback">{fieldError}</div>
-                            )}
+                            {fieldError && <div className="invalid-feedback">{fieldError}</div>}
                         </div>
                     );
                 }}
@@ -110,9 +93,7 @@ export default function LoginForm() {
                 }}
             >
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length
-                        ? field.state.meta.errors.join(', ')
-                        : serverErrors.password;
+                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.password;
 
                     return (
                         <div className="form-group mb-4">
@@ -141,38 +122,25 @@ export default function LoginForm() {
                                     tabIndex={-1}
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                 >
-                                    <i className="material-symbols-outlined fs-20">
-                                        {showPassword ? 'visibility_off' : 'visibility'}
-                                    </i>
+                                    <i className="material-symbols-outlined fs-20">{showPassword ? 'visibility_off' : 'visibility'}</i>
                                 </button>
                             </div>
-                            {fieldError && (
-                                <div className="invalid-feedback d-block">{fieldError}</div>
-                            )}
+                            {fieldError && <div className="invalid-feedback d-block">{fieldError}</div>}
                         </div>
                     );
                 }}
             </form.Field>
 
             <div className="form-group mb-4">
-                <Link
-                    href="/forgot-password"
-                    className="text-decoration-none text-primary fw-semibold"
-                >
+                <Link href="/forgot-password" className="text-decoration-none text-primary fw-semibold">
                     Forgot Password?
                 </Link>
             </div>
 
-            <form.Subscribe
-                selector={(state) => [state.isSubmitting, state.canSubmit]}
-            >
+            <form.Subscribe selector={(state) => [state.isSubmitting, state.canSubmit]}>
                 {([isSubmitting]) => (
                     <div className="form-group mb-4">
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="btn btn-primary fw-medium py-2 px-3 w-100"
-                        >
+                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
                             <div className="d-flex align-items-center justify-content-center py-1">
                                 <i className="material-symbols-outlined text-white fs-20 me-2">login</i>
                                 <span>{isSubmitting ? 'Signing in…' : 'Login'}</span>
@@ -193,5 +161,3 @@ export default function LoginForm() {
         </form>
     );
 }
-
-
