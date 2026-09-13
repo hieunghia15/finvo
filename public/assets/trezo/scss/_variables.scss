@@ -1,0 +1,66 @@
+// Color
+$body-color: #64748b;
+$body-color-50: #526077;
+$body-color-60: #8695aa;
+$primary: #605dff;
+$primary-50: #4936f5;
+$primary-60: #3225ae;
+$primary-70: #dde4ff;
+$secondary: #3a4252;
+$secondary-50: #23272e;
+$info: #2db6f5;
+$success: #37d80a;
+$success-50: #1e8308;
+$success-60: #25b003;
+$success-70: #82fc5a;
+$success-80: #d8ffc8;
+$success-90: #eeffe5;
+$warning: #ffbc2b;
+$danger: #fd5812;
+$danger-40: #d71c00;
+$danger-50: #ee3e08;
+$danger-60: #ec1f00;
+$danger-70: #ffe1dd;
+$danger-80: #ff4023;
+$danger-90: #c52b09;
+$danger-100: #fff5ed;
+$light: #d5d9e2;
+$light-40: #f1f0f3;
+$dark: #000000;
+$border-color: #eceef2;
+$border-color-50: #ecf0ff;
+$body-bg: #f6f7f9;
+$primary-div: #ad63f6;
+$primary-div-50: #9135e8;
+$primary-div-60: #f3e8ff;
+$danger-div: #ffcea9;
+$gray-light: #445164;
+$rating-color: #fe7a36;
+$card-bg-c: #3584fc;
+$card-text-c: #ffe8d4;
+$gary-light: #f4f6fc;
+$gray-div: #f7f8f7;
+$gray-100: #f5f7f8;
+$transition: all ease 0.5s;
+$box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+$body-font-family: 'Inter', sans-serif;
+
+// For Dark Mode Color
+$dark-body-bg: #0a0e19;
+$dark-body-color: #8695aa;
+$dark-card-bg: #0c1427;
+$dark-input-bg: #15203c;
+$dark-border: #172036;
+
+// Font Size
+$font-size-root: null;
+$font-size-base: 0.88rem; // Assumes the browser default, typically `16px`
+$font-size-sm: $font-size-base * 0.875;
+$font-size-lg: $font-size-base * 1.25;
+
+$h1-font-size: $font-size-base * 2.5; // Updated 43.2px
+$h2-font-size: $font-size-base * 2.3; // Updated 36.8px
+$h3-font-size: $font-size-base * 1.8; // Updated 28.8px
+$h4-font-size: $font-size-base * 1.4; // Updated 22.4px
+$h5-font-size: $font-size-base * 1; // Updated 17.6px
+$h6-font-size: $font-size-base; // Updated 16px

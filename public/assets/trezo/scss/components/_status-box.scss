@@ -1,0 +1,166 @@
+/* Stats Box Area Style
+============================================*/
+.welcome-box {
+    .border-bottom {
+        border-color: #757dff !important;
+        padding-bottom: 37px;
+        margin-bottom: 37px;
+    }
+    &.style-two {
+        background: linear-gradient(81deg, #605dff 3.39%, #9747ff 93.3%);
+        .welcome-2 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 230px;
+        }
+        p {
+            color: #f6f7f9 !important;
+        }
+    }
+}
+.welcome-status-item {
+    i {
+        width: 42px;
+        height: 42px;
+        line-height: 42px;
+        text-align: center;
+        border-radius: 7px;
+        background-color: #ecf0ff;
+        color: $primary;
+        position: relative;
+        top: -3px;
+        font-size: 24px;
+        &.icon-bg {
+            background-color: #ffe8d4;
+            color: $danger;
+        }
+    }
+    &.style-two {
+        i {
+            background-color: #ffc8c0;
+            color: #ee3e08;
+            &.icon-bg {
+                &.two {
+                    background-color: #d8ffc8;
+                    color: #25b003;
+                }
+            }
+        }
+    }
+}
+.stats-box {
+    .count {
+        background-color: #ffe1dd;
+        color: $danger;
+        border: 1px solid #ffcea9;
+        display: inline-block;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 500;
+        width: 52px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        margin-left: 7px;
+        &.up {
+            background-color: #d8ffc8;
+            border-color: #82fc5a;
+            color: #1e8308;
+        }
+    }
+    .stats-list {
+        li {
+            margin-bottom: 6px;
+            .title {
+                position: relative;
+                padding-left: 30px;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    left: 0;
+                    width: 20px;
+                    height: 5px;
+                    background-color: $primary;
+                    border-radius: 50px;
+                }
+            }
+            &:last-child {
+                margin-bottom: 0;
+                .title {
+                    &::before {
+                        background-color: #c2cdff;
+                    }
+                }
+            }
+        }
+    }
+}
+.chart-position {
+    top: -5px;
+    right: 15px;
+    max-width: 120px;
+    position: absolute;
+}
+.congratulations {
+    bottom: 12px;
+    right: 7px;
+}
+
+/* Max width 767px */
+@media only screen and (max-width: 767px) {
+    .welcome-box {
+        .border-bottom {
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+        }
+    }
+}
+
+/* Min width 768px to Max width 992px */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .stats-box {
+        &.style-three {
+            .p-4 {
+                padding: 10px !important;
+            }
+        }
+    }
+}
+
+/* Min width 992px to Max width 1199px */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .stats-box {
+        &.style-three {
+            .p-4 {
+                padding: 10px !important;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+    .stats-box {
+        &.style-three {
+            .p-4 {
+                padding: 10px !important;
+            }
+        }
+    }
+    .welcome-box {
+        &.style-two {
+            .welcome-2 {
+                width: 185px;
+            }
+        }
+    }
+}
+
+/* Min width 1400px to Max width 1799px */
+@media only screen and (min-width: 1400px) and (max-width: 1799px) {
+}
+
+@media only screen and (max-width: 1199px) {
+}

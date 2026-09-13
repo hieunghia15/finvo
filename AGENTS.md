@@ -1,47 +1,72 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# AGENTS.md
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+## Project Overview
 
-## Prerequisites
+This project is a full-stack web application built with:
 
-Verify that PHP and Composer are available:
+- Laravel 13
+- PHP 8.5+
+- ReactJS
+- TypeScript
+- Inertia.js
+- Laravel Sanctum
+- Vite
+- MySQL compatible with Laravel
 
-```sh
-php -v
-composer -V
+The project uses Laravel as the backend and ReactJS + Inertia.js as the frontend.
+
+---
+
+# 1. General Rules
+
+When modifying or creating code:
+
+- Follow the existing project structure.
+- Reuse existing components, utilities, hooks, types, and services whenever possible.
+- Do not introduce unnecessary dependencies.
+- Do not rewrite existing working code unless required.
+- Keep implementations simple, readable, and maintainable.
+- Prefer small, focused changes over large refactors.
+- Do not change unrelated files.
+- Preserve existing functionality.
+- Follow the project's existing coding style.
+
+Before implementing a feature:
+
+1. Inspect the existing codebase.
+2. Identify related routes, controllers, models, requests, components, layouts, and utilities.
+3. Reuse existing patterns.
+4. Implement the smallest clean solution.
+5. Run relevant tests, linting, formatting, and TypeScript checks.
+
+---
+
+# 2. Backend - Laravel 13
+
+## Architecture
+
+Follow standard Laravel architecture.
+
+Use:
+
+- Controllers for HTTP request handling.
+- Form Requests for complex validation.
+- Models for database interaction.
+- Services only when business logic is sufficiently complex.
+- Resources when API response transformation is required.
+- Middleware for cross-cutting request concerns.
+
+Avoid putting large amounts of business logic directly inside controllers.
+
+Controllers should remain thin.
+
+Example:
+
+```php
+public function store(StoreUserRequest $request)
+{
+    $user = $this->userService->create($request->validated());
+
+    return redirect()->route('users.index');
+}
 ```
-
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
-
-macOS:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
-
-Windows PowerShell:
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
-
-Linux:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
-
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
-
-## Agent Setup
-
-Install Laravel Boost from the application root before making application changes:
-
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
-
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
