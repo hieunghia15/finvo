@@ -1,11 +1,21 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
-import { loginSchema, LoginFormValues } from '@/Schemas';
+import { loginSchema } from '@/Schemas';
+import type { LoginFormValues } from '@/Schemas';
+import { useAuth } from '@/features/auth/hooks';
+import type { AxiosError } from 'axios';
+
+interface ServerErrors {
+    email?: string;
+    password?: string;
+    general?: string;
+}
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
-    const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
+    const [serverErrors, setServerErrors] = useState<ServerErrors>({});
+    const { login } = useAuth();
 
     const form = useForm({
         defaultValues: {
@@ -13,28 +23,30 @@ export default function LoginForm() {
             password: '',
             remember: false,
         } as LoginFormValues,
-        validators: {
-            onChange: ({ value }) => {
-                const result = loginSchema.safeParse(value);
-                if (!result.success) {
-                    return result.error.issues[0]?.message;
-                }
-                return undefined;
-            },
-        },
         onSubmit: async ({ value }) => {
             setServerErrors({});
-            return new Promise<void>((resolve) => {
-                router.post('/login', value, {
-                    onError: (errors) => {
-                        setServerErrors(errors);
-                        resolve();
-                    },
-                    onFinish: () => {
-                        resolve();
-                    },
-                });
-            });
+            try {
+                await login({ email: value.email, password: value.password });
+                router.visit('/dashboard');
+            } catch (error: unknown) {
+                const axiosError = error as AxiosError<{
+                    message?: string;
+                    errors?: Record<string, string[]>;
+                }>;
+                const responseData = axiosError?.response?.data;
+                if (responseData?.errors) {
+                    const mapped: ServerErrors = {};
+                    for (const [key, messages] of Object.entries(responseData.errors)) {
+                        if (key === 'email') mapped.email = messages[0];
+                        else if (key === 'password') mapped.password = messages[0];
+                    }
+                    setServerErrors(mapped);
+                } else {
+                    setServerErrors({
+                        general: responseData?.message ?? 'An unexpected error occurred. Please try again.',
+                    });
+                }
+            }
         },
     });
 
@@ -46,6 +58,12 @@ export default function LoginForm() {
                 form.handleSubmit();
             }}
         >
+            {serverErrors.general && (
+                <div className="alert alert-danger mb-4" role="alert">
+                    {serverErrors.general}
+                </div>
+            )}
+
             <form.Field
                 name="email"
                 validators={{
@@ -73,7 +91,7 @@ export default function LoginForm() {
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
-                                    setServerErrors((prev) => ({ ...prev, email: '' }));
+                                    setServerErrors((prev) => ({ ...prev, email: undefined }));
                                     field.handleChange(e.target.value);
                                 }}
                             />
@@ -111,7 +129,7 @@ export default function LoginForm() {
                                     value={field.state.value}
                                     onBlur={field.handleBlur}
                                     onChange={(e) => {
-                                        setServerErrors((prev) => ({ ...prev, password: '' }));
+                                        setServerErrors((prev) => ({ ...prev, password: undefined }));
                                         field.handleChange(e.target.value);
                                     }}
                                 />
