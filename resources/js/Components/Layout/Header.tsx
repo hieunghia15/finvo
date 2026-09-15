@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { User, NotificationItem } from '@/types';
+import { useAuth } from '@/features/auth/hooks';
 
 export interface HeaderProps {
     user?: User | null;
@@ -10,6 +11,15 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notifications = [] }) => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
+    const { logout } = useAuth();
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } finally {
+            router.visit('/');
+        }
+    };
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
     const notificationRef = useRef<HTMLDivElement>(null);
@@ -239,15 +249,14 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link
+                                                    <button
+                                                        type="button"
                                                         className="dropdown-item admin-item-link d-flex align-items-center text-body py-2 w-100 border-0 bg-transparent text-start"
-                                                        href="/logout"
-                                                        method="post"
-                                                        as="button"
+                                                        onClick={handleLogout}
                                                     >
                                                         <i className="material-symbols-outlined me-2 fs-18">logout</i>
                                                         <span>Logout</span>
-                                                    </Link>
+                                                    </button>
                                                 </li>
                                             </ul>
                                         </div>

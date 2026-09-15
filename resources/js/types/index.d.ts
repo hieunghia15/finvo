@@ -2,9 +2,10 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    email_verified_at?: string;
+    email_verified_at?: string | null;
     avatar?: string;
     role?: string;
+    created_at?: string;
 }
 
 export interface Auth {
