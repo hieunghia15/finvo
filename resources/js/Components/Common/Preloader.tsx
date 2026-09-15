@@ -14,10 +14,7 @@ export interface PreloaderProps {
     minDelay?: number;
 }
 
-export const Preloader: React.FC<PreloaderProps> = ({
-    letters = ['F', 'I', 'N', 'V', 'O'],
-    minDelay = 0,
-}) => {
+export const Preloader: React.FC<PreloaderProps> = ({ letters = ['F', 'I', 'N', 'V', 'O'], minDelay = 0 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(() => {
         return typeof window !== 'undefined' && document.readyState !== 'complete';
     });

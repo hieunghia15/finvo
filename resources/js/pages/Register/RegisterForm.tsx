@@ -137,19 +137,19 @@ export default function RegisterForm() {
                                 Password
                             </label>
                             <input
-                                    id={field.name}
-                                    name={field.name}
-                                    type="password"
-                                    className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
-                                    style={fieldError ? { backgroundImage: 'none' } : undefined}
-                                    placeholder="Type password"
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) => {
+                                id={field.name}
+                                name={field.name}
+                                type="password"
+                                className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
+                                style={fieldError ? { backgroundImage: 'none' } : undefined}
+                                placeholder="Type password"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => {
                                     setServerErrors((prev) => ({ ...prev, password: '' }));
-                                        field.handleChange(e.target.value);
-                                    }}
-                                />
+                                    field.handleChange(e.target.value);
+                                }}
+                            />
                             {fieldError && <div className="invalid-feedback d-block">{fieldError}</div>}
                         </div>
                     );
