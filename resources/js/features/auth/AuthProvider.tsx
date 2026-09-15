@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import * as authApi from './api';
 import type { AuthContextValue, AuthResponse, LoginPayload, User } from './types';
@@ -12,13 +12,13 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const { props } = usePage<PageProps>();
-    const initialUser = (props.auth?.user as User | null) ?? null;
 
-    const [user, setUser] = useState<User | null>(initialUser);
+    const [user, setUser] = useState<User | null>(props.auth?.user ?? null);
     const [loading, setLoading] = useState(false);
 
+    // Sync user state on Inertia page navigations (props.auth.user changes between pages).
     useEffect(() => {
-        setUser((props.auth?.user as User | null) ?? null);
+        setUser(props.auth?.user ?? null);
     }, [props.auth?.user]);
 
     const refreshUser = useCallback(async () => {
@@ -37,9 +37,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return response;
     }, []);
 
+    // Always clear local user state regardless of API success or failure (#7).
     const logout = useCallback(async () => {
-        await authApi.logout();
-        setUser(null);
+        try {
+            await authApi.logout();
+        } finally {
+            setUser(null);
+        }
     }, []);
 
     const value: AuthContextValue = {

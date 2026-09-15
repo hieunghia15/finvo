@@ -13,7 +13,6 @@ interface ServerErrors {
 }
 
 export default function LoginForm() {
-    const [showPassword, setShowPassword] = useState(false);
     const [serverErrors, setServerErrors] = useState<ServerErrors>({});
     const { login } = useAuth();
 
@@ -21,7 +20,6 @@ export default function LoginForm() {
         defaultValues: {
             email: '',
             password: '',
-            remember: false,
         } as LoginFormValues,
         onSubmit: async ({ value }) => {
             setServerErrors({});
@@ -84,7 +82,7 @@ export default function LoginForm() {
                             <input
                                 id={field.name}
                                 name={field.name}
-                                type="text"
+                                type="email"
                                 className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
                                 style={fieldError ? { backgroundImage: 'none' } : undefined}
                                 placeholder="example@trezo.com"
@@ -118,11 +116,10 @@ export default function LoginForm() {
                             <label htmlFor={field.name} className="label text-secondary">
                                 Password
                             </label>
-                            <div className="position-relative">
                                 <input
                                     id={field.name}
                                     name={field.name}
-                                    type={showPassword ? 'text' : 'password'}
+                                    type="password"
                                     className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
                                     style={fieldError ? { backgroundImage: 'none' } : undefined}
                                     placeholder="Type password"
@@ -133,16 +130,6 @@ export default function LoginForm() {
                                         field.handleChange(e.target.value);
                                     }}
                                 />
-                                <button
-                                    type="button"
-                                    className="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-secondary"
-                                    onClick={() => setShowPassword((v) => !v)}
-                                    tabIndex={-1}
-                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    <i className="material-symbols-outlined fs-20">{showPassword ? 'visibility_off' : 'visibility'}</i>
-                                </button>
-                            </div>
                             {fieldError && <div className="invalid-feedback d-block">{fieldError}</div>}
                         </div>
                     );
@@ -156,9 +143,9 @@ export default function LoginForm() {
             </div>
 
             <form.Subscribe selector={(state) => [state.isSubmitting, state.canSubmit]}>
-                {([isSubmitting]) => (
+                {([isSubmitting, canSubmit]) => (
                     <div className="form-group mb-4">
-                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
+                        <button type="submit" disabled={isSubmitting || !canSubmit} className="btn btn-primary fw-medium py-2 px-3 w-100">
                             <div className="d-flex align-items-center justify-content-center py-1">
                                 <i className="material-symbols-outlined text-white fs-20 me-2">login</i>
                                 <span>{isSubmitting ? 'Signing in…' : 'Login'}</span>

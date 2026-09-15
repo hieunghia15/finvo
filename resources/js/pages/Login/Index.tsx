@@ -1,4 +1,3 @@
-import React from 'react';
 import { Head } from '@inertiajs/react';
 import AuthLayout from '@/Components/Auth/AuthLayout';
 import SocialButtons from '@/Components/Auth/SocialButtons';
