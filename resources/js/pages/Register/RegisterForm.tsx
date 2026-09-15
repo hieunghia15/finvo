@@ -4,7 +4,6 @@ import { router, Link } from '@inertiajs/react';
 import { registerSchema, RegisterFormValues } from '@/Schemas';
 
 export default function RegisterForm() {
-    const [showPassword, setShowPassword] = useState(false);
     const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
 
     const form = useForm({
@@ -137,31 +136,20 @@ export default function RegisterForm() {
                             <label htmlFor={field.name} className="label text-secondary">
                                 Password
                             </label>
-                            <div className="position-relative">
-                                <input
-                                    id={field.name}
-                                    name={field.name}
-                                    type={showPassword ? 'text' : 'password'}
-                                    className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
-                                    style={fieldError ? { backgroundImage: 'none' } : undefined}
-                                    placeholder="Type password"
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) => {
-                                        setServerErrors((prev) => ({ ...prev, password: '' }));
-                                        field.handleChange(e.target.value);
-                                    }}
-                                />
-                                <button
-                                    type="button"
-                                    className="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-secondary"
-                                    onClick={() => setShowPassword((v) => !v)}
-                                    tabIndex={-1}
-                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    <i className="material-symbols-outlined fs-20">{showPassword ? 'visibility_off' : 'visibility'}</i>
-                                </button>
-                            </div>
+                            <input
+                                id={field.name}
+                                name={field.name}
+                                type="password"
+                                className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
+                                style={fieldError ? { backgroundImage: 'none' } : undefined}
+                                placeholder="Type password"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => {
+                                    setServerErrors((prev) => ({ ...prev, password: '' }));
+                                    field.handleChange(e.target.value);
+                                }}
+                            />
                             {fieldError && <div className="invalid-feedback d-block">{fieldError}</div>}
                         </div>
                     );
@@ -169,9 +157,9 @@ export default function RegisterForm() {
             </form.Field>
 
             <form.Subscribe selector={(state) => [state.isSubmitting, state.canSubmit]}>
-                {([isSubmitting]) => (
+                {([isSubmitting, canSubmit]) => (
                     <div className="form-group mb-3">
-                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
+                        <button type="submit" disabled={isSubmitting || !canSubmit} className="btn btn-primary fw-medium py-2 px-3 w-100">
                             <div className="d-flex align-items-center justify-content-center py-1">
                                 <i className="material-symbols-outlined text-white fs-20 me-2">person_4</i>
                                 <span>{isSubmitting ? 'Registering…' : 'Register'}</span>

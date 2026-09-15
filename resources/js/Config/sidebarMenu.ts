@@ -48,31 +48,24 @@ export const sidebarMenuConfig: MenuGroup[] = [
                 icon: 'account_circle',
                 url: '/my-profile',
             },
-            {
-                id: 'multiLevel',
-                title: 'Multi Level Menu',
-                icon: 'unfold_more',
-                subItems: [
-                    {
-                        id: 'levelOne',
-                        title: 'Level One',
-                        subItems: [
-                            {
-                                id: 'levelThree',
-                                title: 'Level Three',
-                                url: '#',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: 'logout',
-                title: 'Logout',
-                icon: 'logout',
-                url: '/logout',
-                method: 'post',
-            },
+            // {
+            //     id: 'multiLevel',
+            //     title: 'Multi Level Menu',
+            //     icon: 'unfold_more',
+            //     subItems: [
+            //         {
+            //             id: 'levelOne',
+            //             title: 'Level One',
+            //             subItems: [
+            //                 {
+            //                     id: 'levelThree',
+            //                     title: 'Level Three',
+            //                     url: '#',
+            //                 },
+            //             ],
+            //         },
+            //     ],
+            // }
         ],
     },
 ];

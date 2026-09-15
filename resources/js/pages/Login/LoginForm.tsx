@@ -1,40 +1,50 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
-import { loginSchema, LoginFormValues } from '@/Schemas';
+import { loginSchema } from '@/Schemas';
+import type { LoginFormValues } from '@/Schemas';
+import { useAuth } from '@/features/auth/hooks';
+import type { AxiosError } from 'axios';
+
+interface ServerErrors {
+    email?: string;
+    password?: string;
+    general?: string;
+}
 
 export default function LoginForm() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
+    const [serverErrors, setServerErrors] = useState<ServerErrors>({});
+    const { login } = useAuth();
 
     const form = useForm({
         defaultValues: {
             email: '',
             password: '',
-            remember: false,
         } as LoginFormValues,
-        validators: {
-            onChange: ({ value }) => {
-                const result = loginSchema.safeParse(value);
-                if (!result.success) {
-                    return result.error.issues[0]?.message;
-                }
-                return undefined;
-            },
-        },
         onSubmit: async ({ value }) => {
             setServerErrors({});
-            return new Promise<void>((resolve) => {
-                router.post('/login', value, {
-                    onError: (errors) => {
-                        setServerErrors(errors);
-                        resolve();
-                    },
-                    onFinish: () => {
-                        resolve();
-                    },
-                });
-            });
+            try {
+                await login({ email: value.email, password: value.password });
+                router.visit('/dashboard');
+            } catch (error: unknown) {
+                const axiosError = error as AxiosError<{
+                    message?: string;
+                    errors?: Record<string, string[]>;
+                }>;
+                const responseData = axiosError?.response?.data;
+                if (responseData?.errors) {
+                    const mapped: ServerErrors = {};
+                    for (const [key, messages] of Object.entries(responseData.errors)) {
+                        if (key === 'email') mapped.email = messages[0];
+                        else if (key === 'password') mapped.password = messages[0];
+                    }
+                    setServerErrors(mapped);
+                } else {
+                    setServerErrors({
+                        general: responseData?.message ?? 'An unexpected error occurred. Please try again.',
+                    });
+                }
+            }
         },
     });
 
@@ -46,6 +56,12 @@ export default function LoginForm() {
                 form.handleSubmit();
             }}
         >
+            {serverErrors.general && (
+                <div className="alert alert-danger mb-4" role="alert">
+                    {serverErrors.general}
+                </div>
+            )}
+
             <form.Field
                 name="email"
                 validators={{
@@ -66,14 +82,14 @@ export default function LoginForm() {
                             <input
                                 id={field.name}
                                 name={field.name}
-                                type="text"
+                                type="email"
                                 className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
                                 style={fieldError ? { backgroundImage: 'none' } : undefined}
                                 placeholder="example@trezo.com"
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
-                                    setServerErrors((prev) => ({ ...prev, email: '' }));
+                                    setServerErrors((prev) => ({ ...prev, email: undefined }));
                                     field.handleChange(e.target.value);
                                 }}
                             />
@@ -100,31 +116,20 @@ export default function LoginForm() {
                             <label htmlFor={field.name} className="label text-secondary">
                                 Password
                             </label>
-                            <div className="position-relative">
-                                <input
-                                    id={field.name}
-                                    name={field.name}
-                                    type={showPassword ? 'text' : 'password'}
-                                    className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
-                                    style={fieldError ? { backgroundImage: 'none' } : undefined}
-                                    placeholder="Type password"
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) => {
-                                        setServerErrors((prev) => ({ ...prev, password: '' }));
-                                        field.handleChange(e.target.value);
-                                    }}
-                                />
-                                <button
-                                    type="button"
-                                    className="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-secondary"
-                                    onClick={() => setShowPassword((v) => !v)}
-                                    tabIndex={-1}
-                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    <i className="material-symbols-outlined fs-20">{showPassword ? 'visibility_off' : 'visibility'}</i>
-                                </button>
-                            </div>
+                            <input
+                                id={field.name}
+                                name={field.name}
+                                type="password"
+                                className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
+                                style={fieldError ? { backgroundImage: 'none' } : undefined}
+                                placeholder="Type password"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => {
+                                    setServerErrors((prev) => ({ ...prev, password: undefined }));
+                                    field.handleChange(e.target.value);
+                                }}
+                            />
                             {fieldError && <div className="invalid-feedback d-block">{fieldError}</div>}
                         </div>
                     );
@@ -138,9 +143,9 @@ export default function LoginForm() {
             </div>
 
             <form.Subscribe selector={(state) => [state.isSubmitting, state.canSubmit]}>
-                {([isSubmitting]) => (
+                {([isSubmitting, canSubmit]) => (
                     <div className="form-group mb-4">
-                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
+                        <button type="submit" disabled={isSubmitting || !canSubmit} className="btn btn-primary fw-medium py-2 px-3 w-100">
                             <div className="d-flex align-items-center justify-content-center py-1">
                                 <i className="material-symbols-outlined text-white fs-20 me-2">login</i>
                                 <span>{isSubmitting ? 'Signing in…' : 'Login'}</span>
