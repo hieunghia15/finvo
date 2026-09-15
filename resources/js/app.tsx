@@ -3,6 +3,8 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { AuthProvider } from '@/features/auth/AuthProvider';
 
+import Preloader from '@/Components/Common/Preloader';
+
 const appName = 'Finvo';
 
 createInertiaApp({
@@ -12,13 +14,16 @@ createInertiaApp({
         const container = el || document.getElementById('app');
         if (container) {
             createRoot(container).render(
-                <App {...props}>
-                    {({ Component, key, props: pageProps }) => (
-                        <AuthProvider>
-                            <Component key={key} {...pageProps} />
-                        </AuthProvider>
-                    )}
-                </App>
+                <>
+                    <Preloader />
+                    <App {...props}>
+                        {({ Component, key, props: pageProps }) => (
+                            <AuthProvider>
+                                <Component key={key} {...pageProps} />
+                            </AuthProvider>
+                        )}
+                    </App>
+                </>
             );
         }
     },
