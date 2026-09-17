@@ -25,6 +25,17 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'email'],
             'password' => ['required', 'string', 'min:1'],
+            'remember' => ['sometimes', 'boolean'],
         ];
+    }
+
+    /**
+     * Get the credentials to attempt authentication with.
+     *
+     * @return array<string, string>
+     */
+    public function credentials(): array
+    {
+        return $this->only('email', 'password');
     }
 }
