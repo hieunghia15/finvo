@@ -1,114 +1,114 @@
 # Project Overview
-This is a modern Full-Stack web application with Finvo name using Laravel 13, ReactJS, TypeScript, and Inertia.js.
-You are an expert Full-Stack developer strictly following the conventions and architecture defined below for reading, writing, refactoring code in this project.
+This is a modern Full-Stack web application named Finvo built with Laravel 13, ReactJS, TypeScript, and Inertia.js.
+You are an expert Full-Stack developer strictly following the conventions and architecture defined below for reading, writing, and refactoring code in this project.
 
 ## Tech Stack
 - **Backend:** Laravel 13, PHP 8.5, MySQL
 - **Frontend:** ReactJS 19 (Functional Components, Hooks), TypeScript 7, Inertia.js 3
-- **State Management:** Zustand
-- **Data Fetching:** Axios
-- **Schema Validation:** Zod (Frontend) & Laravel FormRequests (Backend)
-- **UI & Styling**: Trezo Bootstrap Admin Template (assets in `public/assets/trezo/`)
-- **Build Tooling**: Vite 8 with `@vitejs/plugin-react` and `laravel-vite-plugin`
-- **Authentication:** Laravel Sanctum (HttpOnly Session Cookie)
+- **State Management:** Zustand (UI state only), Inertia page props (Server state)
+- **Schema Validation:** Zod / `@tanstack/react-form` (Frontend UX validation) & Laravel FormRequests (Backend server validation)
+- **UI & Styling:** Trezo Bootstrap Admin Template (assets in `public/assets/trezo/`)
+- **Build Tooling:** Vite 8 with `@vitejs/plugin-react` and `laravel-vite-plugin`
+- **Authentication:** Standard Laravel Web Session Authentication (`web` guard, cookie-based session auth managed natively by Inertia and Laravel middleware)
 
 ## Architectural Rules (Strictly Enforced)
 
-### 1. Controllers Separation
-We strictly separate UI serving from Data processing.
+### 1. Monolithic Inertia Architecture (No Separate REST API / No Sanctum API Controllers)
+We fully leverage Inertia.js architecture without building separate RESTful API controllers or using Sanctum tokens/API routes.
 
-**Main Controllers (Web Controllers)**
-- **Location:** `app/Http/Controllers/`
-- **Purpose:** Exclusively for returning Inertia views.
-- **Rule:** DO NOT perform heavy logic or return JSON here. Only fetch necessary initial data for the page load and return `Inertia::render('PageName', $data)`.
+- **Controllers:**
+  - **Location:** `app/Http/Controllers/` (or sub-namespaces like `app/Http/Controllers/Auth/`)
+  - **Purpose:** Handle request validation, delegate logic to Services, and return Inertia responses (`Inertia::render('PageName', $props)`) or Inertia redirects (`redirect()->route(...)` / `back()`).
+  - **Rule:** DO NOT build standalone RESTful API controllers or JSON endpoints in `routes/api.php` for internal application features. All form submissions, authentication flows, and data actions must be handled via web routes (`routes/web.php`) using Inertia form requests/visits.
 
-**API Controllers (RESTful API)**
-- **Location:** `app/Http/Controllers/Api/`
-- **Purpose:** Handle HTTP/API concerns only.
-- **Responsibilities:**
-  - Receive and authorize requests
-  - Accept validated FormRequest data
-  - Delegate business operations to Services
-  - Return JSON responses
-- **Rule:** Must return JSON responses (uses API Resources and follows the pattern in HttpService.). Must be protected by Sanctum middleware (`auth:sanctum`).
-
-### 2. Frontend Conventions (React + TypeScript)
-- **TypeScript:** Use strict typing. Define `Interfaces` or `Types` for all component props, Zustand state, and API responses. Avoid `any`.
-- **Inertia.js:** 
+### 2. Frontend Conventions (React + TypeScript + Inertia.js)
+- **TypeScript:** Use strict typing. Define `Interfaces` or `Types` for component props, Inertia page props, and form state. Avoid `any`.
+- **Inertia.js Navigation & Forms:**
   - Use the `<Link>` component for internal navigation.
-  - Use `usePage()` only for Inertia page props and globally shared server-provided data.
-  - Do not use `usePage()` as a replacement for Zustand or a general client-side state store.
-- **Zod:**
-  - Use Zod for client-side validation of user input and structured API payloads where validation provides value.
-  - Do not duplicate every server validation rule blindly in Zod.
-  - Laravel FormRequests remain the authoritative validation layer.
-  - Client-side validation is for UX and must never replace server-side validation.
-- **Axios:** Use Axios for all RESTful API calls to endpoints defined in `routes/api.php`. Ensure CSRF token and Sanctum auth cookies are properly handled.
+  - Use `usePage()` to access server-shared page props (e.g., authenticated user, flash messages, global settings).
+  - Use `@tanstack/react-form` or Inertia's form helpers (`router.post`, `router.put`, `router.delete`, etc.) for sending data to Laravel web routes.
+  - Rely on standard Laravel web sessions for authentication and CSRF token verification (handled seamlessly by Inertia and Vite).
+- **Zod & Validation:**
+  - Use Zod schemas with `@tanstack/react-form` for client-side UX validation.
+  - Server validation is authoritatively enforced by Laravel FormRequests. Server validation errors return back through Inertia props to display in components.
 
 ### 3. Global State Management (Zustand)
 - **Scope of Use:**
   - ONLY use Zustand for Client-side UI State (e.g., `isSidebarOpen`, `theme`, `activeModal`).
-  - Zustand is not:
-    - API cache
-    - database state
-    - server state
-    - form state
+  - Zustand is NOT for:
+    - API/Server state cache
+    - Database data
+    - Form state
+    - Authentication state (auth state is provided by server via Inertia `usePage().props.auth`)
 - Prefer local React state for component-local state.
-- Use Zustand only when UI state must be shared across unrelated components or persist across navigation.
-- Do not create a Zustand store for state that can remain inside a component.
-- **Anti-pattern:** DO NOT store database data (Server State like User lists, Posts) in Zustand. This data must be managed and passed by Laravel via Inertia props.
-- **TypeScript:** Every Zustand store MUST have a clearly defined interface separating State variables and Actions.
+- Use Zustand only when UI state must be shared across unrelated components or persist across client navigation.
+- **Anti-pattern:** DO NOT store database entity data (User lists, Posts, etc.) in Zustand. This data must be passed directly from Laravel via Inertia page props.
 
 ### 4. Backend Conventions (Laravel 13)
 - **Routing:** 
-  - Web routes (`routes/web.php`) point to Main Controllers.
-  - API routes (`routes/api.php`) point to API Controllers.
-- **Validation:** Always use Laravel FormRequests (`app/Http/Requests`) for backend validation in API Controllers. Do not validate directly inside the controller method.
+  - All routes are defined in `routes/web.php` protected by standard Laravel web session middleware (`web`, `auth`, `guest`).
+  - Do not use `routes/api.php` or Sanctum auth middleware for internal app functionality.
+- **Validation:** Always use Laravel FormRequests (`app/Http/Requests`) for backend request validation.
 - **Authentication:**
-  - Use Laravel Sanctum for first-party SPA authentication.
-  - Authentication must use Sanctum's stateful session/cookie mechanism.
-  - Do not implement Bearer tokens for the first-party web application unless explicitly required.
-  - Axios must send credentials for API requests when required by the application's Sanctum configuration.
-  - CSRF protection must follow Laravel/Sanctum conventions.
-- **Skinny Controllers:** Move all business logic to Services.
+  - Standard Laravel session-based authentication (`Auth::attempt`, `Auth::logout`, web sessions).
+  - Auth middleware guards protect web routes.
+- **Skinny Controllers:** Move reusable business logic, queries, or domain operations into Services classes. Don't use Repository.
 
 ### 5. Code Style & Formatting
-- **PHP:** Follow PSR-12 standards, PER Coding Style.
-- **TypeScript/React:** Use PascalCase for components and interfaces, camelCase for functions and variables.
-- Keep components small and reusable. Place them in `resources/js/Components`.
-- Place Inertia pages in `resources/js/Pages`.
+- **PHP:** Follow PSR-12 standards and PER Coding Style. Run `./vendor/bin/pint` to format code.
+- **TypeScript/React:** Use PascalCase for components/interfaces, camelCase for functions/variables. Run `npm run format` to format JS/TS code.
+- Keep components small and reusable in `resources/js/Components/`.
+- Place Inertia page views in `resources/js/Pages/` (or `resources/js/pages/`).
 
 ### 6. Laravel Naming Conventions (Strict Rules)
 
 **Directories (Folder)**
-- **Root-level & Config:** lowercase. Example: `app/`, `config/`, `routes/`, `database/`.
-- **App-level (Namespaces):** Use `PascalCase` for directories inside `app/`. For example: `app/Http/`, `app/Models/`, `app/Services/`, `app/Http/Controllers/Api/`.
+- **Root-level & Config:** lowercase (e.g., `app/`, `config/`, `routes/`, `database/`).
+- **App-level (Namespaces):** Use `PascalCase` inside `app/` (e.g., `app/Http/Controllers/`, `app/Models/`, `app/Services/`).
 
 **Classes & Files**
-All class files in Laravel must use `PascalCase` and perfectly match the class names inside.
+All class files in Laravel must use `PascalCase` matching their internal class name.
 
 | Component | Rule | Example |
 | :--- | :--- | :--- |
 | **Models** | Singular, `PascalCase` | `User.php`, `ProductCategory.php` |
-| **Web Controllers** | Singular or plural + `Controller` | `UserController.php`, `PageController.php` |
-| **API Controllers** | Place it in the folder `Api/` | `Api/UserController.php` |
-| **Form Requests** | Action + Model + `Request` | `StoreUserRequest.php`, `UpdateUserRequest.php` |
-| **API Resources** | Model + `Resource` / `Collection` | `UserResource.php`, `UserCollection.php` |
-| **Services** (Logic) | Name services after the business capability or domain operation they encapsulate. Prefer cohesive services with a single business responsibility. Do not create generic "God Services". | `PaymentService.php`, `UserAuthService.php` |
+| **Controllers** | Singular or plural + `Controller` | `UserController.php`, `AuthController.php` |
+| **Form Requests** | Action + Model + `Request` | `StoreUserRequest.php`, `LoginRequest.php` |
+| **Services** | Cohesive business logic classes named after capability | `UserAuthService.php`, `PaymentService.php` |
 | **Traits** | Adjective or Prefix `Has`/`Is` | `Searchable.php`, `HasRoles.php` |
 | **Enums** | Singular, `PascalCase` | `UserStatus.php`, `OrderState.php` |
-| **Middleware** | Function name | `CheckAdmin.php`, `EnsureEmailIsVerified.php` |
+| **Middleware** | Functionality name | `CheckAdmin.php`, `EnsureEmailIsVerified.php` |
 | **Jobs** | Verb + Noun | `SendWelcomeEmail.php`, `ProcessPayment.php` |
-| **Events** | Actions that have occurred/are occurring | `UserRegistered.php`, `OrderShipped.php` |
-| **Listeners** | Event response verbs | `SendWelcomeNotification.php` |
+| **Events** | Actions that occurred | `UserRegistered.php`, `OrderShipped.php` |
+| **Listeners** | Event response action | `SendWelcomeNotification.php` |
 
 **Database & Eloquent Conventions**
-Although the processing is done in PHP, the Model names are directly linked to the Database and must adhere to the following:
-- **Tables:** Many, `snake_case`. (Ex: `users`, `product_categories`).
-- **Pivot Tables:** Singular, `snake_case`, arranged in alphabetical order. (Ex: `role_user`, not `user_role`).
-- **Columns:** `snake_case`. (Ex: `first_name`, `created_at`).
-- **Primary Keys:** Always `id`.
-- **Foreign Keys:** Singular model name + `_id`. (Ex: `user_id`, `category_id`).
+- **Tables:** Plural, `snake_case` (e.g., `users`, `product_categories`).
+- **Pivot Tables:** Singular, `snake_case`, alphabetical (e.g., `role_user`).
+- **Columns:** `snake_case` (e.g., `first_name`, `created_at`).
+- **Primary Keys:** `id`.
+- **Foreign Keys:** Singular model name + `_id` (e.g., `user_id`, `category_id`).
+- Use migrations for schema changes.
+- Avoid N+1 queries; use eager loading (`with()`).
+
+### 7. React & TypeScript Naming Conventions (Strict Rules)
+
+**Directories (`resources/js/`)**
+- **Components / Pages / Layouts folders:** `PascalCase` (e.g., `Components/`, `Pages/`, `Layouts/`).
+- **Utilities / Hooks / Config folders:** `camelCase` (e.g., `hooks/`, `lib/`, `types/`, `features/`).
+
+**Files (`.ts` and `.tsx`)**
+
+| Type | Rule | File Extension | Example |
+| :--- | :--- | :--- | :--- |
+| **React Components** | `PascalCase` | `.tsx` | `PrimaryButton.tsx`, `UserList.tsx` |
+| **Inertia Pages** | `PascalCase` (reflecting web route) | `.tsx` | `Dashboard.tsx`, `Users/Index.tsx` |
+| **Layouts** | `PascalCase` + `Layout` | `.tsx` | `AppLayout.tsx`, `AuthLayout.tsx`, `MainLayout.tsx` |
+| **Custom Hooks** | `camelCase` (starts with `use`) | `.ts` / `.tsx` | `useClickOutside.ts`, `useTheme.ts` |
+| **Zustand Stores** | `camelCase` (`use` + `Store`) | `.ts` | `useThemeStore.ts`, `useSidebarStore.ts` |
+| **Zod Schemas** | `camelCase` (Model/Action + `Schema`) | `.ts` | `userSchema.ts`, `loginSchema.ts` |
+| **Types & Interfaces** | `camelCase` | `.ts` / `.d.ts` | `user.types.ts`, `inertia.d.ts` |
+| **Utils / Helpers** | `camelCase` | `.ts` | `formatDate.ts`, `calculateTotal.ts` |
 
 **Database**
 - Use migrations for all schema changes.
@@ -126,11 +126,10 @@ Although the processing is done in PHP, the Model names are directly linked to t
 - Use casts for typed attributes.
 - Use `$fillable` / `$guarded` consistently according to project policy.
 - Avoid unnecessary `DB::raw()`.
-- Do not expose internal model structure directly from API responses; use API Resources.
 
 **Method Naming**
 - Use `camelCase` for all methods. (Ex: `getAllUsers()`, `calculateTotal()`).
-- **Controller Methods:** Adhere to RESTful verbs: `index`, `show`, `store`, `update`, `destroy`.
+- **Controller Methods:** Adhere to verbs: `index`, `show`, `store`, `update`, `destroy`.
 
 ### 7. React & TypeScript Naming Conventions (Strict Rules)
 
@@ -149,25 +148,20 @@ Although the processing is done in PHP, the Model names are directly linked to t
 | **Custom Hooks** | `camelCase` (Start with the word `use`) | `.ts` / `.tsx` | `useClickOutside.ts`, `useFetch.ts` |
 | **Zustand Stores** | `camelCase` (Start with `use` + `Store`) | `.ts` | `useAuthStore.ts`, `useThemeStore.ts` |
 | **Zod Schemas** | `camelCase` (Model Name + `Schema`) | `.ts` | `userSchema.ts`, `loginSchema.ts` |
-| **Types & Interfaces** | `camelCase` | `.ts` / `.d.ts` | `user.types.ts`, `api-responses.ts` |
+| **Types & Interfaces** | `camelCase` | `.ts` / `.d.ts` | `user.types.ts` |
 | **Utils / Helpers** | `camelCase` | `.ts` | `formatDate.ts`, `calculateTotal.ts` |
-| **API Services (Axios)** | `camelCase` (Resource name + `Api`/`Service`)| `.ts` | `userApi.ts`, `productService.ts` |
 
 **Code Naming Conventions (Inside file TS/TSX)**
 - **Variables & Functions:** `camelCase`. (Ex: `const isLoading = false;`, `function handleFetchData() {}`).
-- **Components & Interfaces/Types:**
-  - `PascalCase`. (Ex: `interface UserProfile {}`, `type AuthState = {}`).
-  - Prefer `type` for unions, compositions, and simple object aliases.
-  - Use `interface` when declaration merging or object-oriented extension is useful.
-  - Do not create types unnecessarily when an existing type can be reused.
-- **Constants:** `UPPER_SNAKE_CASE`. (Ex: `const MAX_UPLOAD_SIZE = 5000;`).
-- **Boolean Variables:** Start with `is`, `has`, `should`, `can`. (Ex: `isOpen`, `hasPermission`).
-- **Event Handlers:** 
-  - Prop name (passed down from the father): Start with `on`. (Ex: `onClose`, `onSubmit`).
-  - Function name (inside the component): Start with `handle`. (Ex: `handleClose`, `handleSubmit`).
+
+**Code Naming Conventions**
+- **Variables & Functions:** `camelCase` (e.g., `isLoading`, `handleSubmit`).
+- **Components & Interfaces/Types:** `PascalCase` (e.g., `interface UserProfile`, `type AuthState`).
+- **Constants:** `UPPER_SNAKE_CASE` (e.g., `MAX_UPLOAD_SIZE`).
+- **Booleans:** Prefix with `is`, `has`, `should`, `can` (e.g., `isOpen`, `hasPermission`).
 
 ## Workflow when generating code:
-1. When asked to create a new feature, first create the Backend API (Migration, Model, Request, API Controller, API Route).
-2. Create the Web route and Web Controller to render the Inertia page.
-3. Create the React Page and necessary Components.
-4. Integrate Zod for validation, Axios for API calls, and Zustand for state if needed.
+1. Create Migration, Model, Form Request, and Laravel Service if needed.
+2. Create Web route (`routes/web.php`) and Controller method returning Inertia response/redirect.
+3. Create React Inertia Page and necessary presentational UI Components.
+4. Integrate Zod schema validation for front-end form UX and use standard Inertia visits/form requests for data mutation.
