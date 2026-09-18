@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -53,10 +54,20 @@ class AuthService
      * Create a new user account without logging it in.
      *
      * @param  array{name: string, email: string, password: string}  $data
+     *
+     * @throws ValidationException
      */
     public function register(array $data): User
     {
-        $user = User::create($data);
+        try {
+            $user = User::create($data);
+        } catch (UniqueConstraintViolationException) {
+            // A concurrent request registered the same email between
+            // validation and insert; report it like the "unique" rule would.
+            throw ValidationException::withMessages([
+                'email' => __('validation.unique', ['attribute' => 'email']),
+            ]);
+        }
 
         event(new Registered($user));
 

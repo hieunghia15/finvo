@@ -11,10 +11,10 @@ Route::middleware('guest')->group(function () {
     });
 
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:10,1');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:login');
 
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('throttle:5,1');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('throttle:register');
 });
 
 Route::middleware('auth')->group(function () {

@@ -2,12 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -126,6 +129,55 @@ class AuthTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_login_request_lowercases_the_email_in_credentials(): void
+    {
+        $request = LoginRequest::create('/login', 'POST', [
+            'email' => 'John@Example.COM',
+            'password' => 'password',
+        ]);
+        $request->setContainer($this->app)->setRedirector($this->app['redirect']);
+
+        $request->validateResolved();
+
+        $this->assertSame('john@example.com', $request->credentials()['email']);
+    }
+
+    public function test_user_can_login_with_email_in_different_case(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'john@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'JOHN@Example.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect('/dashboard');
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_login_route_is_rate_limited_per_ip_with_a_form_error(): void
+    {
+        for ($i = 0; $i < 10; $i++) {
+            $this->post('/login', [
+                'email' => "user{$i}@example.com",
+                'password' => 'wrong-password',
+            ]);
+        }
+
+        $response = $this->from('/login')->post('/login', [
+            'email' => 'another@example.com',
+            'password' => 'wrong-password',
+        ]);
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHasErrors('email');
+        $this->assertStringStartsWith('Too many login attempts.', session('errors')->first('email'));
+        $this->assertGuest();
+    }
+
     public function test_login_regenerates_the_session(): void
     {
         $user = User::factory()->create([
@@ -241,6 +293,26 @@ class AuthTest extends TestCase
         $this->assertDatabaseCount('users', 1);
     }
 
+    public function test_register_service_reports_duplicate_email_from_concurrent_insert_as_validation_error(): void
+    {
+        // Simulates a request that passed the "unique" rule before a
+        // concurrent request inserted the same email.
+        User::factory()->create(['email' => 'john@example.com']);
+
+        try {
+            app(AuthService::class)->register([
+                'name' => 'John Doe',
+                'email' => 'john@example.com',
+                'password' => 'secret123',
+            ]);
+            $this->fail('Expected a ValidationException for the duplicate email.');
+        } catch (ValidationException $e) {
+            $this->assertSame(['email' => ['The email has already been taken.']], $e->errors());
+        }
+
+        $this->assertDatabaseCount('users', 1);
+    }
+
     public function test_registration_fails_with_short_password(): void
     {
         $response = $this->from('/register')->post('/register', $this->registrationData([
@@ -286,15 +358,18 @@ class AuthTest extends TestCase
         $this->assertDatabaseMissing('users', ['email' => 'other@example.com']);
     }
 
-    public function test_registration_is_rate_limited(): void
+    public function test_registration_is_rate_limited_with_a_form_error(): void
     {
         for ($i = 0; $i < 5; $i++) {
             $this->from('/register')->post('/register', []);
         }
 
-        $response = $this->from('/register')->post('/register', []);
+        $response = $this->from('/register')->post('/register', $this->registrationData());
 
-        $response->assertStatus(429);
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors(['email' => 'Too many registration attempts. Please try again in 60 seconds.']);
+        $response->assertSessionMissing('_old_input.password');
+        $this->assertDatabaseCount('users', 0);
     }
 
     // =========================================================================

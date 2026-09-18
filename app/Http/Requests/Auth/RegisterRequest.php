@@ -18,15 +18,14 @@ class RegisterRequest extends FormRequest
     }
 
     /**
-     * Normalize the input before validation so that email uniqueness is
-     * case-insensitive and stray whitespace never reaches the database.
+     * Lowercase the email so uniqueness is case-insensitive. Whitespace is
+     * already trimmed by the global TrimStrings middleware.
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'name' => is_string($this->input('name')) ? trim($this->input('name')) : $this->input('name'),
-            'email' => is_string($this->input('email')) ? Str::lower(trim($this->input('email'))) : $this->input('email'),
-        ]);
+        if (is_string($this->input('email'))) {
+            $this->merge(['email' => Str::lower($this->input('email'))]);
+        }
     }
 
     /**
