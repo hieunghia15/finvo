@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -45,6 +47,20 @@ class AuthService
         RateLimiter::clear($throttleKey);
 
         $request->session()->regenerate();
+    }
+
+    /**
+     * Create a new user account without logging it in.
+     *
+     * @param  array{name: string, email: string, password: string}  $data
+     */
+    public function register(array $data): User
+    {
+        $user = User::create($data);
+
+        event(new Registered($user));
+
+        return $user;
     }
 
     /**

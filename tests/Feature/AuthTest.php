@@ -3,7 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Tests\TestCase;
 
@@ -140,6 +143,158 @@ class AuthTest extends TestCase
 
         $this->assertNotSame($originalSessionId, $this->app['session']->getId());
         $this->assertAuthenticatedAs($user);
+    }
+
+    // =========================================================================
+    // Register
+    // =========================================================================
+
+    /**
+     * @param  array<string, mixed>  $overrides
+     *
+     * @return array<string, mixed>
+     */
+    private function registrationData(array $overrides = []): array
+    {
+        return array_merge([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => 'secret123',
+            'password_confirmation' => 'secret123',
+        ], $overrides);
+    }
+
+    public function test_guest_can_view_register_page(): void
+    {
+        $response = $this->get('/register');
+
+        $response->assertOk();
+        $response->assertInertia(fn ($page) => $page->component('Register/Index'));
+    }
+
+    public function test_user_can_register_with_valid_data(): void
+    {
+        $response = $this->post('/register', $this->registrationData([
+            'name' => '  John Doe  ',
+            'email' => '  John@Example.COM ',
+        ]));
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHas('status', 'Account created. Please log in.');
+        $this->assertGuest();
+
+        $user = User::where('email', 'john@example.com')->first();
+        $this->assertNotNull($user);
+        $this->assertSame('John Doe', $user->name);
+        $this->assertNotSame('secret123', $user->password);
+        $this->assertTrue(Hash::check('secret123', $user->password));
+    }
+
+    public function test_registration_fires_registered_event(): void
+    {
+        Event::fake([Registered::class]);
+
+        $this->post('/register', $this->registrationData());
+
+        Event::assertDispatched(Registered::class, fn (Registered $event) => $event->user->email === 'john@example.com');
+    }
+
+    public function test_login_page_shows_status_after_registration(): void
+    {
+        $this->post('/register', $this->registrationData());
+
+        $response = $this->get('/login');
+
+        $response->assertInertia(fn ($page) => $page
+            ->component('Login/Index')
+            ->where('flash.status', 'Account created. Please log in.'));
+    }
+
+    public function test_registration_fails_when_fields_are_missing(): void
+    {
+        $response = $this->from('/register')->post('/register', []);
+
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors(['name', 'email', 'password']);
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_registration_fails_with_taken_email(): void
+    {
+        User::factory()->create(['email' => 'john@example.com']);
+
+        $response = $this->from('/register')->post('/register', $this->registrationData());
+
+        $response->assertSessionHasErrors('email');
+        $this->assertDatabaseCount('users', 1);
+    }
+
+    public function test_registration_fails_with_taken_email_in_different_case(): void
+    {
+        User::factory()->create(['email' => 'john@example.com']);
+
+        $response = $this->from('/register')->post('/register', $this->registrationData([
+            'email' => 'JOHN@Example.com',
+        ]));
+
+        $response->assertSessionHasErrors('email');
+        $this->assertDatabaseCount('users', 1);
+    }
+
+    public function test_registration_fails_with_short_password(): void
+    {
+        $response = $this->from('/register')->post('/register', $this->registrationData([
+            'password' => '12345',
+            'password_confirmation' => '12345',
+        ]));
+
+        $response->assertSessionHasErrors('password');
+        $this->assertGuest();
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_registration_fails_with_mismatched_password_confirmation(): void
+    {
+        $response = $this->from('/register')->post('/register', $this->registrationData([
+            'password_confirmation' => 'different123',
+        ]));
+
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_registration_fails_when_name_or_email_is_too_long(): void
+    {
+        $response = $this->from('/register')->post('/register', $this->registrationData([
+            'name' => str_repeat('a', 256),
+            'email' => str_repeat('a', 250).'@example.com',
+        ]));
+
+        $response->assertSessionHasErrors(['name', 'email']);
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_authenticated_user_cannot_register(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/register', $this->registrationData([
+            'email' => 'other@example.com',
+        ]));
+
+        $response->assertRedirect('/dashboard');
+        $this->assertDatabaseMissing('users', ['email' => 'other@example.com']);
+    }
+
+    public function test_registration_is_rate_limited(): void
+    {
+        for ($i = 0; $i < 5; $i++) {
+            $this->from('/register')->post('/register', []);
+        }
+
+        $response = $this->from('/register')->post('/register', []);
+
+        $response->assertStatus(429);
     }
 
     // =========================================================================

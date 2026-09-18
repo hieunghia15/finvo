@@ -47,6 +47,9 @@ class HandleInertiaRequests extends Middleware
                     'created_at' => $user->created_at,
                 ] : null,
             ],
+            'flash' => [
+                'status' => fn () => $request->session()->get('status'),
+            ],
         ]);
     }
 }

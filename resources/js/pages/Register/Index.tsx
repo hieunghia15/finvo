@@ -9,7 +9,7 @@ export default function Index() {
         <div className="boxed-size bg-white">
             <Head title="Register" />
             <AuthLayout image="/assets/trezo/images/register.jpg">
-                <h3 className="fs-28 mb-2">Register to Trezo Dashboard</h3>
+                <h3 className="fs-28 mb-2">Register to Finvo Dashboard</h3>
                 <p className="fw-medium fs-16 mb-4">Register with social account or enter your details</p>
 
                 <SocialButtons />
