@@ -48,6 +48,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Build a limiter response that redirects back with an "email" error.
      *
+     * @param  string  $message  Translation key or message; may use :seconds and :minutes.
+     *
      * @return callable(Request, array<string, int|string>): RedirectResponse
      */
     protected function throttledResponse(string $message): callable

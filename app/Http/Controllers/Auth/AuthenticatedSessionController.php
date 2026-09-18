@@ -7,11 +7,17 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @param  AuthService  $authService  Handles login, logout and session lifecycle.
+     */
     public function __construct(
         protected AuthService $authService
     ) {}
@@ -26,6 +32,10 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Authenticate the user and start a session.
+     *
+     * @param  LoginRequest  $request  The validated login form submission.
+     *
+     * @throws ValidationException When the credentials are invalid or the user is throttled.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -40,6 +50,8 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Log the user out and invalidate the session.
+     *
+     * @param  Request  $request  The current request whose session is invalidated.
      */
     public function destroy(Request $request): RedirectResponse
     {

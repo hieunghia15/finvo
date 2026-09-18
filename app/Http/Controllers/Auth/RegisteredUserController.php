@@ -6,11 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @param  AuthService  $authService  Handles account creation.
+     */
     public function __construct(
         protected AuthService $authService
     ) {}
@@ -25,6 +31,10 @@ class RegisteredUserController extends Controller
 
     /**
      * Create a new user account and send them to the login page.
+     *
+     * @param  RegisterRequest  $request  The validated registration form submission.
+     *
+     * @throws ValidationException When a concurrent request registered the same email.
      */
     public function store(RegisterRequest $request): RedirectResponse
     {

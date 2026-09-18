@@ -44,7 +44,7 @@ class LoginRequest extends FormRequest
     /**
      * Get the credentials to attempt authentication with.
      *
-     * @return array<string, string>
+     * @return array{email: string, password: string}
      */
     public function credentials(): array
     {

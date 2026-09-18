@@ -20,7 +20,11 @@ class AuthService
     /**
      * Attempt to authenticate the user and start a fresh session.
      *
-     * @throws ValidationException
+     * @param  Request  $request  The current request, used for the throttle key and session.
+     * @param  array{email: string, password: string}  $credentials  The email and plain-text password to check.
+     * @param  bool  $remember  Whether to issue a long-lived "remember me" cookie.
+     *
+     * @throws ValidationException When the credentials are invalid or the user is throttled.
      */
     public function login(Request $request, array $credentials, bool $remember = false): void
     {
@@ -53,9 +57,9 @@ class AuthService
     /**
      * Create a new user account without logging it in.
      *
-     * @param  array{name: string, email: string, password: string}  $data
+     * @param  array{name: string, email: string, password: string}  $data  Validated attributes; the password is hashed by the model cast.
      *
-     * @throws ValidationException
+     * @throws ValidationException When a concurrent request registered the same email.
      */
     public function register(array $data): User
     {
@@ -76,6 +80,8 @@ class AuthService
 
     /**
      * Log the user out and invalidate the current session.
+     *
+     * @param  Request  $request  The current request whose session and CSRF token are reset.
      */
     public function logout(Request $request): void
     {
@@ -89,6 +95,9 @@ class AuthService
      * Build the rate limiter key for a login attempt, scoped to the submitted
      * email and the requesting IP so one bad actor cannot lock out a
      * legitimate user attempting to log in from a different address.
+     *
+     * @param  Request  $request  The current request, used for its IP address.
+     * @param  string  $email  The submitted email address.
      */
     protected function throttleKey(Request $request, string $email): string
     {

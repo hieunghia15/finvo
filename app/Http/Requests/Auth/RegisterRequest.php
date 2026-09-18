@@ -45,7 +45,7 @@ class RegisterRequest extends FormRequest
     /**
      * Get the attributes used to create the new user.
      *
-     * @return array<string, string>
+     * @return array{name: string, email: string, password: string}
      */
     public function userData(): array
     {
