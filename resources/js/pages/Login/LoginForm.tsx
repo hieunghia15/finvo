@@ -1,97 +1,132 @@
-import { FormEvent } from 'react';
-import { useForm, Link } from '@inertiajs/react';
-import { loginSchema } from '@/Schemas';
+import { useState } from 'react';
+import { useForm, revalidateLogic } from '@tanstack/react-form';
+import { router, Link } from '@inertiajs/react';
+import { loginSchema, LoginFormValues, fieldError } from '@/Schemas';
 
-interface LoginFormValues {
-    email: string;
-    password: string;
-    remember: boolean;
-    [key: string]: string | boolean;
-}
+type LoginField = keyof LoginFormValues;
 
 export default function LoginForm() {
-    const { data, setData, post, processing, errors, clearErrors, setError } = useForm<LoginFormValues>({
-        email: '',
-        password: '',
-        remember: false,
+    const [serverErrors, setServerErrors] = useState<Partial<Record<LoginField, string>>>({});
+
+    const form = useForm({
+        defaultValues: {
+            email: '',
+            password: '',
+            remember: false,
+        } as LoginFormValues,
+        validationLogic: revalidateLogic(),
+        validators: {
+            onDynamic: loginSchema,
+        },
+        onSubmit: ({ value }) => {
+            setServerErrors({});
+            return new Promise<void>((resolve) => {
+                router.post('/login', value, {
+                    onError: (errors) => setServerErrors(errors),
+                    onFinish: () => resolve(),
+                });
+            });
+        },
     });
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        clearErrors();
-
-        const result = loginSchema.safeParse({ email: data.email, password: data.password });
-        if (!result.success) {
-            for (const issue of result.error.issues) {
-                setError(issue.path[0] as 'email' | 'password', issue.message);
-            }
-            return;
-        }
-
-        post('/login');
-    };
-
-    const emailError = errors.email;
-    const passwordError = errors.password;
+    const clearServerError = (field: LoginField) => setServerErrors((prev) => ({ ...prev, [field]: undefined }));
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group mb-4">
-                <label htmlFor="email" className="label text-secondary">
-                    Email Address
-                </label>
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    className={`form-control h-55${emailError ? ' is-invalid' : ''}`}
-                    style={emailError ? { backgroundImage: 'none' } : undefined}
-                    placeholder="example@trezo.com"
-                    value={data.email}
-                    onChange={(e) => setData('email', e.target.value)}
-                    autoComplete="username"
-                />
-                {emailError && <div className="invalid-feedback d-block">{emailError}</div>}
-            </div>
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                form.handleSubmit();
+            }}
+        >
+            <form.Field name="email">
+                {(field) => {
+                    const error = fieldError(field.state.meta.errors, serverErrors.email);
 
-            <div className="form-group mb-4">
-                <label htmlFor="password" className="label text-secondary">
-                    Password
-                </label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    className={`form-control h-55${passwordError ? ' is-invalid' : ''}`}
-                    style={passwordError ? { backgroundImage: 'none' } : undefined}
-                    placeholder="Type password"
-                    value={data.password}
-                    onChange={(e) => setData('password', e.target.value)}
-                    autoComplete="current-password"
-                />
-                {passwordError && <div className="invalid-feedback d-block">{passwordError}</div>}
-            </div>
+                    return (
+                        <div className="form-group mb-4">
+                            <label htmlFor={field.name} className="label text-secondary">
+                                Email Address
+                            </label>
+                            <input
+                                id={field.name}
+                                name={field.name}
+                                type="email"
+                                className={`form-control h-55${error ? ' is-invalid' : ''}`}
+                                style={error ? { backgroundImage: 'none' } : undefined}
+                                placeholder="example@trezo.com"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => {
+                                    clearServerError('email');
+                                    field.handleChange(e.target.value);
+                                }}
+                                autoComplete="username"
+                            />
+                            {error && <div className="invalid-feedback d-block">{error}</div>}
+                        </div>
+                    );
+                }}
+            </form.Field>
+
+            <form.Field name="password">
+                {(field) => {
+                    const error = fieldError(field.state.meta.errors, serverErrors.password);
+
+                    return (
+                        <div className="form-group mb-4">
+                            <label htmlFor={field.name} className="label text-secondary">
+                                Password
+                            </label>
+                            <input
+                                id={field.name}
+                                name={field.name}
+                                type="password"
+                                className={`form-control h-55${error ? ' is-invalid' : ''}`}
+                                style={error ? { backgroundImage: 'none' } : undefined}
+                                placeholder="Type password"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => {
+                                    clearServerError('password');
+                                    field.handleChange(e.target.value);
+                                }}
+                                autoComplete="current-password"
+                            />
+                            {error && <div className="invalid-feedback d-block">{error}</div>}
+                        </div>
+                    );
+                }}
+            </form.Field>
 
             <div className="form-group mb-4 d-flex align-items-center justify-content-between">
-                <div className="form-check">
-                    <input id="remember" type="checkbox" className="form-check-input" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />
-                    <label htmlFor="remember" className="form-check-label text-secondary">
-                        Remember Me
-                    </label>
-                </div>
+                <form.Field name="remember">
+                    {(field) => (
+                        <div className="form-check">
+                            <input id={field.name} name={field.name} type="checkbox" className="form-check-input" checked={field.state.value} onChange={(e) => field.handleChange(e.target.checked)} />
+                            <label htmlFor={field.name} className="form-check-label text-secondary">
+                                Remember Me
+                            </label>
+                        </div>
+                    )}
+                </form.Field>
                 <Link href="/forgot-password" className="text-decoration-none text-primary fw-semibold">
                     Forgot Password?
                 </Link>
             </div>
 
-            <div className="form-group mb-4">
-                <button type="submit" disabled={processing} className="btn btn-primary fw-medium py-2 px-3 w-100">
-                    <div className="d-flex align-items-center justify-content-center py-1">
-                        <i className="material-symbols-outlined text-white fs-20 me-2">login</i>
-                        <span>{processing ? 'Signing in…' : 'Login'}</span>
+            <form.Subscribe selector={(state) => state.isSubmitting}>
+                {(isSubmitting) => (
+                    <div className="form-group mb-4">
+                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
+                            <div className="d-flex align-items-center justify-content-center py-1">
+                                <i className="material-symbols-outlined text-white fs-20 me-2">login</i>
+                                <span>{isSubmitting ? 'Signing in…' : 'Login'}</span>
+                            </div>
+                        </button>
                     </div>
-                </button>
-            </div>
+                )}
+            </form.Subscribe>
 
             <div className="form-group">
                 <p>
