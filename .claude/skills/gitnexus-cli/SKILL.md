@@ -1,6 +1,6 @@
 ---
 name: gitnexus-cli
-description: "Use when the user needs to run GitNexus CLI commands like analyze/index a repo, check status, clean the index, generate a wiki, or list indexed repos. Examples: \"Index this repo\", \"Reanalyze the codebase\", \"Generate a wiki\""
+description: 'Use when the user needs to run GitNexus CLI commands like analyze/index a repo, check status, clean the index, generate a wiki, or list indexed repos. Examples: "Index this repo", "Reanalyze the codebase", "Generate a wiki"'
 ---
 
 # GitNexus CLI Commands
@@ -19,16 +19,16 @@ node .gitnexus/run.cjs analyze
 
 Run from the project root. This parses all source files, builds the knowledge graph, writes it to `.gitnexus/`, and generates CLAUDE.md / AGENTS.md context files.
 
-| Flag           | Effect                                                           |
-| -------------- | ---------------------------------------------------------------- |
-| `--watch`      | Keep a Git repository index current with serialized refreshes    |
-| `--debounce <ms>` | Watch quiet period before refresh (default: 300 ms)            |
-| `--force`      | Force full re-index even if up to date                           |
-| `--embeddings` | Enable embedding generation for semantic search (off by default) |
-| `--drop-embeddings` | Drop existing embeddings on rebuild. By default, an `analyze` without `--embeddings` preserves them. |
-| `--pdg` | Build the program-dependence layers used by `explain` and `pdg_query` (taint, CDG, and REACHING_DEF). |
-| `--spring-actuator <path>` | Import opt-in Spring Boot Actuator mappings, beans, conditions, configprops, and env snapshots. Forces a full rebuild; unsupported with `--watch`. |
-| `--asyncapi-spec <path>` | Read opt-in AsyncAPI 3.x documents (directory or single file) and mint `Destination` nodes from their operations. 2.x is refused, not mapped. Unsupported with `--watch`. |
+| Flag                       | Effect                                                                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--watch`                  | Keep a Git repository index current with serialized refreshes                                                                                                             |
+| `--debounce <ms>`          | Watch quiet period before refresh (default: 300 ms)                                                                                                                       |
+| `--force`                  | Force full re-index even if up to date                                                                                                                                    |
+| `--embeddings`             | Enable embedding generation for semantic search (off by default)                                                                                                          |
+| `--drop-embeddings`        | Drop existing embeddings on rebuild. By default, an `analyze` without `--embeddings` preserves them.                                                                      |
+| `--pdg`                    | Build the program-dependence layers used by `explain` and `pdg_query` (taint, CDG, and REACHING_DEF).                                                                     |
+| `--spring-actuator <path>` | Import opt-in Spring Boot Actuator mappings, beans, conditions, configprops, and env snapshots. Forces a full rebuild; unsupported with `--watch`.                        |
+| `--asyncapi-spec <path>`   | Read opt-in AsyncAPI 3.x documents (directory or single file) and mint `Destination` nodes from their operations. 2.x is refused, not mapped. Unsupported with `--watch`. |
 
 **When to run:** First time in a project, after major code changes, or when `gitnexus://repo/{name}/context` reports the index is stale. In Claude Code, a PostToolUse hook detects staleness after `git commit` and `git merge` and notifies the agent to run `analyze` — the hook does not run analyze itself, to avoid blocking the agent for up to 120s and risking KuzuDB corruption on timeout.
 
@@ -38,11 +38,11 @@ For Spring runtime enrichment, pass a JSON bundle, one endpoint JSON file, or a 
 
 Default location is `<repo>/.gitnexus/`. Override with environment variables (also documented in README):
 
-| Env | Effect |
-| --- | ------ |
-| `GITNEXUS_STORAGE_PATH` | One complete external index directory. Wins if both storage vars are set. |
-| `GITNEXUS_STORAGE_ROOT` | Absolute root; GitNexus creates an isolated `<repo-basename>-<12-hex>/` slot per repository. |
-| `GITNEXUS_CONTENT_RETENTION` | `full` (default) keeps file text; `symbol` keeps snippets; `none` keeps the graph only. |
+| Env                          | Effect                                                                                       |
+| ---------------------------- | -------------------------------------------------------------------------------------------- |
+| `GITNEXUS_STORAGE_PATH`      | One complete external index directory. Wins if both storage vars are set.                    |
+| `GITNEXUS_STORAGE_ROOT`      | Absolute root; GitNexus creates an isolated `<repo-basename>-<12-hex>/` slot per repository. |
+| `GITNEXUS_CONTENT_RETENTION` | `full` (default) keeps file text; `symbol` keeps snippets; `none` keeps the graph only.      |
 
 `list_repos`, `gitnexus://repo/{name}/context`, and HTTP `GET /api/repos` / `GET /api/repo` expose `storagePath`, `contentRetention`, and `sourceAvailable`. HTTP `/api/file` and `/api/grep` return 410 unless retention is `full`. MCP `include_content` may still return symbol spans when retention is `symbol`.
 
@@ -77,18 +77,18 @@ node .gitnexus/run.cjs wiki
 
 Generates repository documentation from the knowledge graph using an LLM. HTTP providers require an API key (saved to `~/.gitnexus/config.json` on first use). Local CLI providers (`--provider cursor|claude|codex|opencode|grok`) use your existing CLI login.
 
-| Flag                | Effect                                    |
-| ------------------- | ----------------------------------------- |
-| `--force`           | Force full regeneration, also required to re-generate an existing wiki in a different language |
-| `--provider <name>` | LLM provider: minimax, openai, openrouter, azure, custom, cursor, claude, codex, opencode, or grok (default: minimax). Local CLIs (`cursor`, `claude`, `codex`, `opencode`, `grok`) use your existing CLI login and skip `--api-key`. |
-| `--model <model>`   | LLM model (default: MiniMax-M3)           |
-| `--base-url <url>`  | LLM API base URL                          |
-| `--api-key <key>`   | LLM API key                               |
-| `--concurrency <n>` | Parallel LLM calls (default: 3)           |
-| `--timeout <seconds>` | LLM request timeout in seconds (default: disabled) |
-| `--retries <n>`     | Max LLM retry attempts per request (default: 3) |
-| `--lang <lang>`     | Output language for generated documentation (e.g. english, chinese, spanish, japanese) |
-| `--gist`            | Publish wiki as a public GitHub Gist      |
+| Flag                  | Effect                                                                                                                                                                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--force`             | Force full regeneration, also required to re-generate an existing wiki in a different language                                                                                                                                        |
+| `--provider <name>`   | LLM provider: minimax, openai, openrouter, azure, custom, cursor, claude, codex, opencode, or grok (default: minimax). Local CLIs (`cursor`, `claude`, `codex`, `opencode`, `grok`) use your existing CLI login and skip `--api-key`. |
+| `--model <model>`     | LLM model (default: MiniMax-M3)                                                                                                                                                                                                       |
+| `--base-url <url>`    | LLM API base URL                                                                                                                                                                                                                      |
+| `--api-key <key>`     | LLM API key                                                                                                                                                                                                                           |
+| `--concurrency <n>`   | Parallel LLM calls (default: 3)                                                                                                                                                                                                       |
+| `--timeout <seconds>` | LLM request timeout in seconds (default: disabled)                                                                                                                                                                                    |
+| `--retries <n>`       | Max LLM retry attempts per request (default: 3)                                                                                                                                                                                       |
+| `--lang <lang>`       | Output language for generated documentation (e.g. english, chinese, spanish, japanese)                                                                                                                                                |
+| `--gist`              | Publish wiki as a public GitHub Gist                                                                                                                                                                                                  |
 
 ### list — Show all indexed repos
 
