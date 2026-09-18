@@ -13,6 +13,7 @@ export interface Auth {
 }
 
 export interface Flash {
+    status?: string | null;
     success?: string;
     error?: string;
     info?: string;

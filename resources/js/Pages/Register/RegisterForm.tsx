@@ -1,41 +1,36 @@
 import { useState } from 'react';
-import { useForm } from '@tanstack/react-form';
+import { useForm, revalidateLogic } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
-import { registerSchema, RegisterFormValues } from '@/Schemas';
+import { registerSchema, RegisterFormValues, fieldError } from '@/Schemas';
+
+type RegisterField = keyof RegisterFormValues;
 
 export default function RegisterForm() {
-    const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
+    const [serverErrors, setServerErrors] = useState<Partial<Record<RegisterField, string>>>({});
 
     const form = useForm({
         defaultValues: {
             name: '',
             email: '',
             password: '',
+            password_confirmation: '',
         } as RegisterFormValues,
+        validationLogic: revalidateLogic(),
         validators: {
-            onChange: ({ value }) => {
-                const result = registerSchema.safeParse(value);
-                if (!result.success) {
-                    return result.error.issues[0]?.message;
-                }
-                return undefined;
-            },
+            onDynamic: registerSchema,
         },
-        onSubmit: async ({ value }) => {
+        onSubmit: ({ value }) => {
             setServerErrors({});
             return new Promise<void>((resolve) => {
                 router.post('/register', value, {
-                    onError: (errors) => {
-                        setServerErrors(errors);
-                        resolve();
-                    },
-                    onFinish: () => {
-                        resolve();
-                    },
+                    onError: (errors) => setServerErrors(errors),
+                    onFinish: () => resolve(),
                 });
             });
         },
     });
+
+    const clearServerError = (field: RegisterField) => setServerErrors((prev) => ({ ...prev, [field]: undefined }));
 
     return (
         <form
@@ -45,17 +40,9 @@ export default function RegisterForm() {
                 form.handleSubmit();
             }}
         >
-            <form.Field
-                name="name"
-                validators={{
-                    onChange: ({ value }) => {
-                        const res = registerSchema.shape.name.safeParse(value);
-                        return res.success ? undefined : res.error.issues[0]?.message;
-                    },
-                }}
-            >
+            <form.Field name="name">
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.name;
+                    const error = fieldError(field.state.meta.errors, serverErrors.name);
 
                     return (
                         <div className="form-group mb-3">
@@ -66,33 +53,26 @@ export default function RegisterForm() {
                                 id={field.name}
                                 name={field.name}
                                 type="text"
-                                className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
-                                style={fieldError ? { backgroundImage: 'none' } : undefined}
+                                className={`form-control h-55${error ? ' is-invalid' : ''}`}
+                                style={error ? { backgroundImage: 'none' } : undefined}
                                 placeholder="Enter your full name"
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
-                                    setServerErrors((prev) => ({ ...prev, name: '' }));
+                                    clearServerError('name');
                                     field.handleChange(e.target.value);
                                 }}
+                                autoComplete="name"
                             />
-                            {fieldError && <div className="invalid-feedback">{fieldError}</div>}
+                            {error && <div className="invalid-feedback d-block">{error}</div>}
                         </div>
                     );
                 }}
             </form.Field>
 
-            <form.Field
-                name="email"
-                validators={{
-                    onChange: ({ value }) => {
-                        const res = registerSchema.shape.email.safeParse(value);
-                        return res.success ? undefined : res.error.issues[0]?.message;
-                    },
-                }}
-            >
+            <form.Field name="email">
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.email;
+                    const error = fieldError(field.state.meta.errors, serverErrors.email);
 
                     return (
                         <div className="form-group mb-3">
@@ -103,33 +83,26 @@ export default function RegisterForm() {
                                 id={field.name}
                                 name={field.name}
                                 type="email"
-                                className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
-                                style={fieldError ? { backgroundImage: 'none' } : undefined}
+                                className={`form-control h-55${error ? ' is-invalid' : ''}`}
+                                style={error ? { backgroundImage: 'none' } : undefined}
                                 placeholder="example@trezo.com"
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
-                                    setServerErrors((prev) => ({ ...prev, email: '' }));
+                                    clearServerError('email');
                                     field.handleChange(e.target.value);
                                 }}
+                                autoComplete="email"
                             />
-                            {fieldError && <div className="invalid-feedback">{fieldError}</div>}
+                            {error && <div className="invalid-feedback d-block">{error}</div>}
                         </div>
                     );
                 }}
             </form.Field>
 
-            <form.Field
-                name="password"
-                validators={{
-                    onChange: ({ value }) => {
-                        const res = registerSchema.shape.password.safeParse(value);
-                        return res.success ? undefined : res.error.issues[0]?.message;
-                    },
-                }}
-            >
+            <form.Field name="password">
                 {(field) => {
-                    const fieldError = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : serverErrors.password;
+                    const error = fieldError(field.state.meta.errors, serverErrors.password);
 
                     return (
                         <div className="form-group mb-3">
@@ -140,26 +113,57 @@ export default function RegisterForm() {
                                 id={field.name}
                                 name={field.name}
                                 type="password"
-                                className={`form-control h-55${fieldError ? ' is-invalid' : ''}`}
-                                style={fieldError ? { backgroundImage: 'none' } : undefined}
+                                className={`form-control h-55${error ? ' is-invalid' : ''}`}
+                                style={error ? { backgroundImage: 'none' } : undefined}
                                 placeholder="Type password"
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
-                                    setServerErrors((prev) => ({ ...prev, password: '' }));
+                                    clearServerError('password');
                                     field.handleChange(e.target.value);
                                 }}
+                                autoComplete="new-password"
                             />
-                            {fieldError && <div className="invalid-feedback d-block">{fieldError}</div>}
+                            {error && <div className="invalid-feedback d-block">{error}</div>}
                         </div>
                     );
                 }}
             </form.Field>
 
-            <form.Subscribe selector={(state) => [state.isSubmitting, state.canSubmit]}>
-                {([isSubmitting, canSubmit]) => (
+            <form.Field name="password_confirmation">
+                {(field) => {
+                    const error = fieldError(field.state.meta.errors, serverErrors.password_confirmation);
+
+                    return (
+                        <div className="form-group mb-3">
+                            <label htmlFor={field.name} className="label text-secondary">
+                                Confirm Password
+                            </label>
+                            <input
+                                id={field.name}
+                                name={field.name}
+                                type="password"
+                                className={`form-control h-55${error ? ' is-invalid' : ''}`}
+                                style={error ? { backgroundImage: 'none' } : undefined}
+                                placeholder="Retype password"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => {
+                                    clearServerError('password_confirmation');
+                                    field.handleChange(e.target.value);
+                                }}
+                                autoComplete="new-password"
+                            />
+                            {error && <div className="invalid-feedback d-block">{error}</div>}
+                        </div>
+                    );
+                }}
+            </form.Field>
+
+            <form.Subscribe selector={(state) => state.isSubmitting}>
+                {(isSubmitting) => (
                     <div className="form-group mb-3">
-                        <button type="submit" disabled={isSubmitting || !canSubmit} className="btn btn-primary fw-medium py-2 px-3 w-100">
+                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
                             <div className="d-flex align-items-center justify-content-center py-1">
                                 <i className="material-symbols-outlined text-white fs-20 me-2">person_4</i>
                                 <span>{isSubmitting ? 'Registering…' : 'Register'}</span>
@@ -171,7 +175,7 @@ export default function RegisterForm() {
 
             <div className="form-group">
                 <p>
-                    By confirming your email, you agree to our{' '}
+                    By registering, you agree to our{' '}
                     <a href="#" className="fw-medium text-decoration-none">
                         Terms of Service
                     </a>{' '}

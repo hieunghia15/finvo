@@ -47,3 +47,7 @@
 - **Booleans:** Prefix with `is`, `has`, `should`, `can` (e.g., `isOpen`, `hasPermission`).
 - Keep components small and reusable in `resources/js/Components/`.
 - Place Inertia page views in `resources/js/Pages/`.
+
+## Code Style
+
+- Run `npm run format` for formatting code.
