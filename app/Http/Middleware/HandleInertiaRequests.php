@@ -20,6 +20,8 @@ class HandleInertiaRequests extends Middleware
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
+     *
+     * @param  Request  $request  The current request.
      */
     public function version(Request $request): ?string
     {
@@ -31,13 +33,26 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/shared-data
      *
+     * @param  Request  $request  The current request, used for the user and flashed session data.
+     *
      * @return array<string, mixed>
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'email_verified_at' => $user->email_verified_at,
+                    'created_at' => $user->created_at,
+                ] : null,
+            ],
+            'flash' => [
+                'status' => fn () => $request->session()->get('status'),
             ],
         ]);
     }

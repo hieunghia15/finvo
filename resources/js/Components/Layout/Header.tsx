@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, router } from '@inertiajs/react';
 import { User, NotificationItem } from '@/types';
-import { useAuth } from '@/features/auth/hooks';
 
 export interface HeaderProps {
     user?: User | null;
@@ -12,13 +11,8 @@ export interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notifications = [] }) => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-    const { logout } = useAuth();
-    const handleLogout = async () => {
-        try {
-            await logout();
-        } finally {
-            router.visit('/');
-        }
+    const handleLogout = () => {
+        router.post('/logout');
     };
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 

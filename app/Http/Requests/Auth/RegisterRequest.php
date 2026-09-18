@@ -5,8 +5,9 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
-class LoginRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,8 +18,8 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Lowercase the email so it matches how registration stores it,
-     * regardless of the database collation.
+     * Lowercase the email so uniqueness is case-insensitive. Whitespace is
+     * already trimmed by the global TrimStrings middleware.
      */
     protected function prepareForValidation(): void
     {
@@ -35,19 +36,19 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:1'],
-            'remember' => ['sometimes', 'boolean'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
         ];
     }
 
     /**
-     * Get the credentials to attempt authentication with.
+     * Get the attributes used to create the new user.
      *
-     * @return array{email: string, password: string}
+     * @return array{name: string, email: string, password: string}
      */
-    public function credentials(): array
+    public function userData(): array
     {
-        return $this->only('email', 'password');
+        return $this->only('name', 'email', 'password');
     }
 }
