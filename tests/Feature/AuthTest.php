@@ -489,4 +489,18 @@ class AuthTest extends TestCase
         $responseRegister = $this->actingAs($user)->get('/register');
         $responseRegister->assertRedirect('/dashboard');
     }
+
+    public function test_session_is_logged_out_after_the_password_changes_elsewhere(): void
+    {
+        $user = User::factory()->create();
+
+        // Stores the current password hash in this session.
+        $this->actingAs($user)->get('/dashboard')->assertOk();
+
+        // Another device changes the password.
+        $user->forceFill(['password' => 'NewPassw0rd!'])->save();
+
+        $this->get('/dashboard')->assertRedirect('/login');
+        $this->assertGuest();
+    }
 }
