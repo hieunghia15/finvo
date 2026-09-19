@@ -1,0 +1,62 @@
+{
+    "permissions": {
+        "allow": [
+            "Bash(npm run format)",
+            "Bash(npm run format:*)",
+
+            "Bash(vendor/bin/pint)",
+            "Bash(./vendor/bin/pint)",
+            "Bash(php artisan pint)",
+
+            "Bash(npm run lint)",
+            "Bash(npm run typecheck)",
+            "Bash(npm run build)",
+
+            "Bash(npm run test)",
+            "Bash(php artisan test)"
+        ],
+
+        "ask": [
+            "Bash(npm install)",
+            "Bash(npm install:*)",
+            "Bash(npm i)",
+            "Bash(npm i:*)",
+
+            "Bash(composer install)",
+            "Bash(composer install:*)",
+            "Bash(composer require)",
+            "Bash(composer require:*)",
+            "Bash(composer update)",
+            "Bash(composer update:*)",
+
+            "Bash(php artisan migrate)",
+            "Bash(php artisan migrate:*)",
+            "Bash(php artisan db:seed)",
+            "Bash(php artisan db:seed:*)",
+            "Bash(php artisan db:wipe)",
+
+            "Bash(rm)",
+            "Bash(rm:*)",
+            "Bash(del)",
+            "Bash(del:*)",
+            "Bash(erase)",
+            "Bash(erase:*)",
+            "Bash(rmdir)",
+            "Bash(rmdir:*)",
+
+            "Bash(git reset)",
+            "Bash(git reset:*)",
+            "Bash(git clean)",
+            "Bash(git clean:*)",
+            "Bash(git checkout)",
+            "Bash(git checkout:*)",
+            "Bash(git restore)",
+            "Bash(git restore:*)",
+
+            "Bash(git rebase)",
+            "Bash(git rebase:*)"
+        ],
+
+        "deny": ["Bash(git commit)", "Bash(git commit:*)", "Bash(git push)", "Bash(git push:*)", "Read(.env)", "Read(.env.*)", "Read(**/.env)", "Read(**/.env.*)"]
+    }
+}

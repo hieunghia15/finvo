@@ -7,6 +7,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -16,6 +17,13 @@ class AuthService
     protected const MAX_ATTEMPTS = 5;
 
     protected const DECAY_SECONDS = 60;
+
+    /**
+     * @param  UserOnboardingService  $onboarding  Creates the default wallet and categories for new accounts.
+     */
+    public function __construct(
+        protected UserOnboardingService $onboarding
+    ) {}
 
     /**
      * Attempt to authenticate the user and start a fresh session.
@@ -55,7 +63,7 @@ class AuthService
     }
 
     /**
-     * Create a new user account without logging it in.
+     * Create a new user account, with its default wallet and categories, without logging it in.
      *
      * @param  array{name: string, email: string, password: string}  $data  Validated attributes; the password is hashed by the model cast.
      *
@@ -63,15 +71,21 @@ class AuthService
      */
     public function register(array $data): User
     {
-        try {
-            $user = User::create($data);
-        } catch (UniqueConstraintViolationException) {
-            // A concurrent request registered the same email between
-            // validation and insert; report it like the "unique" rule would.
-            throw ValidationException::withMessages([
-                'email' => __('validation.unique', ['attribute' => 'email']),
-            ]);
-        }
+        $user = DB::transaction(function () use ($data) {
+            try {
+                $user = User::create($data);
+            } catch (UniqueConstraintViolationException) {
+                // A concurrent request registered the same email between
+                // validation and insert; report it like the "unique" rule would.
+                throw ValidationException::withMessages([
+                    'email' => __('validation.unique', ['attribute' => 'email']),
+                ]);
+            }
+
+            $this->onboarding->createDefaults($user);
+
+            return $user;
+        });
 
         event(new Registered($user));
 
