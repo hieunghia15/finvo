@@ -3,6 +3,7 @@ import { useForm, revalidateLogic } from '@tanstack/react-form';
 import { router } from '@inertiajs/react';
 import { updateAccountSchema, UpdateAccountFormValues, fieldError } from '@/Schemas';
 import { formatDate } from '@/lib/formatDate';
+import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
 import { Account } from '@/types';
 
 type ProfileField = keyof UpdateAccountFormValues;
@@ -22,14 +23,14 @@ export default function ProfileForm({ account }: ProfileFormProps) {
         validators: {
             onDynamic: updateAccountSchema,
         },
-        onSubmit: ({ value }) => {
+        onSubmit: ({ value, formApi }) => {
             setServerErrors({});
             return new Promise<void>((resolve) => {
-                // On success the page remounts with the saved, normalized name;
-                // on errors the state is kept so the server messages can show.
                 router.patch('/account', value, {
-                    preserveScroll: true,
-                    preserveState: 'errors',
+                    ...IN_PLACE_SUBMIT,
+                    // Show the saved, server-normalized name; it also becomes
+                    // the value Cancel returns to.
+                    onSuccess: (page) => formApi.reset({ name: (page.props.account as Account).name }),
                     onError: (errors) => setServerErrors(errors),
                     onFinish: () => resolve(),
                 });

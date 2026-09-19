@@ -3,6 +3,7 @@ import { useForm, revalidateLogic } from '@tanstack/react-form';
 import { router } from '@inertiajs/react';
 import { updatePasswordSchema, UpdatePasswordFormValues, fieldError } from '@/Schemas';
 import PasswordInput, { PasswordInputProps } from '@/Components/Form/PasswordInput';
+import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
 
 type PasswordField = keyof UpdatePasswordFormValues;
 
@@ -34,11 +35,10 @@ export default function ChangePasswordForm() {
         onSubmit: ({ value, formApi }) => {
             setServerErrors({});
             return new Promise<void>((resolve) => {
-                // preserveState keeps this tab open after the redirect back to
+                // IN_PLACE_SUBMIT keeps this tab open after the redirect back to
                 // /account; the fields are cleared once the password is changed.
                 router.put('/account/password', value, {
-                    preserveScroll: true,
-                    preserveState: true,
+                    ...IN_PLACE_SUBMIT,
                     onSuccess: () => formApi.reset(),
                     onError: (errors) => setServerErrors(errors),
                     onFinish: () => resolve(),

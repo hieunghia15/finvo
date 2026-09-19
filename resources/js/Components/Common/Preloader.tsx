@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { router } from '@inertiajs/react';
+import { isInPlaceSubmit } from '@/lib/inPlaceSubmit';
 
 export interface PreloaderProps {
     /**
@@ -56,8 +57,13 @@ export const Preloader: React.FC<PreloaderProps> = ({ letters = ['F', 'I', 'N', 
             window.addEventListener('load', handleLoad);
         }
 
-        // Listen to Inertia router SPA navigation events.
-        const unbindStart = router.on('start', showPreloader);
+        // Listen to Inertia router SPA navigation events. In-place form submits
+        // show LoadingOverlay instead.
+        const unbindStart = router.on('start', (event) => {
+            if (!isInPlaceSubmit(event.detail.visit)) {
+                showPreloader();
+            }
+        });
         const unbindFinish = router.on('finish', hidePreloader);
 
         return () => {
