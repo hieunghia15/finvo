@@ -196,9 +196,9 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
 
                                             <ul className="admin-link ps-0 mb-0 list-unstyled">
                                                 <li>
-                                                    <Link className="dropdown-item admin-item-link d-flex align-items-center text-body py-2" href="/my-profile">
+                                                    <Link className="dropdown-item admin-item-link d-flex align-items-center text-body py-2" href="/account">
                                                         <i className="material-symbols-outlined me-2 fs-18">account_circle</i>
-                                                        <span>My Profile</span>
+                                                        <span>Account</span>
                                                     </Link>
                                                 </li>
                                                 <li>
@@ -224,12 +224,6 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                                             <hr className="my-2" />
 
                                             <ul className="admin-link ps-0 mb-0 list-unstyled">
-                                                <li>
-                                                    <Link className="dropdown-item admin-item-link d-flex align-items-center text-body py-2" href="/settings">
-                                                        <i className="material-symbols-outlined me-2 fs-18">settings</i>
-                                                        <span>Settings</span>
-                                                    </Link>
-                                                </li>
                                                 <li>
                                                     <Link className="dropdown-item admin-item-link d-flex align-items-center text-body py-2" href="/tickets">
                                                         <i className="material-symbols-outlined me-2 fs-18">support</i>

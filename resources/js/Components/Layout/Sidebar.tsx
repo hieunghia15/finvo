@@ -58,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar
             <div className="logo position-relative">
                 <Link href="/" className="d-block text-decoration-none position-relative">
                     <img src="/assets/trezo/images/logo-icon.png" alt="logo-icon" />
-                    <span className="logo-text fw-bold text-dark">Trezo</span>
+                    <span className="logo-text fw-bold text-dark">Finvo</span>
                 </Link>
                 <button
                     type="button"

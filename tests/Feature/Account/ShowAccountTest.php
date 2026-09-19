@@ -28,11 +28,10 @@ class ShowAccountTest extends TestCase
 
         $response = $this->actingAs($user)->get('/account');
 
-        // The page file is added by the frontend task, so its existence is not checked yet.
         // The scoped closure fails on any key it does not assert, e.g. password or id.
         $response->assertOk();
         $response->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Account/Index', false)
+            ->component('Account/Index')
             ->has('account', fn (AssertableJson $account) => $account
                 ->where('name', 'Nguyễn Văn A')
                 ->where('email', 'nguyenvana@example.com')

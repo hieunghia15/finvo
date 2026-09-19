@@ -8,6 +8,12 @@ export interface User {
     created_at?: string;
 }
 
+export interface Account {
+    name: string;
+    email: string;
+    created_at: string; // ISO 8601, UTC
+}
+
 export interface Auth {
     user: User | null;
 }
