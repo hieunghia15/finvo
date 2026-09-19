@@ -8,13 +8,15 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
+    public const EMAIL = 'finvo@gmail.com';
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'finvo@gmail.com'],
+            ['email' => self::EMAIL],
             [
                 'name' => 'Finvo Admin',
                 'password' => Hash::make('123admiN!'),
