@@ -2,15 +2,19 @@
 
 namespace Tests\Feature;
 
+use App\Enums\EntityStatus;
+use App\Enums\WalletType;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use App\Services\AuthService;
+use App\Services\UserOnboardingService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -33,12 +37,12 @@ class AuthTest extends TestCase
     {
         $user = User::factory()->create([
             'email' => 'john@example.com',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('Passw0rd!'),
         ]);
 
         $response = $this->post('/login', [
             'email' => 'john@example.com',
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
 
         $response->assertRedirect('/dashboard');
@@ -49,12 +53,12 @@ class AuthTest extends TestCase
     {
         User::factory()->create([
             'email' => 'john@example.com',
-            'password' => bcrypt('correct-password'),
+            'password' => bcrypt('Correct-Pass1'),
         ]);
 
         $response = $this->from('/login')->post('/login', [
             'email' => 'john@example.com',
-            'password' => 'wrong-password',
+            'password' => 'Wrong-Pass1',
         ]);
 
         $response->assertRedirect('/login');
@@ -66,7 +70,7 @@ class AuthTest extends TestCase
     {
         $response = $this->from('/login')->post('/login', [
             'email' => 'nobody@example.com',
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
 
         $response->assertRedirect('/login');
@@ -78,7 +82,7 @@ class AuthTest extends TestCase
     {
         $response = $this->from('/login')->post('/login', [
             'email' => 'not-an-email',
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
 
         $response->assertRedirect('/login');
@@ -89,7 +93,7 @@ class AuthTest extends TestCase
     public function test_login_fails_when_email_is_missing(): void
     {
         $response = $this->from('/login')->post('/login', [
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
 
         $response->assertSessionHasErrors('email');
@@ -110,19 +114,19 @@ class AuthTest extends TestCase
 
         User::factory()->create([
             'email' => 'john@example.com',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('Passw0rd!'),
         ]);
 
         for ($i = 0; $i < 5; $i++) {
             $this->post('/login', [
                 'email' => 'john@example.com',
-                'password' => 'wrong-password',
+                'password' => 'Wrong-Pass1',
             ]);
         }
 
         $response = $this->from('/login')->post('/login', [
             'email' => 'john@example.com',
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
 
         $response->assertSessionHasErrors('email');
@@ -133,7 +137,7 @@ class AuthTest extends TestCase
     {
         $request = LoginRequest::create('/login', 'POST', [
             'email' => 'John@Example.COM',
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
         $request->setContainer($this->app)->setRedirector($this->app['redirect']);
 
@@ -146,12 +150,12 @@ class AuthTest extends TestCase
     {
         $user = User::factory()->create([
             'email' => 'john@example.com',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('Passw0rd!'),
         ]);
 
         $response = $this->post('/login', [
             'email' => 'JOHN@Example.com',
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
 
         $response->assertRedirect('/dashboard');
@@ -163,13 +167,13 @@ class AuthTest extends TestCase
         for ($i = 0; $i < 10; $i++) {
             $this->post('/login', [
                 'email' => "user{$i}@example.com",
-                'password' => 'wrong-password',
+                'password' => 'Wrong-Pass1',
             ]);
         }
 
         $response = $this->from('/login')->post('/login', [
             'email' => 'another@example.com',
-            'password' => 'wrong-password',
+            'password' => 'Wrong-Pass1',
         ]);
 
         $response->assertRedirect('/login');
@@ -182,7 +186,7 @@ class AuthTest extends TestCase
     {
         $user = User::factory()->create([
             'email' => 'john@example.com',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('Passw0rd!'),
         ]);
 
         $this->get('/login');
@@ -190,7 +194,7 @@ class AuthTest extends TestCase
 
         $this->post('/login', [
             'email' => 'john@example.com',
-            'password' => 'password',
+            'password' => 'Passw0rd!',
         ]);
 
         $this->assertNotSame($originalSessionId, $this->app['session']->getId());
@@ -211,8 +215,8 @@ class AuthTest extends TestCase
         return array_merge([
             'name' => 'John Doe',
             'email' => 'john@example.com',
-            'password' => 'secret123',
-            'password_confirmation' => 'secret123',
+            'password' => 'Secret123!',
+            'password_confirmation' => 'Secret123!',
         ], $overrides);
     }
 
@@ -238,8 +242,49 @@ class AuthTest extends TestCase
         $user = User::where('email', 'john@example.com')->first();
         $this->assertNotNull($user);
         $this->assertSame('John Doe', $user->name);
-        $this->assertNotSame('secret123', $user->password);
-        $this->assertTrue(Hash::check('secret123', $user->password));
+        $this->assertNotSame('Secret123!', $user->password);
+        $this->assertTrue(Hash::check('Secret123!', $user->password));
+    }
+
+    public function test_registration_creates_default_wallet_and_categories(): void
+    {
+        $this->post('/register', $this->registrationData())->assertRedirect('/login');
+
+        $user = User::where('email', 'john@example.com')->firstOrFail();
+
+        $wallet = $user->wallets()->sole();
+        $this->assertSame(UserOnboardingService::DEFAULT_WALLET_NAME, $wallet->name);
+        $this->assertSame(WalletType::Bank, $wallet->type);
+        $this->assertSame('VND', $wallet->currency_code);
+        $this->assertSame('0.0000', $wallet->initial_balance);
+        $this->assertSame(EntityStatus::Active, $wallet->status);
+
+        foreach (UserOnboardingService::DEFAULT_CATEGORIES as $type => $names) {
+            $this->assertEqualsCanonicalizing(
+                $names,
+                $user->categories()->where('type', $type)->pluck('name')->all(),
+            );
+        }
+    }
+
+    public function test_registration_is_rolled_back_when_default_data_fails(): void
+    {
+        $this->mock(UserOnboardingService::class)
+            ->shouldReceive('createDefaults')
+            ->andThrow(new RuntimeException('Onboarding failed'));
+
+        try {
+            app(AuthService::class)->register([
+                'name' => 'John Doe',
+                'email' => 'john@example.com',
+                'password' => 'Secret123!',
+            ]);
+            $this->fail('Expected the onboarding failure to propagate.');
+        } catch (RuntimeException $e) {
+            $this->assertSame('Onboarding failed', $e->getMessage());
+        }
+
+        $this->assertDatabaseCount('users', 0);
     }
 
     public function test_registration_fires_registered_event(): void
@@ -303,7 +348,7 @@ class AuthTest extends TestCase
             app(AuthService::class)->register([
                 'name' => 'John Doe',
                 'email' => 'john@example.com',
-                'password' => 'secret123',
+                'password' => 'Secret123!',
             ]);
             $this->fail('Expected a ValidationException for the duplicate email.');
         } catch (ValidationException $e) {
@@ -328,7 +373,7 @@ class AuthTest extends TestCase
     public function test_registration_fails_with_mismatched_password_confirmation(): void
     {
         $response = $this->from('/register')->post('/register', $this->registrationData([
-            'password_confirmation' => 'different123',
+            'password_confirmation' => 'Different123!',
         ]));
 
         $response->assertSessionHasErrors('password');
