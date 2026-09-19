@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\ValidEmail;
+use App\Rules\ValidPassword;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
@@ -35,8 +37,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:1'],
+            'email' => ['required', new ValidEmail],
+            'password' => ['required', 'string', new ValidPassword],
             'remember' => ['sometimes', 'boolean'],
         ];
     }
