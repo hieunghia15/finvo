@@ -80,7 +80,7 @@ Each item gives the fork, then a hint (a grep or dir to spot which side the app 
 This app ships a frontend stack, so the items below apply.
 
 28. Frontend stack: Blade+Livewire vs Inertia (Vue/React/Svelte) vs Blade-only / API + separate SPA.
-    - Hint: `composer.json` + `package.json`; `ls resources/js/pages`, `resources/views`.
+    - Hint: `composer.json` + `package.json`; `ls resources/js/Pages`, `resources/views`.
 29. Blade composition: class `<x-*>` components vs anonymous components (`@props`) vs `@include` partials.
     - Hint: `ls app/View/Components`; grep `<x-`, `@include` in `resources/views`.
 30. Localization: short keys (`lang/*/*.php` + `__('messages.welcome')`) vs JSON string keys (`lang/*.json` + `__('Full sentence')`).

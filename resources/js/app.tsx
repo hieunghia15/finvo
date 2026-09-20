@@ -2,6 +2,7 @@ import { createInertiaApp, ResolvedComponent } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 
+import LoadingOverlay from '@/Components/Common/LoadingOverlay';
 import Preloader from '@/Components/Common/Preloader';
 
 const appName = 'Finvo';
@@ -22,6 +23,7 @@ createInertiaApp({
             createRoot(container).render(
                 <>
                     <Preloader />
+                    <LoadingOverlay />
                     <App {...props}>{({ Component, key, props: pageProps }) => <Component key={key} {...pageProps} />}</App>
                 </>
             );

@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useForm, revalidateLogic } from '@tanstack/react-form';
+import { useForm, useStore, revalidateLogic } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
-import { registerSchema, RegisterFormValues, fieldError } from '@/Schemas';
+import { registerSchema, RegisterFormValues } from '@/Schemas';
+import { fieldError } from '@/lib/fieldError';
 
 type RegisterField = keyof RegisterFormValues;
 
@@ -29,6 +30,8 @@ export default function RegisterForm() {
             });
         },
     });
+
+    const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
 
     const clearServerError = (field: RegisterField) => setServerErrors((prev) => ({ ...prev, [field]: undefined }));
 
@@ -160,18 +163,14 @@ export default function RegisterForm() {
                 }}
             </form.Field>
 
-            <form.Subscribe selector={(state) => state.isSubmitting}>
-                {(isSubmitting) => (
-                    <div className="form-group mb-3">
-                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
-                            <div className="d-flex align-items-center justify-content-center py-1">
-                                <i className="material-symbols-outlined text-white fs-20 me-2">person_4</i>
-                                <span>{isSubmitting ? 'Registering…' : 'Register'}</span>
-                            </div>
-                        </button>
+            <div className="form-group mb-3">
+                <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
+                    <div className="d-flex align-items-center justify-content-center py-1">
+                        <i className="material-symbols-outlined text-white fs-20 me-2">person_4</i>
+                        <span>{isSubmitting ? 'Registering…' : 'Register'}</span>
                     </div>
-                )}
-            </form.Subscribe>
+                </button>
+            </div>
 
             <div className="form-group">
                 <p>
