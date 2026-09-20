@@ -2,51 +2,53 @@ import { useEffect, useRef, useState } from 'react';
 import { router } from '@inertiajs/react';
 import { isInPlaceSubmit } from '@/lib/inPlaceSubmit';
 
-/**
- * Keeps the spinner up long enough to be seen when the server answers fast.
- */
-const MIN_VISIBLE_MS = 300;
+/** Keep the spinner up this long so it does not just flash when the server answers fast. */
+const MINIMUM_VISIBLE_MS = 300;
 
 /**
- * Blurred overlay with a spinner, shown while a form sent with
- * IN_PLACE_SUBMIT is being submitted.
+ * Blurred overlay with a spinner, shown while a form submitted with
+ * IN_PLACE_SUBMIT is being saved. Page navigations show Preloader instead.
  */
 export default function LoadingOverlay() {
     const [isVisible, setIsVisible] = useState(false);
-    const shownAtRef = useRef(0);
-    const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const shownAt = useRef(0);
+    const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
-        const clearHideTimer = () => {
-            if (hideTimerRef.current) {
-                clearTimeout(hideTimerRef.current);
-                hideTimerRef.current = null;
+        const cancelPendingHide = () => {
+            if (hideTimer.current) {
+                clearTimeout(hideTimer.current);
+                hideTimer.current = null;
             }
         };
 
         const unbindStart = router.on('start', (event) => {
-            if (isInPlaceSubmit(event.detail.visit)) {
-                clearHideTimer();
-                shownAtRef.current = Date.now();
-                setIsVisible(true);
+            if (!isInPlaceSubmit(event.detail.visit)) {
+                return;
             }
+
+            cancelPendingHide();
+            shownAt.current = Date.now();
+            setIsVisible(true);
         });
+
         const unbindFinish = router.on('finish', (event) => {
-            if (isInPlaceSubmit(event.detail.visit)) {
-                const remaining = MIN_VISIBLE_MS - (Date.now() - shownAtRef.current);
-                clearHideTimer();
-                hideTimerRef.current = setTimeout(
-                    () => {
-                        hideTimerRef.current = null;
-                        setIsVisible(false);
-                    },
-                    Math.max(remaining, 0)
-                );
+            if (!isInPlaceSubmit(event.detail.visit)) {
+                return;
             }
+
+            // The new data is already rendered underneath; only the overlay waits.
+            const remainingMs = Math.max(MINIMUM_VISIBLE_MS - (Date.now() - shownAt.current), 0);
+
+            cancelPendingHide();
+            hideTimer.current = setTimeout(() => {
+                hideTimer.current = null;
+                setIsVisible(false);
+            }, remainingMs);
         });
 
         return () => {
-            clearHideTimer();
+            cancelPendingHide();
             unbindStart();
             unbindFinish();
         };

@@ -1,44 +1,52 @@
 import { useState } from 'react';
-import { useForm, revalidateLogic } from '@tanstack/react-form';
+import { useForm, useStore, revalidateLogic } from '@tanstack/react-form';
 import { router } from '@inertiajs/react';
-import { updateAccountSchema, UpdateAccountFormValues, fieldError } from '@/Schemas';
+import FormField from '@/Components/Form/FormField';
+import { updateAccountSchema } from '@/Schemas';
+import { fieldError } from '@/lib/fieldError';
 import { formatDate } from '@/lib/formatDate';
 import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
 import { Account } from '@/types';
-
-type ProfileField = keyof UpdateAccountFormValues;
 
 interface ProfileFormProps {
     account: Account;
 }
 
+/**
+ * Profile tab: the name can be edited, email and registration date are read-only.
+ */
 export default function ProfileForm({ account }: ProfileFormProps) {
-    const [serverErrors, setServerErrors] = useState<Partial<Record<ProfileField, string>>>({});
+    // Validation error Laravel sent back for the name field, if any.
+    const [nameServerError, setNameServerError] = useState<string>();
 
     const form = useForm({
-        defaultValues: {
-            name: account.name,
-        } as UpdateAccountFormValues,
+        defaultValues: { name: account.name },
         validationLogic: revalidateLogic(),
-        validators: {
-            onDynamic: updateAccountSchema,
-        },
+        validators: { onDynamic: updateAccountSchema },
         onSubmit: ({ value, formApi }) => {
-            setServerErrors({});
+            setNameServerError(undefined);
+
+            // router.patch has no promise to await, so wrap it in one and resolve
+            // on onFinish; otherwise isSubmitting would flip back immediately.
             return new Promise<void>((resolve) => {
                 router.patch('/account', value, {
                     ...IN_PLACE_SUBMIT,
-                    // Show the saved, server-normalized name; it also becomes
-                    // the value Cancel returns to.
+                    // Load the saved, server-normalized name back into the form.
+                    // It also becomes the value Cancel returns to.
                     onSuccess: (page) => formApi.reset({ name: (page.props.account as Account).name }),
-                    onError: (errors) => setServerErrors(errors),
+                    onError: (errors) => setNameServerError(errors.name),
                     onFinish: () => resolve(),
                 });
             });
         },
     });
 
-    const clearServerError = (field: ProfileField) => setServerErrors((prev) => ({ ...prev, [field]: undefined }));
+    const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
+
+    const handleCancel = () => {
+        form.reset();
+        setNameServerError(undefined);
+    };
 
     return (
         <>
@@ -55,87 +63,65 @@ export default function ProfileForm({ account }: ProfileFormProps) {
                 }}
             >
                 <div className="row">
-                    <form.Field name="name">
-                        {(field) => {
-                            const error = fieldError(field.state.meta.errors, serverErrors.name);
+                    <div className="col-lg-6">
+                        <form.Field name="name">
+                            {(field) => {
+                                const error = fieldError(field.state.meta.errors, nameServerError);
 
-                            return (
-                                <div className="col-lg-6">
-                                    <div className="form-group mb-4">
-                                        <label htmlFor={field.name} className="label text-secondary">
-                                            Full Name
-                                        </label>
+                                return (
+                                    <FormField htmlFor={field.name} label="Full Name" error={error}>
                                         <div className="form-group position-relative">
                                             <input
                                                 id={field.name}
                                                 name={field.name}
                                                 type="text"
                                                 className={`form-control text-dark ps-5 h-55${error ? ' is-invalid' : ''}`}
+                                                // Bootstrap's invalid icon would sit on top of the field icon.
                                                 style={error ? { backgroundImage: 'none' } : undefined}
                                                 placeholder="Enter your full name"
                                                 value={field.state.value}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) => {
-                                                    clearServerError('name');
+                                                    setNameServerError(undefined);
                                                     field.handleChange(e.target.value);
                                                 }}
                                                 autoComplete="name"
                                             />
                                             <i className="ri-user-line position-absolute top-50 start-0 translate-middle-y fs-20 text-gray-light ps-20"></i>
                                         </div>
-                                        {error && <div className="invalid-feedback d-block">{error}</div>}
-                                    </div>
-                                </div>
-                            );
-                        }}
-                    </form.Field>
+                                    </FormField>
+                                );
+                            }}
+                        </form.Field>
+                    </div>
 
                     <div className="col-lg-6">
-                        <div className="form-group mb-4">
-                            <label htmlFor="email" className="label text-secondary">
-                                Email Address
-                            </label>
+                        <FormField htmlFor="email" label="Email Address" hint="Email cannot be changed.">
                             <div className="form-group position-relative">
                                 <input id="email" type="email" className="form-control text-dark ps-5 h-55" value={account.email} disabled />
                                 <i className="ri-mail-line position-absolute top-50 start-0 translate-middle-y fs-20 text-gray-light ps-20"></i>
                             </div>
-                            <span className="d-block fs-14 text-secondary mt-1">Email cannot be changed.</span>
-                        </div>
+                        </FormField>
                     </div>
 
                     <div className="col-lg-6">
-                        <div className="form-group mb-4">
-                            <label htmlFor="registered_on" className="label text-secondary">
-                                Registered On
-                            </label>
+                        <FormField htmlFor="registered_on" label="Registered On">
                             <div className="form-group position-relative">
                                 <input id="registered_on" type="text" className="form-control text-dark ps-5 h-55" value={formatDate(account.created_at)} disabled />
                                 <i className="ri-calendar-line position-absolute top-50 start-0 translate-middle-y fs-20 text-gray-light ps-20"></i>
                             </div>
-                        </div>
+                        </FormField>
                     </div>
 
                     <div className="col-lg-12">
-                        <form.Subscribe selector={(state) => state.isSubmitting}>
-                            {(isSubmitting) => (
-                                <div className="d-flex flex-wrap gap-3">
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger py-2 px-4 fw-medium fs-16 text-white"
-                                        disabled={isSubmitting}
-                                        onClick={() => {
-                                            form.reset();
-                                            setServerErrors({});
-                                        }}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button type="submit" className="btn btn-primary py-2 px-4 fw-medium fs-16" disabled={isSubmitting}>
-                                        <i className="ri-check-line text-white fw-medium"></i> {isSubmitting ? 'Saving…' : 'Save Changes'}
-                                    </button>
-                                </div>
-                            )}
-                        </form.Subscribe>
+                        <div className="d-flex flex-wrap gap-3">
+                            <button type="button" className="btn btn-danger py-2 px-4 fw-medium fs-16 text-white" disabled={isSubmitting} onClick={handleCancel}>
+                                Cancel
+                            </button>
+                            <button type="submit" className="btn btn-primary py-2 px-4 fw-medium fs-16" disabled={isSubmitting}>
+                                <i className="ri-check-line text-white fw-medium"></i> {isSubmitting ? 'Saving…' : 'Save Changes'}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>

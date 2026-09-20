@@ -1,99 +1,58 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { router } from '@inertiajs/react';
 import { isInPlaceSubmit } from '@/lib/inPlaceSubmit';
 
-export interface PreloaderProps {
-    /**
-     * Array of letter characters to animate in the waviy preloader.
-     * Defaults to ['F', 'I', 'N', 'V', 'O'].
-     */
-    letters?: string[];
-    /**
-     * Minimum delay in milliseconds before hiding the preloader.
-     * Useful to prevent visual flash on rapid responses.
-     */
-    minDelay?: number;
-}
+const LETTERS = ['F', 'I', 'N', 'V', 'O'];
 
-export const Preloader: React.FC<PreloaderProps> = ({ letters = ['F', 'I', 'N', 'V', 'O'], minDelay = 0 }) => {
-    const [isLoading, setIsLoading] = useState<boolean>(() => {
-        return typeof window !== 'undefined' && document.readyState !== 'complete';
-    });
-
-    // useRef keeps a stable timer reference across renders without triggering re-renders.
-    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+/**
+ * Full-page "FINVO" loading screen, shown on the first page load and while
+ * Inertia navigates to another page. Forms submitted with IN_PLACE_SUBMIT show
+ * LoadingOverlay instead, so the page stays visible while it is being saved.
+ */
+export default function Preloader() {
+    const [isLoading, setIsLoading] = useState(() => document.readyState !== 'complete');
 
     useEffect(() => {
-        const hidePreloader = () => {
-            if (timerRef.current) clearTimeout(timerRef.current);
+        const hide = () => setIsLoading(false);
 
-            if (minDelay > 0) {
-                timerRef.current = setTimeout(() => {
-                    setIsLoading(false);
-                    timerRef.current = null;
-                }, minDelay);
-            } else {
-                setIsLoading(false);
-            }
-        };
-
-        const showPreloader = () => {
-            // Cancel any pending hide timer so a new navigation can show the preloader immediately.
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-                timerRef.current = null;
-            }
-            setIsLoading(true);
-        };
-
-        // Handle hard initial page load / refresh.
-        // Store the same function reference so removeEventListener can find it.
-        let handleLoad: (() => void) | null = null;
-
+        // The browser may have finished loading between the first render and
+        // here, in which case the "load" event has already fired.
         if (document.readyState === 'complete') {
-            setIsLoading(false);
-        } else {
-            handleLoad = () => hidePreloader();
-            window.addEventListener('load', handleLoad);
+            hide();
         }
+        window.addEventListener('load', hide);
 
-        // Listen to Inertia router SPA navigation events. In-place form submits
-        // show LoadingOverlay instead.
         const unbindStart = router.on('start', (event) => {
             if (!isInPlaceSubmit(event.detail.visit)) {
-                showPreloader();
+                setIsLoading(true);
             }
         });
-        const unbindFinish = router.on('finish', hidePreloader);
+        const unbindFinish = router.on('finish', hide);
 
         return () => {
-            if (timerRef.current) clearTimeout(timerRef.current);
+            window.removeEventListener('load', hide);
             unbindStart();
             unbindFinish();
-            // Only remove the listener if it was actually registered.
-            if (handleLoad) {
-                window.removeEventListener('load', handleLoad);
-            }
         };
-    }, [minDelay]);
+    }, []);
 
     if (!isLoading) {
         return null;
     }
 
     return (
+        // Both wrappers are needed: the theme styles the letters through the
+        // selector "#preloader .preloader .waviy".
         <div className="preloader" id="preloader">
             <div className="preloader">
                 <div className="waviy position-relative">
-                    {letters.map((char, index) => (
-                        <span key={`${char}-${index}`} className="d-inline-block">
-                            {char}
+                    {LETTERS.map((letter) => (
+                        <span key={letter} className="d-inline-block">
+                            {letter}
                         </span>
                     ))}
                 </div>
             </div>
         </div>
     );
-};
-
-export default Preloader;
+}
