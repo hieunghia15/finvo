@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useForm, revalidateLogic } from '@tanstack/react-form';
+import { useForm, useStore, revalidateLogic } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
-import { loginSchema, LoginFormValues, fieldError } from '@/Schemas';
+import { loginSchema, LoginFormValues } from '@/Schemas';
+import { fieldError } from '@/lib/fieldError';
 
 type LoginField = keyof LoginFormValues;
 
@@ -28,6 +29,8 @@ export default function LoginForm() {
             });
         },
     });
+
+    const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
 
     const clearServerError = (field: LoginField) => setServerErrors((prev) => ({ ...prev, [field]: undefined }));
 
@@ -115,18 +118,14 @@ export default function LoginForm() {
                 </Link>
             </div>
 
-            <form.Subscribe selector={(state) => state.isSubmitting}>
-                {(isSubmitting) => (
-                    <div className="form-group mb-4">
-                        <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
-                            <div className="d-flex align-items-center justify-content-center py-1">
-                                <i className="material-symbols-outlined text-white fs-20 me-2">login</i>
-                                <span>{isSubmitting ? 'Signing in…' : 'Login'}</span>
-                            </div>
-                        </button>
+            <div className="form-group mb-4">
+                <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
+                    <div className="d-flex align-items-center justify-content-center py-1">
+                        <i className="material-symbols-outlined text-white fs-20 me-2">login</i>
+                        <span>{isSubmitting ? 'Signing in…' : 'Login'}</span>
                     </div>
-                )}
-            </form.Subscribe>
+                </button>
+            </div>
 
             <div className="form-group">
                 <p>

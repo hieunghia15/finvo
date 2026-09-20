@@ -43,10 +43,10 @@ export const sidebarMenuConfig: MenuGroup[] = [
         title: 'OTHERS',
         items: [
             {
-                id: 'myProfile',
-                title: 'My Profile',
+                id: 'account',
+                title: 'Account',
                 icon: 'account_circle',
-                url: '/my-profile',
+                url: '/account',
             },
             // {
             //     id: 'multiLevel',

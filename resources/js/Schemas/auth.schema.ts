@@ -8,7 +8,7 @@ const emailRegex = /^([a-zA-Z0-9_.+-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,64})+
 /**
  * Must match the backend ValidPassword rule.
  */
-const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,32}$/;
+export const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,32}$/;
 
 export const loginSchema = z.object({
     email: z.string().trim().min(1, 'Email is required').regex(emailRegex, 'Please enter a valid email address'),
