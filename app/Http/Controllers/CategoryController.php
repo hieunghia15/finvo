@@ -27,32 +27,19 @@ class CategoryController extends Controller
     /**
      * Display the current user's categories.
      *
-     * Only whitelisted fields are sent, so user_id and the timestamps never
-     * reach the frontend. Every mutation below redirects back to this screen,
-     * which keeps the filters in the query string intact.
+     * Every mutation below redirects back to this screen, which keeps the
+     * filters in the query string intact.
      *
      * @param  IndexCategoryRequest  $request  The validated list filters.
      */
     public function index(IndexCategoryRequest $request): Response
     {
-        $categories = $this->categoryService->listFor(
-            $request->user(),
-            $request->type(),
-            $request->includeArchived(),
-        );
+        $filters = $this->categoryService->normalizeFilters($request->validated());
+        $categories = $this->categoryService->listFor($request->user(), $filters);
 
         return Inertia::render('Categories/Index', [
-            'categories' => $categories->map->only([
-                'id',
-                'name',
-                'type',
-                'status',
-                'transactions_count',
-            ]),
-            'filters' => [
-                'type' => $request->type()?->value,
-                'include_archived' => $request->includeArchived(),
-            ],
+            'categories' => $categories,
+            'filters' => $filters,
         ]);
     }
 
@@ -63,7 +50,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        $this->categoryService->create($request->user(), $request->name(), $request->type());
+        $this->categoryService->create($request->user(), $request->validated());
 
         return back()->with('status', 'Category created.');
     }
@@ -75,7 +62,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request): RedirectResponse
     {
-        $this->categoryService->update($request->category(), $request->name(), $request->type());
+        $this->categoryService->update($request->category(), $request->validated());
 
         return back()->with('status', 'Category updated.');
     }

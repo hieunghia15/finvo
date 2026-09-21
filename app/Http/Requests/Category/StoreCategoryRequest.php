@@ -68,20 +68,4 @@ class StoreCategoryRequest extends FormRequest
             'name.unique' => 'You already have a category with this name and type.',
         ];
     }
-
-    /**
-     * The validated name, normalized by prepareForValidation().
-     */
-    public function name(): string
-    {
-        return $this->string('name')->toString();
-    }
-
-    /**
-     * The validated type.
-     */
-    public function type(): TransactionType
-    {
-        return $this->enum('type', TransactionType::class);
-    }
 }

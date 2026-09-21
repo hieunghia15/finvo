@@ -32,23 +32,4 @@ class IndexCategoryRequest extends FormRequest
             'include_archived' => ['nullable', 'boolean'],
         ];
     }
-
-    /**
-     * The type filter, or null when the list is not narrowed to one type.
-     */
-    public function type(): ?TransactionType
-    {
-        return $this->enum('type', TransactionType::class);
-    }
-
-    /**
-     * Whether archived categories join the list.
-     *
-     * When on, the list shows every status rather than only the archived
-     * ones: the question this answers is "where did my category go?".
-     */
-    public function includeArchived(): bool
-    {
-        return $this->boolean('include_archived');
-    }
 }

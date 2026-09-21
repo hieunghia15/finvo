@@ -7,21 +7,48 @@ use App\Enums\TransactionType;
 use App\Exceptions\CategoryInUseException;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class CategoryService
 {
     /**
+     * Read the validated list filters into the shape the index screen uses.
+     *
+     * The result is also sent back to the frontend so the filter controls
+     * reflect the current query. Normalizing an already normalized array
+     * returns it unchanged.
+     *
+     * When include_archived is on, the list shows every status rather than
+     * only the archived ones: the question it answers is "where did my
+     * category go?".
+     *
+     * @param  array{type?: string|null, include_archived?: bool|int|string|null}  $filters  The validated list filters.
+     *
+     * @return array{type: string|null, include_archived: bool} The type to narrow to, or null for both, and whether archived categories join the list.
+     */
+    public function normalizeFilters(array $filters): array
+    {
+        return [
+            'type' => $filters['type'] ?? null,
+            'include_archived' => (bool) ($filters['include_archived'] ?? false),
+        ];
+    }
+
+    /**
      * List a user's categories for the index screen.
      *
-     * @param  User  $user  The owner whose categories are listed.
-     * @param  TransactionType|null  $type  Narrow to one type, or null for both.
-     * @param  bool  $includeArchived  When true the list covers every status, not only the archived ones.
+     * Only whitelisted fields are returned, so user_id and the timestamps
+     * never reach the frontend.
      *
-     * @return Collection<int, Category> Categories with their transaction counts, ordered for display.
+     * @param  User  $user  The owner whose categories are listed.
+     * @param  array{type?: string|null, include_archived?: bool|int|string|null}  $filters  The validated list filters; normalized here.
+     *
+     * @return Collection<int, array<string, mixed>> Categories with their transaction counts, ordered for display.
      */
-    public function listFor(User $user, ?TransactionType $type, bool $includeArchived): Collection
+    public function listFor(User $user, array $filters): Collection
     {
+        ['type' => $type, 'include_archived' => $includeArchived] = $this->normalizeFilters($filters);
+
         return $user->categories()
             ->withCount('transactions')
             ->when($type, fn ($query) => $query->where('type', $type))
@@ -33,47 +60,48 @@ class CategoryService
                 TransactionType::Expense->value,
             ])
             ->orderBy('name')
-            ->get();
+            ->get()
+            ->map->only([
+                'id',
+                'name',
+                'type',
+                'status',
+                'transactions_count',
+            ]);
     }
 
     /**
      * Create a category for a user.
      *
      * Goes through the relationship so user_id comes from the session and
-     * never from request input. The status is left to the model default.
+     * never from request input. The status is left to the model default, so
+     * $data must not carry one.
      *
      * @param  User  $user  The owner of the new category.
-     * @param  string  $name  The validated, normalized name.
-     * @param  TransactionType  $type  Whether it categorizes income or expense.
+     * @param  array{name: string, type: string}  $data  Validated attributes; the model cast turns the type into a TransactionType.
      *
      * @return Category The created category.
      */
-    public function create(User $user, string $name, TransactionType $type): Category
+    public function create(User $user, array $data): Category
     {
-        return $user->categories()->create([
-            'name' => $name,
-            'type' => $type,
-        ]);
+        return $user->categories()->create($data);
     }
 
     /**
      * Update a category's details.
      *
      * The caller must have already rejected an edit to an archived category
-     * and a type change on a category that has transactions.
+     * and a type change on a category that has transactions. The status is
+     * changed through updateStatus(), so $data must not carry one.
      *
      * @param  Category  $category  The category to update.
-     * @param  string  $name  The validated, normalized name.
-     * @param  TransactionType  $type  The validated type.
+     * @param  array{name: string, type: string}  $data  Validated attributes; the model cast turns the type into a TransactionType.
      *
      * @return Category The updated category.
      */
-    public function update(Category $category, string $name, TransactionType $type): Category
+    public function update(Category $category, array $data): Category
     {
-        $category->update([
-            'name' => $name,
-            'type' => $type,
-        ]);
+        $category->update($data);
 
         return $category;
     }

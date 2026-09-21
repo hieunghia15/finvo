@@ -112,20 +112,4 @@ class UpdateCategoryRequest extends FormRequest
             },
         ];
     }
-
-    /**
-     * The validated name, normalized by prepareForValidation().
-     */
-    public function name(): string
-    {
-        return $this->string('name')->toString();
-    }
-
-    /**
-     * The validated type.
-     */
-    public function type(): TransactionType
-    {
-        return $this->enum('type', TransactionType::class);
-    }
 }
