@@ -1,0 +1,18 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - bootstrap/app.php
+        - config/
+        - database/
+        - routes/
+        - tests/
+
+    # 0 is the loosest and 10 the strictest. Level 6 adds checks for missing
+    # type declarations; level 7 checks union types, level 8 nullability.
+    level: 6
+
+    # Read the casts() method on models, so an enum cast is typed as the enum
+    parseModelCastsMethod: true
