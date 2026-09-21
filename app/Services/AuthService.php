@@ -36,7 +36,7 @@ class AuthService
      */
     public function login(Request $request, array $credentials, bool $remember = false): void
     {
-        $throttleKey = $this->throttleKey($request, (string) ($credentials['email'] ?? ''));
+        $throttleKey = $this->throttleKey($request, $credentials['email']);
 
         if (RateLimiter::tooManyAttempts($throttleKey, self::MAX_ATTEMPTS)) {
             $seconds = RateLimiter::availableIn($throttleKey);

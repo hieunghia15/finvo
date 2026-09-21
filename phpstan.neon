@@ -14,5 +14,4 @@ parameters:
     # type declarations; level 7 checks union types, level 8 nullability.
     level: 6
 
-    # Read the casts() method on models, so an enum cast is typed as the enum
     parseModelCastsMethod: true

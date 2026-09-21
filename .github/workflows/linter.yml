@@ -59,3 +59,7 @@ jobs:
       # Run Laravel Pint
       - name: Laravel Pint Check
         run: ./vendor/bin/pint --test
+
+      # Run PHPStan with Larastan, configured in phpstan.neon
+      - name: PHPStan Analysis
+        run: composer analyse -- --no-progress

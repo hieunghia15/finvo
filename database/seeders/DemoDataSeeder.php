@@ -26,7 +26,7 @@ class DemoDataSeeder extends Seeder
         $user = User::where('email', AdminUserSeeder::EMAIL)->firstOrFail();
 
         if ($user->transactions()->exists()) {
-            $this->command?->info('Demo data already present, skipping.');
+            $this->command->info('Demo data already present, skipping.');
 
             return;
         }
