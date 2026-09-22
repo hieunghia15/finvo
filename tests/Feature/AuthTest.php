@@ -293,7 +293,8 @@ class AuthTest extends TestCase
 
         $this->post('/register', $this->registrationData());
 
-        Event::assertDispatched(Registered::class, fn (Registered $event) => $event->user->email === 'john@example.com');
+        Event::assertDispatched(Registered::class, fn (Registered $event) => $event->user instanceof User
+            && $event->user->email === 'john@example.com');
     }
 
     public function test_login_page_shows_status_after_registration(): void

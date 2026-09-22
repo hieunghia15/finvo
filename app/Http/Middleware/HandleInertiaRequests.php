@@ -53,6 +53,9 @@ class HandleInertiaRequests extends Middleware
             ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
+                // For failures that belong to no form field, such as deleting
+                // a record that is still in use.
+                'error' => fn () => $request->session()->get('error'),
             ],
         ]);
     }
