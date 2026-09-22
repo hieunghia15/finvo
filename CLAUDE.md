@@ -61,7 +61,7 @@ Detailed project rules are organized in `.agents/rules/`:
 
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **finvo** (4976 symbols, 13027 relationships, 421 execution flows).
+This project is indexed by GitNexus as **finvo** (4931 symbols, 12984 relationships, 419 execution flows).
 
 > Index stale? Run `node .gitnexus/run.cjs analyze --index-only` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? Bootstrap with `npx`, `bunx`, or `pnpm dlx` — e.g. `bunx gitnexus@latest analyze` (npm 11 npx crash; #1939).
 
