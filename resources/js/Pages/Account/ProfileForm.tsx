@@ -7,6 +7,7 @@ import { fieldError } from '@/lib/fieldError';
 import { formatDate } from '@/lib/formatDate';
 import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
 import { Account } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface ProfileFormProps {
     account: Account;
@@ -16,6 +17,7 @@ interface ProfileFormProps {
  * Profile tab: the name can be edited, email and registration date are read-only.
  */
 export default function ProfileForm({ account }: ProfileFormProps) {
+    const { t, locale } = useTranslation();
     // Validation error Laravel sent back for the name field, if any.
     const [nameServerError, setNameServerError] = useState<string>();
 
@@ -51,8 +53,8 @@ export default function ProfileForm({ account }: ProfileFormProps) {
     return (
         <>
             <div className="mb-4">
-                <h4 className="fs-20 mb-1">Profile</h4>
-                <p className="fs-15">Update your personal details here.</p>
+                <h4 className="fs-20 mb-1">{t('Profile')}</h4>
+                <p className="fs-15">{t('Update your personal details here.')}</p>
             </div>
 
             <form
@@ -66,10 +68,10 @@ export default function ProfileForm({ account }: ProfileFormProps) {
                     <div className="col-lg-6">
                         <form.Field name="name">
                             {(field) => {
-                                const error = fieldError(field.state.meta.errors, nameServerError);
+                                const error = fieldError(t, field.state.meta.errors, nameServerError);
 
                                 return (
-                                    <FormField htmlFor={field.name} label="Full Name" error={error}>
+                                    <FormField htmlFor={field.name} label={t('Full Name')} error={error}>
                                         <div className="form-group position-relative">
                                             <input
                                                 id={field.name}
@@ -78,7 +80,7 @@ export default function ProfileForm({ account }: ProfileFormProps) {
                                                 className={`form-control text-dark ps-5 h-55${error ? ' is-invalid' : ''}`}
                                                 // Bootstrap's invalid icon would sit on top of the field icon.
                                                 style={error ? { backgroundImage: 'none' } : undefined}
-                                                placeholder="Enter your full name"
+                                                placeholder={t('Enter your full name')}
                                                 value={field.state.value}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) => {
@@ -96,7 +98,7 @@ export default function ProfileForm({ account }: ProfileFormProps) {
                     </div>
 
                     <div className="col-lg-6">
-                        <FormField htmlFor="email" label="Email Address" hint="Email cannot be changed.">
+                        <FormField htmlFor="email" label={t('Email Address')} hint={t('Email cannot be changed.')}>
                             <div className="form-group position-relative">
                                 <input id="email" type="email" className="form-control text-dark ps-5 h-55" value={account.email} disabled />
                                 <i className="ri-mail-line position-absolute top-50 start-0 translate-middle-y fs-20 text-gray-light ps-20"></i>
@@ -105,9 +107,9 @@ export default function ProfileForm({ account }: ProfileFormProps) {
                     </div>
 
                     <div className="col-lg-6">
-                        <FormField htmlFor="registered_on" label="Registered On">
+                        <FormField htmlFor="registered_on" label={t('Registered On')}>
                             <div className="form-group position-relative">
-                                <input id="registered_on" type="text" className="form-control text-dark ps-5 h-55" value={formatDate(account.created_at)} disabled />
+                                <input id="registered_on" type="text" className="form-control text-dark ps-5 h-55" value={formatDate(account.created_at, locale)} disabled />
                                 <i className="ri-calendar-line position-absolute top-50 start-0 translate-middle-y fs-20 text-gray-light ps-20"></i>
                             </div>
                         </FormField>
@@ -116,10 +118,10 @@ export default function ProfileForm({ account }: ProfileFormProps) {
                     <div className="col-lg-12">
                         <div className="d-flex flex-wrap gap-3">
                             <button type="button" className="btn btn-danger py-2 px-4 fw-medium fs-16 text-white" disabled={isSubmitting} onClick={handleCancel}>
-                                Cancel
+                                {t('Cancel')}
                             </button>
                             <button type="submit" className="btn btn-primary py-2 px-4 fw-medium fs-16" disabled={isSubmitting}>
-                                <i className="ri-check-line text-white fw-medium"></i> {isSubmitting ? 'Saving…' : 'Save Changes'}
+                                <i className="ri-check-line text-white fw-medium"></i> {isSubmitting ? t('Saving…') : t('Save Changes')}
                             </button>
                         </div>
                     </div>

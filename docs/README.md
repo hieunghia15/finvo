@@ -32,7 +32,7 @@ docs/
 | Categories | 1     | [Backend](tasks/categories/backend.md)   | ✅ Đã merge (PR #18)                                 |
 | Categories | 1     | [Frontend](tasks/categories/frontend.md) | ✅ Đã merge (PR #20)                                 |
 | Multi-lang | 1     | [Backend](tasks/multi-lang/backend.md)   | ✅ Đã làm, chưa commit — `feat/implement-multi-lang` |
-| Multi-lang | 1     | [Frontend](tasks/multi-lang/frontend.md) | 📝 Chưa làm — `feat/implement-multi-lang`            |
+| Multi-lang | 1     | [Frontend](tasks/multi-lang/frontend.md) | ✅ Đã làm, chưa commit — `feat/implement-multi-lang` |
 
 ## Quy ước đặt tên
 

@@ -255,7 +255,7 @@ Khung modal dùng chung (Q2). **Parent quyết định mount/unmount** — khôn
 interface ModalProps {
     title: string;
     onClose: () => void;
-    /** Blocks Esc, backdrop click and the × button, e.g. while submitting. */
+    /** Disables the × button, e.g. while submitting. */
     isCloseDisabled?: boolean;
     size?: 'sm' | 'lg';
     /** Buttons rendered in `.modal-footer`. */
@@ -269,7 +269,7 @@ Yêu cầu:
 - `role="dialog"`, `aria-modal="true"`, `aria-labelledby` trỏ vào id của title (`useId()`).
 - Render qua `createPortal(…, document.body)` — `main-content-container` có `overflow-hidden`.
 - Khi mount: thêm class `modal-open` vào `body` (khóa scroll); khi unmount: gỡ.
-- Esc → `onClose()`; click vào vùng `.modal` bên ngoài `.modal-dialog` (`e.target === e.currentTarget`) → `onClose()`. Cả hai bị bỏ qua khi `isCloseDisabled`.
+- Chỉ nút × (và nút Cancel ở footer) đóng modal. **Không** đóng khi click backdrop hay nhấn Esc — _đổi sau khi triển khai, theo yêu cầu người dùng (ban đầu Esc và click backdrop cũng đóng)._ Nút × bị disable khi `isCloseDisabled`.
 - Không cần animation fade-out.
 
 Form trong modal: `<form>` bọc cả body + footer để nút submit nằm ở footer vẫn submit được form; hoặc dùng thuộc tính `form="<id>"` trên nút. Chọn một cách và dùng thống nhất cho cả 2 modal có form.
@@ -502,7 +502,7 @@ Chuẩn bị: một user mới đăng ký (có sẵn 11 danh mục seed). Tạo 
 - [ ] Gõ lại vào Name → lỗi server biến mất.
 - [ ] Tạo "Ăn uống" nhưng type **Income** → thành công.
 - [ ] Đóng rồi mở lại modal → form trống, không còn lỗi cũ.
-- [ ] Trong lúc đang submit: Esc / click backdrop / nút × không đóng được modal.
+- [ ] Click ra ngoài modal hoặc nhấn Esc → modal **không** đóng; chỉ nút × / Cancel đóng. Trong lúc đang submit: nút × bị disable.
 
 ### Sửa
 

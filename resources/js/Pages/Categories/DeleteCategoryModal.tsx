@@ -3,6 +3,7 @@ import { router } from '@inertiajs/react';
 import Modal from '@/Components/Common/Modal';
 import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
 import { Category } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface DeleteCategoryModalProps {
     category: Category;
@@ -14,6 +15,7 @@ interface DeleteCategoryModalProps {
  * comes back as a flash message on the page, not inside this modal.
  */
 export default function DeleteCategoryModal({ category, onClose }: DeleteCategoryModalProps) {
+    const { t } = useTranslation();
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleDelete = () => {
@@ -29,24 +31,22 @@ export default function DeleteCategoryModal({ category, onClose }: DeleteCategor
 
     return (
         <Modal
-            title="Delete Category"
+            title={t('Delete Category')}
             size="sm"
             onClose={onClose}
             isCloseDisabled={isDeleting}
             footer={
                 <>
                     <button type="button" className="btn btn-primary text-white" disabled={isDeleting} onClick={onClose}>
-                        Cancel
+                        {t('Cancel')}
                     </button>
                     <button type="button" className="btn btn-danger text-white" disabled={isDeleting} onClick={handleDelete}>
-                        {isDeleting ? 'Deleting…' : 'Delete'}
+                        {isDeleting ? t('Deleting…') : t('Delete')}
                     </button>
                 </>
             }
         >
-            <p className="mb-0">
-                Delete &quot;<strong>{category.name}</strong>&quot;? This cannot be undone.
-            </p>
+            <p className="mb-0">{t('Delete ":name"? This cannot be undone.', { name: category.name })}</p>
         </Modal>
     );
 }

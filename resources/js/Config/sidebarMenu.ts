@@ -1,3 +1,9 @@
+import { trans } from '@/lib/i18n';
+
+/**
+ * Finvo's own titles are marked with trans() and translated by Sidebar. The
+ * template's demo entries are left unmarked: they are due to be removed.
+ */
 export interface MenuItem {
     id: string;
     title: string;
@@ -16,7 +22,7 @@ export interface MenuGroup {
 export const sidebarMenuConfig: MenuGroup[] = [
     {
         id: 'main',
-        title: 'MAIN',
+        title: trans('MAIN'),
         items: [
             {
                 id: 'frontPages',
@@ -38,7 +44,7 @@ export const sidebarMenuConfig: MenuGroup[] = [
             },
             {
                 id: 'categories',
-                title: 'Categories',
+                title: trans('Categories'),
                 icon: 'category',
                 url: '/categories',
             },
@@ -46,11 +52,11 @@ export const sidebarMenuConfig: MenuGroup[] = [
     },
     {
         id: 'others',
-        title: 'OTHERS',
+        title: trans('OTHERS'),
         items: [
             {
                 id: 'account',
-                title: 'Account',
+                title: trans('Account'),
                 icon: 'account_circle',
                 url: '/account',
             },

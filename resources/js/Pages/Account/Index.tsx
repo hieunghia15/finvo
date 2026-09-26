@@ -5,6 +5,7 @@ import Breadcrumb from '@/Components/Layout/Breadcrumb';
 import { Account, PageProps } from '@/types';
 import ProfileForm from './ProfileForm';
 import ChangePasswordForm from './ChangePasswordForm';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type AccountTab = 'profile' | 'password';
 
@@ -17,13 +18,14 @@ function tabButtonClass(isActive: boolean): string {
 }
 
 export default function Index({ account }: IndexProps) {
+    const { t } = useTranslation();
     const { flash } = usePage<PageProps>().props;
 
     // The backend has a single GET /account, so the two tabs are local state
     // only: switching tabs does not navigate and does not touch the URL.
     const [activeTab, setActiveTab] = useState<AccountTab>('profile');
 
-    const pageTitle = activeTab === 'profile' ? 'Account' : 'Change Password';
+    const pageTitle = activeTab === 'profile' ? t('Account') : t('Change Password');
 
     return (
         <MainLayout>
@@ -32,7 +34,7 @@ export default function Index({ account }: IndexProps) {
             <Breadcrumb
                 title={pageTitle}
                 items={[
-                    { label: 'Dashboard', url: '/dashboard' },
+                    { label: t('Dashboard'), url: '/dashboard' },
                     { label: pageTitle, active: true },
                 ]}
             />
@@ -53,7 +55,7 @@ export default function Index({ account }: IndexProps) {
                                 aria-current={activeTab === 'profile' ? 'page' : undefined}
                                 onClick={() => setActiveTab('profile')}
                             >
-                                Account
+                                {t('Account')}
                             </button>
                         </li>
                         <li>
@@ -63,7 +65,7 @@ export default function Index({ account }: IndexProps) {
                                 aria-current={activeTab === 'password' ? 'page' : undefined}
                                 onClick={() => setActiveTab('password')}
                             >
-                                Change Password
+                                {t('Change Password')}
                             </button>
                         </li>
                     </ul>

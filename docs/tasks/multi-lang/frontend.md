@@ -4,6 +4,15 @@
 > Nguồn: [`features/phase-1.md`](../../features/phase-1.md) §6 + [`phases/phase-1.md`](../../phases/phase-1.md) §9 + [`backend.md`](backend.md) + template `multi-lang.html` + buổi grill Q1–Q26.
 > Phạm vi: **frontend** — hook `t()`, `LanguageSwitcher`, dịch mọi chuỗi UI, format ngày/số theo ngôn ngữ, `<html lang>`. Cần backend §5.1–§5.6 xong trước (props `locale`, `translations`, route `PUT /locale`).
 > Nhánh: `feat/implement-multi-lang` — **một PR chung** với backend (Q22).
+>
+> **Trạng thái: ✅ đã triển khai** (chưa commit). `tsc --noEmit`, `npm run build`, `npm run lang:check` (132/132 key), Prettier và `php artisan test` (142/142) đều pass; luồng đổi ngôn ngữ đã kiểm tra end-to-end qua HTTP trên `finvo.test`. Checklist tay §7 trên trình duyệt **chưa chạy**.
+>
+> Khác với đặc tả ban đầu:
+>
+> - `LoadingOverlay` chuyển vào **trong** render-prop của `<App>` ở `app.tsx` (trước đó nằm ngoài, không đọc được `usePage()` để dịch "Loading..."); vẫn không có `key` nên không remount khi điều hướng.
+> - `AuthLayout` bọc `LanguageSwitcher` trong `.right-header-content > ul > li.header-right-item` để dùng lại CSS dropdown của header template.
+> - Câu điều khoản ở trang Register dịch theo từng đoạn quanh hai link (`By registering, you agree to our` …); "Already have an account." sửa thành câu hỏi.
+> - Dashboard (trang placeholder) bỏ mục breadcrumb "Extra Pages" của template.
 
 ---
 

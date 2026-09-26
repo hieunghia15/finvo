@@ -1,4 +1,7 @@
 export * from './category.types';
+export * from './locale.types';
+
+import type { Locale, Translations } from './locale.types';
 
 export interface User {
     id: number;
@@ -32,6 +35,9 @@ export type PageProps<T = Record<string, unknown>> = T & {
     auth: Auth;
     flash?: Flash;
     errors: Record<string, string>;
+    locale: Locale;
+    /** Once prop: sent on the first load and after a language switch, then kept by the client. */
+    translations: Translations;
 };
 
 export interface BreadcrumbItem {
