@@ -36,6 +36,12 @@ export const sidebarMenuConfig: MenuGroup[] = [
                 icon: 'map',
                 url: '/google-map',
             },
+            {
+                id: 'categories',
+                title: 'Categories',
+                icon: 'category',
+                url: '/categories',
+            },
         ],
     },
     {

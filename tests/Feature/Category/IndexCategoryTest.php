@@ -76,8 +76,8 @@ class IndexCategoryTest extends TestCase
 
         $response->assertInertia(fn (AssertableInertia $page) => $page
             ->has('categories', 2)
-            ->where('categories.0.name', 'Ăn uống')
-            ->where('categories.1.name', 'Di chuyển'));
+            ->where('categories.0.name', 'Di chuyển')
+            ->where('categories.1.name', 'Ăn uống'));
     }
 
     public function test_include_archived_shows_every_status_not_only_archived(): void
@@ -105,23 +105,38 @@ class IndexCategoryTest extends TestCase
             ->where('categories.0.name', 'Lương'));
     }
 
-    public function test_income_comes_before_expense_and_names_are_sorted_within_a_type(): void
+    public function test_categories_are_listed_newest_first_regardless_of_type_and_name(): void
     {
         $user = User::factory()->create();
-        // Inserted out of order on purpose: ordering by the type column alone
-        // would put expense first, since 'expense' < 'income' alphabetically.
-        Category::factory()->expense()->for($user)->create(['name' => 'Di chuyển']);
-        Category::factory()->income()->for($user)->create(['name' => 'Thưởng']);
-        Category::factory()->expense()->for($user)->create(['name' => 'Ăn uống']);
-        Category::factory()->income()->for($user)->create(['name' => 'Lương']);
+        // Types and names interleaved on purpose, so neither a type grouping
+        // nor a name sort could produce the expected order by accident.
+        $first = Category::factory()->expense()->for($user)->create(['name' => 'Ăn uống']);
+        $second = Category::factory()->income()->for($user)->create(['name' => 'Thưởng']);
+        $third = Category::factory()->expense()->for($user)->create(['name' => 'Di chuyển']);
+        $fourth = Category::factory()->income()->for($user)->create(['name' => 'Lương']);
 
         $response = $this->actingAs($user)->get('/categories');
 
         $response->assertInertia(fn (AssertableInertia $page) => $page
-            ->where('categories.0.name', 'Lương')
-            ->where('categories.1.name', 'Thưởng')
-            ->where('categories.2.name', 'Ăn uống')
-            ->where('categories.3.name', 'Di chuyển'));
+            ->where('categories.0.id', $fourth->id)
+            ->where('categories.1.id', $third->id)
+            ->where('categories.2.id', $second->id)
+            ->where('categories.3.id', $first->id));
+    }
+
+    public function test_a_type_filter_keeps_the_newest_first_order(): void
+    {
+        $user = User::factory()->create();
+        $older = Category::factory()->expense()->for($user)->create(['name' => 'Ăn uống']);
+        Category::factory()->income()->for($user)->create(['name' => 'Lương']);
+        $newer = Category::factory()->expense()->for($user)->create(['name' => 'Di chuyển']);
+
+        $response = $this->actingAs($user)->get('/categories?type=expense');
+
+        $response->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('categories', 2)
+            ->where('categories.0.id', $newer->id)
+            ->where('categories.1.id', $older->id));
     }
 
     public function test_it_counts_transactions_including_for_archived_categories(): void
