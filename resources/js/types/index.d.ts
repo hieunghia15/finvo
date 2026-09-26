@@ -1,3 +1,5 @@
+export * from './category.types';
+
 export interface User {
     id: number;
     name: string;

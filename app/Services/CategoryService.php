@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Enums\EntityStatus;
-use App\Enums\TransactionType;
 use App\Exceptions\CategoryInUseException;
 use App\Models\Category;
 use App\Models\User;
@@ -43,7 +42,7 @@ class CategoryService
      * @param  User  $user  The owner whose categories are listed.
      * @param  array{type?: string|null, include_archived?: bool|int|string|null}  $filters  The validated list filters; normalized here.
      *
-     * @return Collection<int, array<string, mixed>> Categories with their transaction counts, ordered for display.
+     * @return Collection<int, array<string, mixed>> Categories with their transaction counts, newest first.
      */
     public function listFor(User $user, array $filters): Collection
     {
@@ -53,13 +52,8 @@ class CategoryService
             ->withCount('transactions')
             ->when($type, fn ($query) => $query->where('type', $type))
             ->when(!$includeArchived, fn ($query) => $query->whereNot('status', EntityStatus::Archived))
-            // Income comes first. Ordering by the column itself would not do:
-            // 'expense' sorts before 'income' alphabetically.
-            ->orderByRaw('FIELD(type, ?, ?)', [
-                TransactionType::Income->value,
-                TransactionType::Expense->value,
-            ])
-            ->orderBy('name')
+            // Newest first, the same order with or without a type filter.
+            ->orderByDesc('id')
             ->get()
             ->map->only([
                 'id',

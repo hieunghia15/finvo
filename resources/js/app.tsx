@@ -1,6 +1,7 @@
 import { createInertiaApp, ResolvedComponent } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
+import { Toaster } from 'sonner';
 
 import LoadingOverlay from '@/Components/Common/LoadingOverlay';
 import Preloader from '@/Components/Common/Preloader';
@@ -24,6 +25,7 @@ createInertiaApp({
                 <>
                     <Preloader />
                     <LoadingOverlay />
+                    <Toaster position="top-right" richColors closeButton />
                     <App {...props}>{({ Component, key, props: pageProps }) => <Component key={key} {...pageProps} />}</App>
                 </>
             );
