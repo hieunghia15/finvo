@@ -52,7 +52,7 @@ class CategoryController extends Controller
     {
         $this->categoryService->create($request->user(), $request->validated());
 
-        return back()->with('status', 'Category created.');
+        return back()->with('status', __('Category created.'));
     }
 
     /**
@@ -64,7 +64,7 @@ class CategoryController extends Controller
     {
         $this->categoryService->update($request->category(), $request->validated());
 
-        return back()->with('status', 'Category updated.');
+        return back()->with('status', __('Category updated.'));
     }
 
     /**
@@ -76,7 +76,7 @@ class CategoryController extends Controller
     {
         $this->categoryService->updateStatus($request->category(), $request->status());
 
-        return back()->with('status', 'Category status updated.');
+        return back()->with('status', __('Category status updated.'));
     }
 
     /**
@@ -99,6 +99,6 @@ class CategoryController extends Controller
             return back()->with('error', $exception->getMessage());
         }
 
-        return back()->with('status', 'Category deleted.');
+        return back()->with('status', __('Category deleted.'));
     }
 }

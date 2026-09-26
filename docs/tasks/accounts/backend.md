@@ -42,7 +42,7 @@ Rút từ plan §4.6, §4.7 và từ code đã merge.
 | D10 | Rate limit trả về **lỗi gắn field** (redirect back + `withErrors`), không phải trang 429 trần, để Inertia hiển thị như mọi lỗi validation khác.                            |
 | D11 | Một controller cho mỗi domain: `AccountController` gom cả profile lẫn password (không tách `PasswordController`).                                                          |
 | D12 | Controller chỉ gọi Service; logic nằm ở `AuthService`, `AccountService`, `UserOnboardingService`. Không Repository.                                                        |
-| D13 | Backend giữ chuỗi **tiếng Anh** (`"Account updated."`, `"Password updated."`…). i18n là nợ kỹ thuật chung (§9).                                                            |
+| D13 | Backend giữ chuỗi **tiếng Anh** (`"Account updated."`, `"Password updated."`…). i18n là nợ kỹ thuật chung (§9). _→ Thay bởi [multi-lang](../multi-lang/backend.md)._       |
 
 ---
 
@@ -350,7 +350,7 @@ Theo [`phases/phase-1.md`](../../phases/phase-1.md) §0 — không implement, kh
 ## 9. Nợ kỹ thuật / follow-up
 
 - ~~`AdminUserSeeder` chạy ở mọi môi trường với mật khẩu cố định~~ — **đã sửa**: `DatabaseSeeder` bỏ qua seeder này khi `app()->isProduction()`; production chỉ có tài khoản do người dùng tự đăng ký (§5.11).
-- **Chưa có i18n** (kế thừa [`tasks/categories/backend.md`](../categories/backend.md) §9): thông báo flash, rule message và `auth.failed` / `auth.throttle` đều là tiếng Anh. Cần task riêng: `lang/vi/`, `APP_LOCALE=vi`.
+- ✅ Đã có task [`tasks/multi-lang/backend.md`](../multi-lang/backend.md). ~~**Chưa có i18n**~~ (kế thừa [`tasks/categories/backend.md`](../categories/backend.md) §9): thông báo flash, rule message và `auth.failed` / `auth.throttle` đều là tiếng Anh. Cần task riêng: `lang/vi/`, `APP_LOCALE=vi`.
 - **Thông báo lỗi của `ValidEmail` / `ValidPassword` là chuỗi cứng** trong class, không qua `__()` → sẽ phải sửa khi làm i18n.
 - `auth.user` đang gửi `email_verified_at` dù Phase 1 không dùng xác thực email; có thể bỏ khi dọn shared props.
 - Checklist [`phases/phase-1.md`](../../phases/phase-1.md) §8, mục "Đăng ký: tạo đúng 1 ví … lỗi giữa chừng thì rollback", vẫn để `[ ]` dù test đã có (`test_registration_creates_default_wallet_and_categories`, `test_registration_is_rolled_back_when_default_data_fails`) — có thể tick.

@@ -411,3 +411,46 @@
     - xác nhận mật khẩu mới.
 - Không lưu plaintext password.
 - DB lưu: `password_hash`
+
+---
+
+## 6. Multi-language / Đa ngôn ngữ
+
+Chức năng cắt ngang mọi màn hình. Chi tiết kỹ thuật: [`phases/phase-1.md`](../phases/phase-1.md) §9.
+
+### 6.1. Chọn ngôn ngữ
+
+- Hai ngôn ngữ: **Tiếng Việt** (mặc định) và **English**.
+- Chọn qua dropdown có icon `translate` (theo mẫu "Choose Language" của template Trezo), mỗi mục có cờ tròn và tên ngôn ngữ viết bằng chính ngôn ngữ đó.
+- Có ở:
+    - Header của mọi trang sau khi đăng nhập
+    - Trang Đăng nhập / Đăng ký (khách chưa đăng nhập cũng chọn được)
+- Đổi ngôn ngữ: toàn bộ chữ trên trang đổi ngay, không mất phiên đăng nhập.
+
+### 6.2. Ghi nhớ lựa chọn
+
+- Lựa chọn được nhớ trên **trình duyệt đang dùng** (cookie, 1 năm), kể cả sau khi đăng xuất.
+- Không đồng bộ giữa các thiết bị.
+- Lần đầu vào (chưa chọn): luôn là Tiếng Việt.
+
+### 6.3. Nội dung được dịch
+
+- Mọi chữ trên giao diện: menu, tiêu đề, nút, nhãn, thông báo trống…
+- Thông báo kết quả thao tác (toast / alert): "Đã cập nhật tài khoản.", …
+- Thông báo lỗi nhập liệu, cả phía trình duyệt lẫn phía server.
+- Nhãn loại và trạng thái: Thu / Chi, Đang dùng / Tạm ngưng / Đã lưu trữ.
+
+**Không** dịch dữ liệu do người dùng nhập (tên ví, tên danh mục, ghi chú).
+
+### 6.4. Dữ liệu mặc định theo ngôn ngữ đăng ký
+
+- Ví và 11 danh mục mặc định được tạo bằng ngôn ngữ đang chọn **lúc đăng ký**.
+    - Tiếng Việt: Ngân hàng, Lương, Ăn uống, …
+    - English: Bank, Salary, Food & Drinks, …
+- Đổi ngôn ngữ sau đó **không** đổi tên dữ liệu đã tạo (người dùng tự đổi tên nếu muốn).
+
+### 6.5. Định dạng ngày và số
+
+- Tiếng Việt: `26/09/2026`, `1.000.000 ₫`.
+- English: `26/09/2026`, `₫1,000,000` (ngày vẫn theo thứ tự ngày/tháng/năm).
+- Múi giờ luôn là `Asia/Ho_Chi_Minh`.

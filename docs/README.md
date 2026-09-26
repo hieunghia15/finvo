@@ -25,12 +25,14 @@ docs/
 
 ### Tasks
 
-| Chức năng  | Phase | Task                                     | Trạng thái                                 |
-| ---------- | ----- | ---------------------------------------- | ------------------------------------------ |
-| Accounts   | 1     | [Backend](tasks/accounts/backend.md)     | ✅ Đã merge (PR #3, #4, #9, #10, #12, #14) |
-| Accounts   | 1     | [Frontend](tasks/accounts/frontend.md)   | ✅ Đã merge (PR #3, #4, #17)               |
-| Categories | 1     | [Backend](tasks/categories/backend.md)   | ✅ Đã merge (PR #18)                       |
-| Categories | 1     | [Frontend](tasks/categories/frontend.md) | ✅ Đã merge (PR #20)                       |
+| Chức năng  | Phase | Task                                     | Trạng thái                                           |
+| ---------- | ----- | ---------------------------------------- | ---------------------------------------------------- |
+| Accounts   | 1     | [Backend](tasks/accounts/backend.md)     | ✅ Đã merge (PR #3, #4, #9, #10, #12, #14)           |
+| Accounts   | 1     | [Frontend](tasks/accounts/frontend.md)   | ✅ Đã merge (PR #3, #4, #17)                         |
+| Categories | 1     | [Backend](tasks/categories/backend.md)   | ✅ Đã merge (PR #18)                                 |
+| Categories | 1     | [Frontend](tasks/categories/frontend.md) | ✅ Đã merge (PR #20)                                 |
+| Multi-lang | 1     | [Backend](tasks/multi-lang/backend.md)   | ✅ Đã làm, chưa commit — `feat/implement-multi-lang` |
+| Multi-lang | 1     | [Frontend](tasks/multi-lang/frontend.md) | 📝 Chưa làm — `feat/implement-multi-lang`            |
 
 ## Quy ước đặt tên
 

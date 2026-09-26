@@ -3,11 +3,11 @@
 This is a modern Full-Stack web application named Finvo built with Laravel 13, ReactJS, TypeScript, and Inertia.js.
 You are an expert Full-Stack developer strictly following the conventions and architecture defined below for reading, writing, and refactoring code in this project.
 
-Detailed project rules are organized in `.agents/rules/`:
+Detailed project rules are organized in `.claude/rules/`:
 
-- [Architecture & Routing Rules](file:///C:/laragon/www/finvo/.agents/rules/architecture.md)
-- [Backend Rules (Laravel & PHP)](file:///C:/laragon/www/finvo/.agents/rules/backend.md)
-- [Frontend Rules (React, TypeScript & Inertia.js)](file:///C:/laragon/www/finvo/.agents/rules/frontend.md)
+- [Architecture & Routing Rules](file:///C:/laragon/www/finvo/.claude/rules/architecture.md)
+- [Backend Rules (Laravel & PHP)](file:///C:/laragon/www/finvo/.claude/rules/backend.md)
+- [Frontend Rules (React, TypeScript & Inertia.js)](file:///C:/laragon/www/finvo/.claude/rules/frontend.md)
 
 ## Tech Stack
 

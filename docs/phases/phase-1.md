@@ -15,6 +15,7 @@
 - Wallets: CRUD, loại ví, currency, số dư ban đầu, trạng thái, lịch sử giao dịch theo ví.
 - Accounts: đăng ký, xem thông tin, cập nhật tên, đổi mật khẩu.
 - Đa tiền tệ ở mức **hiển thị/nhóm theo currency** (không quy đổi).
+- Đa ngôn ngữ giao diện: Tiếng Việt (mặc định) + English (xem §9).
 
 ### Ngoài phạm vi (không implement, không tạo cột/bảng)
 
@@ -42,6 +43,7 @@
 | Khóa chính              | ID tự tăng (`bigint`) cho bảng nghiệp vụ; `currencies` dùng `code CHAR(3)` làm PK. Không dùng UUID/ULID.                                                                      |
 | Phân quyền              | Mọi truy vấn scope theo user hiện tại (`$request->user()->wallets()->findOrFail($id)` hoặc Policy). Truy cập bản ghi của user khác → **404**.                                 |
 | Chuẩn hóa chuỗi         | `name` (ví, danh mục) được trim + gộp khoảng trắng liên tiếp trong `prepareForValidation` của FormRequest.                                                                    |
+| Ngôn ngữ                | `vi` (mặc định) + `en` (fallback). Lựa chọn lưu ở cookie `locale`. Key dịch là **câu tiếng Anh**; bản dịch nằm ở `lang/vi.json` + `lang/vi/*.php`. Chi tiết §9.               |
 
 ---
 
@@ -294,6 +296,7 @@ Logic này đặt trong Service (ví dụ `UserOnboardingService`), không đặ
 5. **Seeders & factories:** `CurrencySeeder`, factories cho Wallet/Category/Transaction.
 6. **Registration onboarding:** Service tạo ví + danh mục mặc định trong DB transaction.
 7. **Wallets → Categories → Transactions → Dashboard → Account**, mỗi module theo workflow CLAUDE.md: FormRequest → Service → Controller/route → Inertia page → Zod schema.
+8. **Multi-language** (§9) — cắt ngang mọi module; module nào làm sau §9 thì viết chuỗi qua `__()` / `t()` ngay từ đầu.
 
 ---
 
@@ -320,3 +323,77 @@ Logic này đặt trong Service (ví dụ `UserOnboardingService`), không đặ
 - [x] Đổi mật khẩu: các session khác bị đăng xuất.
 - [x] Cập nhật tài khoản: gửi kèm email thì email không đổi.
 - [ ] Truy cập `/transactions/{id}` của user khác: 404.
+- [ ] Không có cookie `locale` → giao diện tiếng Việt; cookie `locale=fr` (không hỗ trợ) → tiếng Việt.
+- [ ] Đổi sang English → cookie `locale=en`, chữ trên trang đổi, vẫn đăng nhập; đăng xuất rồi vào lại vẫn English.
+- [ ] Lỗi validation, flash, thông báo rate limit hiện đúng ngôn ngữ đang chọn.
+- [ ] Đăng ký khi đang ở English → ví "Bank" + danh mục tiếng Anh; ở Tiếng Việt → "Ngân hàng" + danh mục tiếng Việt.
+- [ ] Mọi key dùng trong code đều có trong `lang/vi.json` (`npm run lang:check` chạy trong CI).
+
+---
+
+## 9. Đa ngôn ngữ (Multi-language)
+
+> Nguồn: [`features/phase-1.md`](../features/phase-1.md) §6 + buổi grill Q1–Q26. Task: [`tasks/multi-lang/backend.md`](../tasks/multi-lang/backend.md), [`tasks/multi-lang/frontend.md`](../tasks/multi-lang/frontend.md).
+
+### 9.1. Quyết định chung
+
+| Chủ đề              | Quyết định                                                                                                                                                                          |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ngôn ngữ            | `vi` (mặc định, `APP_LOCALE`) + `en` (`APP_FALLBACK_LOCALE`). Không đọc `Accept-Language`.                                                                                          |
+| Lưu lựa chọn        | **Chỉ cookie** `locale` (mã hóa như mọi cookie Laravel, 1 năm, HttpOnly). Không có cột DB, không đồng bộ giữa thiết bị. Giá trị ngoài `vi`/`en` bị bỏ qua.                          |
+| Nguồn bản dịch      | **Một nguồn duy nhất** ở `lang/` của Laravel. Không dùng package npm i18n.                                                                                                          |
+| Kiểu key            | **Câu tiếng Anh làm key** (`__('Account updated.')`, `t('Add New Category')`). Chỉ có `lang/vi.json`; tiếng Anh không cần file. Placeholder `:name` theo cú pháp Laravel.           |
+| Validation / auth   | `php artisan lang:publish` → `lang/en/*.php`; tự viết `lang/vi/validation.php` (đủ mọi rule + `attributes`), `lang/vi/auth.php`, `lang/vi/pagination.php`, `lang/vi/passwords.php`. |
+| Gửi xuống frontend  | Shared prop `locale` (mỗi request) + `translations` là **once prop** với key `translations.{locale}`: chỉ gửi lần đầu và khi đổi ngôn ngữ.                                          |
+| Đổi ngôn ngữ        | `PUT /locale` (khách lẫn user), FormRequest `Rule::enum(Locale::class)`, set cookie → `back()`. Frontend hiện Preloader.                                                            |
+| Dịch ở frontend     | Hook `useTranslation()` → `{ t, locale }`. Chuỗi trong schema Zod / map nhãn / cấu hình sidebar giữ tiếng Anh (đánh dấu bằng `trans()` no-op) và được dịch **ở lớp hiển thị**.      |
+| Số nhiều            | Không hỗ trợ.                                                                                                                                                                       |
+| Format ngày / số    | `vi` → `vi-VN`; `en` → `en-GB`. Timezone luôn `Asia/Ho_Chi_Minh`.                                                                                                                   |
+| Dữ liệu seed        | Ví + danh mục mặc định tạo theo ngôn ngữ **lúc đăng ký**; không dịch lại về sau. `DemoDataSeeder` luôn tiếng Việt.                                                                  |
+| Kiểm soát key thiếu | `npm run lang:check` (script Node, không dependency) trong CI: key thiếu → fail, key thừa → cảnh báo.                                                                               |
+| Test backend        | `phpunit.xml` đặt `APP_LOCALE=en`: test nghiệp vụ không phụ thuộc bản dịch. Test riêng cho phần đa ngôn ngữ.                                                                        |
+
+### 9.2. Thuật ngữ tiếng Việt
+
+Xưng **"bạn"**, câu ngắn. Tên ngôn ngữ trong dropdown luôn viết bằng chính ngôn ngữ đó: "Tiếng Việt", "English".
+
+| English          | Tiếng Việt |
+| ---------------- | ---------- |
+| Dashboard        | Tổng quan  |
+| Income / Expense | Thu / Chi  |
+| Category         | Danh mục   |
+| Wallet           | Ví         |
+| Transaction      | Giao dịch  |
+| Active           | Đang dùng  |
+| Inactive         | Tạm ngưng  |
+| Archived         | Đã lưu trữ |
+| Account          | Tài khoản  |
+| Sign in / Log in | Đăng nhập  |
+| Register         | Đăng ký    |
+
+### 9.3. Dữ liệu mặc định khi đăng ký
+
+`UserOnboardingService` lưu **key tiếng Anh**, dịch bằng `__()` tại thời điểm tạo:
+
+| Key (English)  | Tiếng Việt    | Loại    |
+| -------------- | ------------- | ------- |
+| Bank           | Ngân hàng     | ví      |
+| Salary         | Lương         | income  |
+| Bonus          | Thưởng        | income  |
+| Other income   | Thu nhập khác | income  |
+| Food & Drinks  | Ăn uống       | expense |
+| Transportation | Di chuyển     | expense |
+| Shopping       | Mua sắm       | expense |
+| Housing        | Nhà ở         | expense |
+| Bills          | Hóa đơn       | expense |
+| Entertainment  | Giải trí      | expense |
+| Health         | Sức khỏe      | expense |
+| Other expenses | Chi phí khác  | expense |
+
+### 9.4. Ngoài phạm vi
+
+- Ngôn ngữ thứ ba; UI quản lý bản dịch; dịch dữ liệu người dùng nhập.
+- Lưu ngôn ngữ theo tài khoản (`users.locale`), đồng bộ giữa thiết bị.
+- Tiền tố ngôn ngữ trên URL (`/en/...`).
+- Email / notification đa ngôn ngữ (Phase 1 chưa gửi email nào).
+- Dọn các mục demo của template (sidebar "Front Pages", "Google Map", thông báo và link demo ở Header): task riêng, **không dịch** các mục này.

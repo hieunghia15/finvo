@@ -30,26 +30,26 @@ Sự thật đã xác minh trong lúc grill:
 
 ## 1. Bảng quyết định (Q1–Q18)
 
-| #   | Quyết định                                                                                                                                                        |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1  | UI **tiếng Anh**. Nhãn enum gom vào `CATEGORY_TYPE_LABELS` / `CATEGORY_STATUS_LABELS` (một chỗ duy nhất, sẵn cho i18n sau này).                                   |
-| Q2  | Modal **React tự điều khiển**: `Components/Common/Modal.tsx`, markup theo `modals.html`. Không dùng `window.bootstrap`, không dùng offcanvas của template.        |
-| Q3  | **Một bảng** có cột Type (badge). Filter type là tab **All / Income / Expense** ↔ `?type=`.                                                                       |
-| Q4  | **Bỏ** ô "Search here" của template (backend không có search).                                                                                                    |
-| Q5  | Có quản lý trạng thái: cột Status (badge) + checkbox **"Show archived"** ↔ `?include_archived=1` + thao tác đổi trạng thái.                                       |
-| Q6  | Nút xóa **disabled** khi `transactions_count > 0`. Luôn có **modal xác nhận**. Vẫn hiển thị `flash.error` (backend là lớp chặn thật).                             |
-| Q7  | ~~`FlashAlerts` (alert inline)~~ → **toast `sonner`**: `<Toaster />` trong `app.tsx` + `Components/Common/FlashToasts.tsx`. Chỉ Categories dùng trong task này.   |
-| Q8  | **Không dùng `FormField`**. Form trong modal viết markup label / input / `invalid-feedback` inline.                                                               |
-| Q9  | Sidebar: thêm `Categories` vào nhóm **MAIN**. Giữ nguyên các mục demo.                                                                                            |
-| Q10 | Icon **"Change status"** trên mỗi dòng → `CategoryStatusModal` (select 3 trạng thái) → `PATCH /categories/{id}/status`.                                           |
-| Q11 | Type dùng `<select class="form-select form-control text-dark h-55">` **không icon**, theo mẫu "Basic Form" của `basic-elements.html`.                             |
-| Q12 | Ma trận ràng buộc theo dòng — xem §5.                                                                                                                             |
-| Q13 | Type mặc định khi Thêm: `filters.type ?? 'expense'`.                                                                                                              |
-| Q14 | GET đổi filter hiện **`LoadingOverlay`**, không hiện Preloader: thêm `IN_PLACE_FILTER` + header `X-Finvo-In-Place`, mở rộng `isInPlaceSubmit()`. `replace: true`. |
-| Q15 | `Pages/Categories/DeleteCategoryModal.tsx` riêng, dựng trên `Modal`. **Không** tạo `ConfirmModal` generic (chưa có call site thứ hai).                            |
-| Q16 | Thành công → đóng modal + flash. Lỗi → giữ modal mở, lỗi dưới field. Đang submit → chặn đóng. Mở lại → form sạch.                                                 |
-| Q17 | Type đặt ở `types/category.types.ts`, re-export từ `types/index.d.ts`.                                                                                            |
-| Q18 | Không thêm framework test. Kiểm chứng: `tsc --noEmit` + `build` + `format:check` + checklist test tay (§8).                                                       |
+| #   | Quyết định                                                                                                                                                                            |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1  | UI **tiếng Anh**. Nhãn enum gom vào `CATEGORY_TYPE_LABELS` / `CATEGORY_STATUS_LABELS` (một chỗ duy nhất, sẵn cho i18n sau này). _→ Thay bởi [multi-lang](../multi-lang/frontend.md)._ |
+| Q2  | Modal **React tự điều khiển**: `Components/Common/Modal.tsx`, markup theo `modals.html`. Không dùng `window.bootstrap`, không dùng offcanvas của template.                            |
+| Q3  | **Một bảng** có cột Type (badge). Filter type là tab **All / Income / Expense** ↔ `?type=`.                                                                                           |
+| Q4  | **Bỏ** ô "Search here" của template (backend không có search).                                                                                                                        |
+| Q5  | Có quản lý trạng thái: cột Status (badge) + checkbox **"Show archived"** ↔ `?include_archived=1` + thao tác đổi trạng thái.                                                           |
+| Q6  | Nút xóa **disabled** khi `transactions_count > 0`. Luôn có **modal xác nhận**. Vẫn hiển thị `flash.error` (backend là lớp chặn thật).                                                 |
+| Q7  | ~~`FlashAlerts` (alert inline)~~ → **toast `sonner`**: `<Toaster />` trong `app.tsx` + `Components/Common/FlashToasts.tsx`. Chỉ Categories dùng trong task này.                       |
+| Q8  | **Không dùng `FormField`**. Form trong modal viết markup label / input / `invalid-feedback` inline.                                                                                   |
+| Q9  | Sidebar: thêm `Categories` vào nhóm **MAIN**. Giữ nguyên các mục demo.                                                                                                                |
+| Q10 | Icon **"Change status"** trên mỗi dòng → `CategoryStatusModal` (select 3 trạng thái) → `PATCH /categories/{id}/status`.                                                               |
+| Q11 | Type dùng `<select class="form-select form-control text-dark h-55">` **không icon**, theo mẫu "Basic Form" của `basic-elements.html`.                                                 |
+| Q12 | Ma trận ràng buộc theo dòng — xem §5.                                                                                                                                                 |
+| Q13 | Type mặc định khi Thêm: `filters.type ?? 'expense'`.                                                                                                                                  |
+| Q14 | GET đổi filter hiện **`LoadingOverlay`**, không hiện Preloader: thêm `IN_PLACE_FILTER` + header `X-Finvo-In-Place`, mở rộng `isInPlaceSubmit()`. `replace: true`.                     |
+| Q15 | `Pages/Categories/DeleteCategoryModal.tsx` riêng, dựng trên `Modal`. **Không** tạo `ConfirmModal` generic (chưa có call site thứ hai).                                                |
+| Q16 | Thành công → đóng modal + flash. Lỗi → giữ modal mở, lỗi dưới field. Đang submit → chặn đóng. Mở lại → form sạch.                                                                     |
+| Q17 | Type đặt ở `types/category.types.ts`, re-export từ `types/index.d.ts`.                                                                                                                |
+| Q18 | Không thêm framework test. Kiểm chứng: `tsc --noEmit` + `build` + `format:check` + checklist test tay (§8).                                                                           |
 
 ---
 
@@ -559,7 +559,7 @@ Chuẩn bị: một user mới đăng ký (có sẵn 11 danh mục seed). Tạo 
 ## 10. Follow-up (ngoài phạm vi task này)
 
 - Chuyển alert inline ở `Pages/Account/Index.tsx` và `Pages/Login/Index.tsx` sang toast `sonner` qua `FlashToasts`. (Q7)
-- i18n toàn dự án — kế thừa nợ kỹ thuật §9 của task backend; nhãn Categories đã gom sẵn ở `lib/categoryLabels.ts`. (Q1)
+- ~~i18n toàn dự án~~ → [`tasks/multi-lang/frontend.md`](../multi-lang/frontend.md). (Q1)
 - Hạ tầng test frontend. (Q18)
 - Hoist `CategoryType` / `CategoryStatus` thành `TransactionType` / `EntityStatus` dùng chung khi Transactions/Wallets cần. (§4.1)
 - Sidebar chưa highlight mục theo URL hiện tại — áp dụng cho mọi mục, không riêng Categories.

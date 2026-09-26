@@ -8,7 +8,7 @@ metadata:
 
 # Laravel Best Practices
 
-Best practices for Laravel, organized as an index of rule files. Each rule file teaches what to do and why. For exact API syntax, verify with `search-docs`.
+Best practices for Laravel, organized as an index of rule files. Each rule file teaches what to do and why. For exact API syntax, verify against the installed framework in `vendor/laravel/framework` or the Laravel 13 docs.
 
 ## Consistency First
 
@@ -21,7 +21,7 @@ Check sibling files, related controllers, models, or tests for established patte
 1. Check the changed files, nearby code, project configuration, and relevant tests for established patterns. Deviate only for a correctness or security defect, and call the deviation out.
 2. Map every affected concern to the rule index below. Read each mapped rule file before editing. Skip unrelated rule files.
 3. Make the smallest coherent change. Keep the application's architecture and naming instead of introducing a second pattern for the same job.
-4. Verify version-sensitive Laravel APIs for the installed version with `search-docs`, or inspect the installed framework when it is unavailable.
+4. Verify version-sensitive Laravel APIs against the installed framework in `vendor/laravel/framework`.
 5. Run the narrowest relevant tests first, then the project's formatting and static-analysis checks when the change warrants them.
 6. Re-read the diff against every mapped rule before finishing.
 

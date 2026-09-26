@@ -20,7 +20,7 @@ Activate this skill when:
 
 ## Documentation
 
-Use `search-docs` for detailed Inertia v3 React patterns and documentation.
+Check the official Inertia v3 docs (https://inertiajs.com) and the installed package types in `node_modules/@inertiajs/react` and `node_modules/@inertiajs/core` for exact APIs. Do not use an API you have not confirmed in the installed version.
 
 ## Basic Usage
 
@@ -190,7 +190,7 @@ The `<Form>` component supports automatic resetting:
 - `resetOnSuccess` - Reset form data when the request succeeds
 - `setDefaultsOnSuccess` - Update default values on success
 
-Use the `search-docs` tool with a query of `form component resetting` for detailed guidance.
+See the "Forms" page of the Inertia docs for detailed guidance on resetting.
 
 <!-- Form with Reset Props -->
 
@@ -216,7 +216,7 @@ import { Form } from '@inertiajs/react'
 </Form>
 ```
 
-Forms can also be built using the `useForm` helper for more programmatic control. Use the `search-docs` tool with a query of `useForm helper` for guidance.
+Forms can also be built using the `useForm` helper for more programmatic control. See the "Forms" page of the Inertia docs for the `useForm` helper.
 
 ### `useForm` Hook
 
@@ -527,7 +527,7 @@ export default function Users({ users }) {
 }
 ```
 
-The server must use `Inertia::scroll()` to configure the paginated data. Use the `search-docs` tool with a query of `infinite scroll` for detailed guidance on buffers, manual loading, reverse mode, and custom trigger elements.
+The server must use `Inertia::scroll()` to configure the paginated data. See the "Infinite scroll" page of the Inertia docs for buffers, manual loading, reverse mode, and custom trigger elements.
 
 ## Server-Side Patterns
 

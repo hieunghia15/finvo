@@ -37,7 +37,7 @@
 | D10 | Ô mật khẩu ở trang Account dùng `PasswordInput` (nút hiện/ẩn). Login / Register dùng `<input type="password">` thường.                                                              |
 | D11 | Ngày hiển thị qua `formatDate()` — `dd/MM/yyyy`, locale `vi-VN`, timezone `Asia/Ho_Chi_Minh`.                                                                                       |
 | D12 | Điểm vào trang Account: mục **Account** trong nhóm **OTHERS** của sidebar + mục trong dropdown profile ở Header. Logout ở dropdown Header (`router.post('/logout')`).               |
-| D13 | UI **tiếng Anh**.                                                                                                                                                                   |
+| D13 | UI **tiếng Anh**. _→ Thay bởi [multi-lang](../multi-lang/frontend.md)._                                                                                                             |
 
 ---
 
@@ -305,5 +305,5 @@ Dự án chưa có framework test frontend → dùng checklist tay ở §7. Trư
 - `Flash` type còn các key `success`, `info`, `warning` mà backend không bao giờ gửi; `User.avatar`, `User.role` cũng vậy.
 - `ProfileForm` còn icon trong input (`ps-5` + `<i>`), khác với quy ước form mới (Categories) là **không** icon trong form control. Chỉ đổi nếu muốn đồng bộ giao diện.
 - Login / Register chưa dùng `PasswordInput` (không có nút hiện/ẩn mật khẩu) như trang Account.
-- i18n toàn dự án (kế thừa [`tasks/accounts/backend.md`](backend.md) §9).
+- ~~i18n toàn dự án~~ → [`tasks/multi-lang/frontend.md`](../multi-lang/frontend.md).
 - Hạ tầng test frontend (kế thừa Categories frontend Q18).

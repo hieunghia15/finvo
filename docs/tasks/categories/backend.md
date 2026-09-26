@@ -30,23 +30,23 @@ Ràng buộc môi trường đã xác minh:
 
 ## 1. Bảng quyết định (Q1–Q15)
 
-| #   | Quyết định                                                                                                               |
-| --- | ------------------------------------------------------------------------------------------------------------------------ |
-| Q1  | CRUD bằng **modal trên trang index**. Không có route `create`/`edit`/`show`.                                             |
-| Q2  | Đổi trạng thái đi qua **endpoint riêng** `PATCH /categories/{category}/status`, tách khỏi endpoint sửa name/type.        |
-| Q3  | Index **không phân trang, không tìm kiếm**. Query params: `type` (optional) + `include_archived` (bool).                 |
-| Q4  | Lỗi gắn được với field → `ValidationException`. Lỗi không gắn field (xóa) → **`flash.error`** (thêm vào shared props).   |
-| Q5  | Chặn truy cập chéo user bằng `$request->user()->categories()->findOrFail()` → **404**. Không dùng Policy, không binding. |
-| Q6  | `POST /categories` chỉ nhận `name` + `type`. Danh mục mới **luôn `active`** (default của model).                         |
-| Q7  | Guard đổi `type` nằm trong `UpdateCategoryRequest`; FormRequest **resolve + memoize** category, controller dùng lại.     |
-| Q8  | `include_archived=1` → hiện **tất cả** (active + inactive + archived), không phải chỉ archived.                          |
-| Q9  | Props: **mảng phẳng đã sắp xếp** ở SQL. Fields: `id`, `name`, `type`, `status`, `transactions_count`. Kèm `filters`.     |
-| Q10 | **Không** xử lý race condition unique (`QueryException` 1062). Cố ý bỏ — xem §8.                                         |
-| Q11 | Feature test **đầy đủ cho cả 5 endpoint**, theo khuôn `tests/Feature/Account/`.                                          |
-| Q12 | `CategoryService` ôm **cả đọc lẫn ghi**. Không tách Eloquent scope (chưa có call site thứ hai).                          |
-| Q13 | Exception **riêng cho Category**: `App\Exceptions\CategoryInUseException`. Không tạo class dùng chung vội.               |
-| Q14 | Sau mutation: **`redirect()->back()`** để giữ nguyên query string (filter không bị reset).                               |
-| Q15 | Backend giữ chuỗi **tiếng Anh**; **không** gửi `typeOptions`/`statusOptions`. Frontend sở hữu nhãn tiếng Việt.           |
+| #   | Quyết định                                                                                                                                                                                   |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1  | CRUD bằng **modal trên trang index**. Không có route `create`/`edit`/`show`.                                                                                                                 |
+| Q2  | Đổi trạng thái đi qua **endpoint riêng** `PATCH /categories/{category}/status`, tách khỏi endpoint sửa name/type.                                                                            |
+| Q3  | Index **không phân trang, không tìm kiếm**. Query params: `type` (optional) + `include_archived` (bool).                                                                                     |
+| Q4  | Lỗi gắn được với field → `ValidationException`. Lỗi không gắn field (xóa) → **`flash.error`** (thêm vào shared props).                                                                       |
+| Q5  | Chặn truy cập chéo user bằng `$request->user()->categories()->findOrFail()` → **404**. Không dùng Policy, không binding.                                                                     |
+| Q6  | `POST /categories` chỉ nhận `name` + `type`. Danh mục mới **luôn `active`** (default của model).                                                                                             |
+| Q7  | Guard đổi `type` nằm trong `UpdateCategoryRequest`; FormRequest **resolve + memoize** category, controller dùng lại.                                                                         |
+| Q8  | `include_archived=1` → hiện **tất cả** (active + inactive + archived), không phải chỉ archived.                                                                                              |
+| Q9  | Props: **mảng phẳng đã sắp xếp** ở SQL. Fields: `id`, `name`, `type`, `status`, `transactions_count`. Kèm `filters`.                                                                         |
+| Q10 | **Không** xử lý race condition unique (`QueryException` 1062). Cố ý bỏ — xem §8.                                                                                                             |
+| Q11 | Feature test **đầy đủ cho cả 5 endpoint**, theo khuôn `tests/Feature/Account/`.                                                                                                              |
+| Q12 | `CategoryService` ôm **cả đọc lẫn ghi**. Không tách Eloquent scope (chưa có call site thứ hai).                                                                                              |
+| Q13 | Exception **riêng cho Category**: `App\Exceptions\CategoryInUseException`. Không tạo class dùng chung vội.                                                                                   |
+| Q14 | Sau mutation: **`redirect()->back()`** để giữ nguyên query string (filter không bị reset).                                                                                                   |
+| Q15 | Backend giữ chuỗi **tiếng Anh**; **không** gửi `typeOptions`/`statusOptions`. Frontend sở hữu nhãn tiếng Việt. _→ Thay bởi [multi-lang](../multi-lang/backend.md): mọi chuỗi đi qua `__()`._ |
 
 ---
 
@@ -443,6 +443,8 @@ Ghi lại để không ai phải suy luận lại từ đầu.
 ---
 
 ## 9. Nợ kỹ thuật phát hiện trong lúc grill
+
+> ✅ **Đã xử lý bởi [`tasks/multi-lang/backend.md`](../multi-lang/backend.md).**
 
 **Chưa có i18n.** Dự án không có thư mục `lang/`, `APP_LOCALE = 'en'`. Trait `HasOptions::translate()` gọi `__()` nhưng vì không có file dịch nào, nó trả về chính key. Hệ quả **đang xảy ra ngay lúc này**: user tiếng Việt thấy toast `"Account updated."`, và `TransactionType::options()` cho ra `"Income"` / `"Expense"`.
 

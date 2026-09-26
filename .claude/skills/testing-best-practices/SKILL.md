@@ -1,6 +1,6 @@
 ---
 name: testing-best-practices
-description: 'Laravel test design and review. Use when selecting coverage, naming or structuring tests, choosing assertions or test data, isolating dependencies, testing HTTP or security boundaries, improving suite performance, or reviewing test value. Use framework guidance or search-docs for Pest and PHPUnit syntax.'
+description: 'Laravel test design and review. Use when selecting coverage, naming or structuring tests, choosing assertions or test data, isolating dependencies, testing HTTP or security boundaries, improving suite performance, or reviewing test value. This project writes PHPUnit class-based tests.'
 license: MIT
 metadata:
     author: laravel
@@ -8,8 +8,20 @@ metadata:
 
 # Testing Best Practices
 
-This skill provides rules for designing Laravel tests. Each rule file explains what to do and why. Use `search-docs` for Laravel and Pest API syntax.
-This project uses Pest. Follow the corresponding guidance in each rule.
+This skill provides rules for designing Laravel tests. Each rule file explains what to do and why.
+
+This project uses **PHPUnit 12** with class-based tests; Pest is not installed, so never write Pest syntax here. Several rule files show Pest examples; apply their PHPUnit equivalent:
+
+| Pest in the rule files  | PHPUnit in this project                                                      |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `it('…')` / `test('…')` | `public function test_…(): void` in a class extending `Tests\TestCase`       |
+| `expect($x)->toBe($y)`  | a Laravel assertion first, else `$this->assertSame($y, $x)`                  |
+| `describe('…')`         | a separate test class, or comment banners as in `tests/Feature/AuthTest.php` |
+| `beforeEach()`          | `setUp()`, configuration only                                                |
+| datasets                | a static provider method with `#[DataProvider('…')]`                         |
+| `arch()` tests          | not available; do not add Pest to get them                                   |
+
+Check exact assertion names against the installed framework (`vendor/laravel/framework/src/Illuminate/Testing`) or the Laravel 13 testing docs.
 
 ## Consistency First
 

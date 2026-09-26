@@ -56,6 +56,10 @@ jobs:
       - name: Prettier Check
         run: npm run format:check
 
+      # Every translation key used in the code must exist in lang/vi.json
+      - name: Lang Check
+        run: npm run lang:check
+
       # Run Laravel Pint
       - name: Laravel Pint Check
         run: ./vendor/bin/pint --test
