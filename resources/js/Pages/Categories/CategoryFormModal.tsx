@@ -37,7 +37,7 @@ export default function CategoryFormModal({ category, defaultType, onClose }: Ca
     const [serverErrors, setServerErrors] = useState<CategoryServerErrors>({});
 
     const isEditing = category !== undefined;
-    // plan_phase_1.md §4.4: the type is locked once the category has been used.
+    // docs/phases/phase-1.md §4.4: the type is locked once the category has been used.
     const isTypeLocked = isEditing && category.transactions_count > 0;
 
     const form = useForm({

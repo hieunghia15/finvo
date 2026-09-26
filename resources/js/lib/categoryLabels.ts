@@ -17,7 +17,7 @@ export const CATEGORY_STATUS_LABELS: Record<CategoryStatus, string> = {
     archived: 'Archived',
 };
 
-/** What each status means for the user, from the status matrix in plan_phase_1.md §4.2. */
+/** What each status means for the user, from the status matrix in docs/phases/phase-1.md §4.2. */
 export const CATEGORY_STATUS_DESCRIPTIONS: Record<CategoryStatus, string> = {
     active: 'Shown in the list and can be picked for new transactions.',
     inactive: 'Shown in the list, but cannot be picked for new transactions.',

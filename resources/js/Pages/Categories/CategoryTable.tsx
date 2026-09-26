@@ -69,7 +69,7 @@ export default function CategoryTable({ categories, onEdit, onChangeStatus, onDe
                         )}
 
                         {categories.map((category) => {
-                            // plan_phase_1.md §4.2: an archived category must be restored before editing.
+                            // docs/phases/phase-1.md §4.2: an archived category must be restored before editing.
                             const canEdit = category.status !== 'archived';
                             // §4.4: a category that has transactions cannot be deleted.
                             const canDelete = category.transactions_count === 0;

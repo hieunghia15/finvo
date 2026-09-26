@@ -14,10 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            CurrencySeeder::class,
-            AdminUserSeeder::class,
-        ]);
+        // Required everywhere, production included: registration needs VND.
+        $this->call(CurrencySeeder::class);
+
+        // The admin password is hardcoded, so production never gets this
+        // account; users there sign up through the registration page.
+        if (!app()->isProduction()) {
+            $this->call(AdminUserSeeder::class);
+        }
 
         if (app()->environment('local')) {
             $this->call(DemoDataSeeder::class);
