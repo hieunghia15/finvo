@@ -7,6 +7,7 @@ import { fieldError } from '@/lib/fieldError';
 import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
 import { CATEGORY_STATUS_DESCRIPTIONS, CATEGORY_STATUS_LABELS } from '@/lib/categoryLabels';
 import { Category, CategoryStatus } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface CategoryStatusModalProps {
     category: Category;
@@ -20,6 +21,7 @@ const STATUS_OPTIONS = Object.entries(CATEGORY_STATUS_LABELS) as [CategoryStatus
  * restoring an archived category, so this is also the way back from archived.
  */
 export default function CategoryStatusModal({ category, onClose }: CategoryStatusModalProps) {
+    const { t } = useTranslation();
     const formId = useId();
     const [statusServerError, setStatusServerError] = useState<string>();
 
@@ -49,17 +51,17 @@ export default function CategoryStatusModal({ category, onClose }: CategoryStatu
 
     return (
         <Modal
-            title="Change Status"
+            title={t('Change Status')}
             onClose={onClose}
             isCloseDisabled={isSubmitting}
             footer={
                 <>
                     <button type="button" className="btn btn-danger text-white" disabled={isSubmitting} onClick={onClose}>
-                        Cancel
+                        {t('Cancel')}
                     </button>
                     {/* The footer sits outside the <form>, so the button points at it by id. */}
                     <button type="submit" form={formId} className="btn btn-primary text-white" disabled={isSubmitting || isUnchanged}>
-                        {isSubmitting ? 'Saving…' : 'Save'}
+                        {isSubmitting ? t('Saving…') : t('Save')}
                     </button>
                 </>
             }
@@ -73,18 +75,18 @@ export default function CategoryStatusModal({ category, onClose }: CategoryStatu
                 }}
             >
                 <p className="mb-4">
-                    Category: <strong>{category.name}</strong>
+                    {t('Category:')} <strong>{category.name}</strong>
                 </p>
 
                 <form.Field name="status">
                     {(field) => {
-                        const error = fieldError(field.state.meta.errors, statusServerError);
+                        const error = fieldError(t, field.state.meta.errors, statusServerError);
                         const inputId = `${formId}-status`;
 
                         return (
                             <div className="form-group mb-2">
                                 <label htmlFor={inputId} className="label text-secondary">
-                                    Status
+                                    {t('Status')}
                                 </label>
                                 <div className="form-group">
                                     <select
@@ -101,12 +103,12 @@ export default function CategoryStatusModal({ category, onClose }: CategoryStatu
                                     >
                                         {STATUS_OPTIONS.map(([value, label]) => (
                                             <option key={value} value={value}>
-                                                {label}
+                                                {t(label)}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
-                                <span className="d-block fs-14 text-secondary mt-1">{CATEGORY_STATUS_DESCRIPTIONS[field.state.value]}</span>
+                                <span className="d-block fs-14 text-secondary mt-1">{t(CATEGORY_STATUS_DESCRIPTIONS[field.state.value])}</span>
                                 {error && <div className="invalid-feedback d-block">{error}</div>}
                             </div>
                         );

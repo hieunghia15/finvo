@@ -2,11 +2,21 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\LocaleService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
+use Inertia\OnceProp;
 
 class HandleInertiaRequests extends Middleware
 {
+    /**
+     * @param  LocaleService  $localeService  Loads the translation dictionary.
+     */
+    public function __construct(
+        protected LocaleService $localeService
+    ) {}
+
     /**
      * The root template that's loaded on the first page visit.
      *
@@ -57,6 +67,28 @@ class HandleInertiaRequests extends Middleware
                 // a record that is still in use.
                 'error' => fn () => $request->session()->get('error'),
             ],
+            'locale' => fn () => app()->getLocale(),
         ]);
+    }
+
+    /**
+     * Define the props that are shared once and remembered across navigations.
+     *
+     * The dictionary is only sent on the first load: the client keeps it and
+     * reports it back. Its key carries the locale, so switching language makes
+     * the server send the new one, and switching back reuses the kept copy.
+     *
+     * @param  Request  $request  The current request.
+     *
+     * @return array<string, OnceProp>
+     */
+    public function shareOnce(Request $request): array
+    {
+        $locale = app()->getLocale();
+
+        return [
+            'translations' => Inertia::once(fn () => $this->localeService->dictionary($locale))
+                ->as("translations.{$locale}"),
+        ];
     }
 }

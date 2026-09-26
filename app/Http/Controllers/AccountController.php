@@ -47,7 +47,7 @@ class AccountController extends Controller
 
         return redirect()
             ->route('account.show')
-            ->with('status', 'Account updated.');
+            ->with('status', __('Account updated.'));
     }
 
     /**
@@ -61,6 +61,6 @@ class AccountController extends Controller
 
         return redirect()
             ->route('account.show')
-            ->with('status', 'Password updated.');
+            ->with('status', __('Password updated.'));
     }
 }

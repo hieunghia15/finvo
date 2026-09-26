@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Requests\Locale;
+
+use App\Enums\Locale;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class UpdateLocaleRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * Guests switch language on the login and register pages too.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'locale' => ['required', Rule::enum(Locale::class)],
+        ];
+    }
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export interface PasswordInputProps {
     id: string;
@@ -16,6 +17,7 @@ export interface PasswordInputProps {
  * rendered by the parent form.
  */
 export default function PasswordInput({ id, name, value, onChange, onBlur, autoComplete, placeholder, isInvalid = false }: PasswordInputProps) {
+    const { t } = useTranslation();
     const [isVisible, setIsVisible] = useState(false);
 
     return (
@@ -38,7 +40,7 @@ export default function PasswordInput({ id, name, value, onChange, onBlur, autoC
                 className="btn p-0 border-0 bg-transparent position-absolute top-50 translate-middle-y lh-1"
                 style={{ right: 15, color: '#A9A9C8' }}
                 onClick={() => setIsVisible((prev) => !prev)}
-                aria-label={isVisible ? 'Hide password' : 'Show password'}
+                aria-label={isVisible ? t('Hide password') : t('Show password')}
             >
                 <i className={`${isVisible ? 'ri-eye-line' : 'ri-eye-off-line'} fs-16`} aria-hidden="true"></i>
             </button>
