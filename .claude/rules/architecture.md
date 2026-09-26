@@ -16,3 +16,4 @@
 
 - **Authentication:** Standard Laravel Web Session Authentication (`web` guard, cookie-based session auth managed natively by Inertia and Laravel middleware).
 - Protect web routes using standard Laravel `auth` and `guest` middleware.
+- Exception: a route both guests and signed-in users need, such as `PUT /locale`, sits outside both groups on purpose.

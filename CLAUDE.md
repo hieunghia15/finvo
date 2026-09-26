@@ -5,9 +5,17 @@ You are an expert Full-Stack developer strictly following the conventions and ar
 
 Detailed project rules are organized in `.claude/rules/`:
 
-- [Architecture & Routing Rules](file:///C:/laragon/www/finvo/.claude/rules/architecture.md)
-- [Backend Rules (Laravel & PHP)](file:///C:/laragon/www/finvo/.claude/rules/backend.md)
-- [Frontend Rules (React, TypeScript & Inertia.js)](file:///C:/laragon/www/finvo/.claude/rules/frontend.md)
+- [Architecture & Routing Rules](.claude/rules/architecture.md)
+- [Backend Rules (Laravel & PHP)](.claude/rules/backend.md)
+- [Frontend Rules (React, TypeScript & Inertia.js)](.claude/rules/frontend.md)
+
+Path-scoped rules, loaded only when working on matching files:
+
+- [HTTP Layer (controllers, requests, services, routes)](.claude/rules/backend-http.md)
+- [Enums, Money and Constraints (enums, models, migrations)](.claude/rules/data.md)
+- [Localization (PHP, React, lang files)](.claude/rules/localization.md)
+- [Forms (pages and Zod schemas)](.claude/rules/frontend-forms.md)
+- [Tests](.claude/rules/testing.md)
 
 ## Tech Stack
 

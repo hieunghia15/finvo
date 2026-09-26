@@ -39,3 +39,8 @@
 
 - Follow PSR-12 standards and PER Coding Style.
 - Run `./vendor/bin/pint` for formatting PHP code.
+
+## Classes and Docblocks
+
+- Inject dependencies through the constructor as `protected` promoted properties, not `private readonly`.
+- Every method has a PHPDoc summary, and each `@param` carries a short description after the variable name.

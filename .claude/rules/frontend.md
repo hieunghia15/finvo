@@ -28,16 +28,16 @@
 
 **Files (`.ts` and `.tsx`)**
 
-| Type                   | Rule                                  | File Extension  | Example                                             |
-| :--------------------- | :------------------------------------ | :-------------- | :-------------------------------------------------- |
-| **React Components**   | `PascalCase`                          | `.tsx`          | `PrimaryButton.tsx`, `UserList.tsx`                 |
-| **Inertia Pages**      | `PascalCase` (reflecting web route)   | `.tsx`          | `Dashboard.tsx`, `Users/Index.tsx`                  |
-| **Layouts**            | `PascalCase` + `Layout`               | `.tsx`          | `AppLayout.tsx`, `AuthLayout.tsx`, `MainLayout.tsx` |
-| **Custom Hooks**       | `camelCase` (starts with `use`)       | `.ts` / `.tsx`  | `useClickOutside.ts`, `useTheme.ts`                 |
-| **Zustand Stores**     | `camelCase` (`use` + `Store`)         | `.ts`           | `useThemeStore.ts`, `useSidebarStore.ts`            |
-| **Zod Schemas**        | `camelCase` (Model/Action + `Schema`) | `.ts`           | `userSchema.ts`, `loginSchema.ts`                   |
-| **Types & Interfaces** | `camelCase`                           | `.ts` / `.d.ts` | `user.types.ts`, `inertia.d.ts`                     |
-| **Utils / Helpers**    | `camelCase`                           | `.ts`           | `formatDate.ts`, `calculateTotal.ts`                |
+| Type                   | Rule                                | File Extension  | Example                                             |
+| :--------------------- | :---------------------------------- | :-------------- | :-------------------------------------------------- |
+| **React Components**   | `PascalCase`                        | `.tsx`          | `PrimaryButton.tsx`, `UserList.tsx`                 |
+| **Inertia Pages**      | `PascalCase` (reflecting web route) | `.tsx`          | `Dashboard.tsx`, `Users/Index.tsx`                  |
+| **Layouts**            | `PascalCase` + `Layout`             | `.tsx`          | `AppLayout.tsx`, `AuthLayout.tsx`, `MainLayout.tsx` |
+| **Custom Hooks**       | `camelCase` (starts with `use`)     | `.ts` / `.tsx`  | `useClickOutside.ts`, `useTheme.ts`                 |
+| **Zustand Stores**     | `camelCase` (`use` + `Store`)       | `.ts`           | `useThemeStore.ts`, `useSidebarStore.ts`            |
+| **Zod Schemas**        | Domain + `.schema`                  | `.ts`           | `auth.schema.ts`, `category.schema.ts`              |
+| **Types & Interfaces** | `camelCase`                         | `.ts` / `.d.ts` | `user.types.ts`, `inertia.d.ts`                     |
+| **Utils / Helpers**    | `camelCase`                         | `.ts`           | `formatDate.ts`, `calculateTotal.ts`                |
 
 **Code Conventions**
 
@@ -45,9 +45,17 @@
 - **Components & Interfaces/Types:** `PascalCase` (e.g., `interface UserProfile`, `type AuthState`).
 - **Constants:** `UPPER_SNAKE_CASE` (e.g., `MAX_UPLOAD_SIZE`).
 - **Booleans:** Prefix with `is`, `has`, `should`, `can` (e.g., `isOpen`, `hasPermission`).
-- Keep components small and reusable in `resources/js/Components/`.
+- Keep components small. Components shared across pages go in `resources/js/Components/`; a component used by a single page lives beside it (see Project Patterns).
 - Place Inertia page views in `resources/js/Pages/`.
 
 ## Code Style
 
 - Run `npm run format` for formatting code.
+
+## Project Patterns
+
+- Components are `export default function Name(props: NameProps)`; `React.FC` only remains in the layout components ported from the template.
+- A component used by one page lives beside it in `Pages/<Domain>/`; only components shared across pages go in `Components/`.
+- Types of a new domain go in `types/<domain>.types.ts`, re-exported from `types/index.d.ts`.
+- Dropdowns and modals are driven by React state, never Bootstrap's JS (`data-bs-*`, `window.bootstrap`). Modals use `Components/Common/Modal`, mounted by the parent to open and unmounted to close. A modal closes only through its × button or a Cancel button, never by clicking the backdrop or pressing Esc.
+- New pages show the result of a create, update or delete as a `sonner` toast through `<FlashToasts />`, not as an inline alert. The inline alerts left on Account and Login are legacy.
