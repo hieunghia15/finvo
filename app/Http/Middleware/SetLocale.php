@@ -22,8 +22,9 @@ class SetLocale
      * the configured default stays, which is vi everywhere except the test
      * suite.
      *
-     * Runs in the web group after EncryptCookies and before route middleware
-     * and form requests, so throttle and validation messages are translated.
+     * Runs in the web group after EncryptCookies, and is prioritised ahead of
+     * the auth and throttle middleware (bootstrap/app.php) and form requests,
+     * so throttle and validation messages are translated.
      *
      * @param  Request  $request  The current request.
      * @param  Closure(Request): Response  $next  The next middleware.

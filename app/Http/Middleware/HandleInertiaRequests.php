@@ -77,6 +77,8 @@ class HandleInertiaRequests extends Middleware
      * The dictionary is only sent on the first load: the client keeps it and
      * reports it back. Its key carries the locale, so switching language makes
      * the server send the new one, and switching back reuses the kept copy.
+     * The key also carries the file's version, so a deploy that only edits
+     * the translations still reaches clients that kept the old copy.
      *
      * @param  Request  $request  The current request.
      *
@@ -85,10 +87,11 @@ class HandleInertiaRequests extends Middleware
     public function shareOnce(Request $request): array
     {
         $locale = app()->getLocale();
+        $version = $this->localeService->dictionaryVersion($locale);
 
         return [
             'translations' => Inertia::once(fn () => $this->localeService->dictionary($locale))
-                ->as("translations.{$locale}"),
+                ->as("translations.{$locale}.{$version}"),
         ];
     }
 }

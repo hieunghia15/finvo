@@ -47,7 +47,7 @@ Chuỗi PHP đang cứng tiếng Anh (phải dịch):
 | Q2  | Chỉ **cookie** `locale`. Không cột `users.locale`, không đồng bộ thiết bị. Cookie sống qua logout (`session()->invalidate()` không đụng tới cookie). |
 | Q3  | Một nguồn bản dịch ở `lang/`; frontend nhận qua Inertia, không có file dịch phía JS.                                                                 |
 | Q7  | Key là **câu tiếng Anh**. Chỉ `lang/vi.json`. Key dạng group (`auth.failed`, `validation.unique`) vẫn dùng file PHP.                                 |
-| Q8  | `locale` là shared prop thường; `translations` là once prop với key `translations.{locale}`.                                                         |
+| Q8  | `locale` là shared prop thường; `translations` là once prop với key `translations.{locale}.{version}`.                                               |
 | Q9  | `PUT /locale` + `UpdateLocaleRequest` → cookie 1 năm → `back()`. Không throttle.                                                                     |
 | Q10 | Không cookie hoặc cookie không hợp lệ → `config('app.locale')`. Không đọc `Accept-Language`.                                                         |
 | Q11 | Seed theo `app()->getLocale()` **lúc đăng ký**. `DemoDataSeeder` luôn `vi`.                                                                          |
@@ -124,13 +124,13 @@ Shared props bổ sung trên **mọi** Inertia response (kể cả `Login/Index`
 ```ts
 {
     locale: 'vi' | 'en'; // mỗi request
-    translations: Record<string, string>; // once prop, key "translations.{locale}"
+    translations: Record<string, string>; // once prop, key "translations.{locale}.{version}"
 }
 ```
 
 - `locale = 'vi'` → `translations` = nội dung `lang/vi.json` (object phẳng: câu tiếng Anh → câu tiếng Việt).
 - `locale = 'en'` → `translations = {}` (key chính là câu hiển thị). Không đọc file nào.
-- Once prop: client gửi header các once prop đã có; server bỏ qua `translations.vi` nếu client đã giữ. Đổi sang `en` → key `translations.en` chưa có → server gửi. Đổi lại `vi` → client đã có `translations.vi` từ trước nên không gửi lại.
+- Once prop: client gửi header các once prop đã có; server bỏ qua `translations.vi.{version}` nếu client đã giữ. Đổi sang `en` → key `translations.en.none` chưa có → server gửi. Đổi lại `vi` → client đã có `translations.vi.{version}` từ trước nên không gửi lại. File `lang/vi.json` đổi → `{version}` đổi → server gửi lại, dù asset version không đổi.
 - Chuỗi trong `flash.*`, `errors.*` được backend dịch sẵn theo locale của request → frontend **không** dịch lại.
 
 `PUT /locale`:
@@ -180,9 +180,13 @@ public function rememberCookie(array $data): Cookie;   // cookie(self::COOKIE, $
  * @return array<string, string>
  */
 public function dictionary(string $locale): array;
+
+/** Content hash of lang/{locale}.json, or 'none' when the locale has no file. */
+public function dictionaryVersion(string $locale): string;
 ```
 
 - `dictionary()` đọc `lang_path("{$locale}.json")` nếu file tồn tại, `json_decode(..., flags: JSON_THROW_ON_ERROR)`; `en` không có file → `[]`.
+- `dictionaryVersion()` = `hash_file('xxh3', ...)`, dùng trong key của once prop (§5.6) để deploy chỉ sửa file dịch vẫn tới được client đang giữ bản cũ.
 - Không cache: file vài chục KB, và once prop đã chặn việc gửi lại. Nếu sau này cần, dùng `Cache::rememberForever` theo `filemtime`.
 - Cookie để HttpOnly (mặc định): frontend đọc `locale` từ props, không đọc cookie.
 
@@ -239,15 +243,17 @@ Không flash message: bản thân giao diện đổi ngôn ngữ đã là phản
 
 /**
  * The dictionary is sent once and kept by the client across navigations. Its
- * key carries the locale, so switching language makes the server send the new one.
+ * key carries the locale and the file's version, so switching language or
+ * editing the translations makes the server send the new one.
  */
 public function shareOnce(Request $request): array
 {
     $locale = app()->getLocale();
+    $version = $this->localeService->dictionaryVersion($locale);
 
     return [
         'translations' => Inertia::once(fn () => $this->localeService->dictionary($locale))
-            ->as("translations.{$locale}"),
+            ->as("translations.{$locale}.{$version}"),
     ];
 }
 ```
@@ -359,7 +365,7 @@ Giới hạn đã biết: key truyền qua biến (`t(label)`) không bị bắt
 - [x] `PUT /locale` với **user đã đăng nhập** → như trên, vẫn đăng nhập.
 - [x] `PUT /locale` `{locale: 'fr'}` / thiếu `locale` → lỗi trên `locale`, không set cookie.
 - [x] Cookie còn sau logout: đặt `locale=en`, `POST /logout`, `GET /login` với cookie đó → `locale = 'en'`.
-- [x] Once prop: request có header `X-Inertia-Except-Once-Props: translations.vi` và cookie `vi` → response **không** chứa `translations`; cùng header nhưng cookie `en` → **có** `translations`.
+- [x] Once prop: request có header `X-Inertia-Except-Once-Props: translations.vi.{version}` và cookie `vi` → response **không** chứa `translations`; cùng header nhưng cookie `en` → **có** `translations`; header mang version cũ → **có** `translations`.
 - [x] Flash tiếng Việt: cookie `vi`, `PATCH /account` → `flash.status = 'Đã cập nhật tài khoản.'`.
 - [x] Validation tiếng Việt: cookie `vi`, `POST /register` rỗng → lỗi `name` = "Trường tên là bắt buộc.".
 - [x] Rule tự viết tiếng Việt: cookie `vi`, email sai định dạng → message của `ValidEmail` bản vi, `:attribute` đã được thay.

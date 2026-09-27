@@ -32,8 +32,9 @@ class AppServiceProvider extends ServiceProvider
      * back to the form with a field error instead of a bare 429 page, so
      * Inertia shows it like any other error.
      *
-     * The limiter callbacks run on every request, after SetLocale, so the
-     * messages are translated here into the visitor's language.
+     * The limiter callbacks run on every request, after SetLocale (its
+     * priority is set in bootstrap/app.php), so the messages are translated
+     * here into the visitor's language.
      */
     protected function configureRateLimiting(): void
     {

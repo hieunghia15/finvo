@@ -168,10 +168,15 @@ class LocaleTest extends TestCase
         ];
     }
 
+    private function viDictionaryKey(): string
+    {
+        return 'translations.vi.'.app(LocaleService::class)->dictionaryVersion('vi');
+    }
+
     public function test_the_dictionary_is_not_resent_when_the_client_already_has_it(): void
     {
         $response = $this->withCookie(LocaleService::COOKIE, 'vi')
-            ->withHeaders($this->inertiaHeaders('translations.vi'))
+            ->withHeaders($this->inertiaHeaders($this->viDictionaryKey()))
             ->get('/login');
 
         $response->assertOk();
@@ -182,12 +187,22 @@ class LocaleTest extends TestCase
     public function test_the_dictionary_is_sent_again_after_switching_language(): void
     {
         $response = $this->withCookie(LocaleService::COOKIE, 'en')
-            ->withHeaders($this->inertiaHeaders('translations.vi'))
+            ->withHeaders($this->inertiaHeaders($this->viDictionaryKey()))
             ->get('/login');
 
         $response->assertOk();
         $this->assertSame('en', $response->json('props.locale'));
         $this->assertSame([], $response->json('props.translations'));
+    }
+
+    public function test_the_dictionary_is_sent_again_after_the_file_changed(): void
+    {
+        $response = $this->withCookie(LocaleService::COOKIE, 'vi')
+            ->withHeaders($this->inertiaHeaders('translations.vi.an-older-version'))
+            ->get('/login');
+
+        $response->assertOk();
+        $this->assertSame('Đã cập nhật tài khoản.', $response->json('props.translations')['Account updated.']);
     }
 
     // =========================================================================
@@ -243,8 +258,11 @@ class LocaleTest extends TestCase
 
     public function test_rate_limit_messages_are_translated(): void
     {
+        // Prime the limiter without the cookie: a request that already set vi
+        // would leave the app locale on vi for the throttled one, hiding a
+        // throttle that runs before SetLocale.
         for ($i = 0; $i < 5; $i++) {
-            $this->withCookie(LocaleService::COOKIE, 'vi')->from('/register')->post('/register', []);
+            $this->from('/register')->post('/register', []);
         }
 
         $response = $this->withCookie(LocaleService::COOKIE, 'vi')->from('/register')->post('/register', []);

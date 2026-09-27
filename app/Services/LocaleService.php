@@ -12,7 +12,7 @@ class LocaleService
     public const COOKIE = 'locale';
 
     /** One year, in minutes. */
-    public const COOKIE_MINUTES = 525_600;
+    public const COOKIE_MINUTES = 60 * 24 * 365;
 
     /**
      * The language stored in the request's cookie.
@@ -58,5 +58,20 @@ class LocaleService
         $dictionary = json_decode((string) file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
 
         return $dictionary;
+    }
+
+    /**
+     * A fingerprint of the locale's dictionary file, so a client drops the
+     * copy it kept once the file changes, even without a new asset build.
+     *
+     * @param  string  $locale  The active locale.
+     *
+     * @return string A content hash, or 'none' when the locale has no file.
+     */
+    public function dictionaryVersion(string $locale): string
+    {
+        $path = lang_path("{$locale}.json");
+
+        return is_file($path) ? (string) hash_file('xxh3', $path) : 'none';
     }
 }
