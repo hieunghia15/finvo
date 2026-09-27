@@ -149,7 +149,7 @@ export function trans(key: string): string {
 export function translate(translations: Translations, key: string, replacements?: Replacements): string;
 ```
 
-- Thay placeholder theo thứ tự **tên dài trước** để `:name` không ăn vào `:names`.
+- Thay mọi placeholder trong **một lượt** (`replace(/:(\w+)/g, fn)`), như `strtr()` của Laravel: giá trị đã thay không bị thay tiếp. Dùng hàm thay thế, không dùng chuỗi, để `$&`, `$$` trong dữ liệu người dùng (tên danh mục) được chèn nguyên văn. Placeholder không có trong `replacements` giữ nguyên.
 - Không hỗ trợ `:Name` / `:NAME` hay số nhiều (Q18).
 
 ### 4.2. `resources/js/hooks/useTranslation.ts`
@@ -229,13 +229,25 @@ Cờ tròn tự vẽ, cùng khung với `usa.svg` (viewBox vuông, hiển thị 
 ### 4.9. `app.tsx` — `<html lang>` (Q26)
 
 ```ts
-// Blade only renders <html lang> on the first load; keep it in step after Inertia visits.
+let serverLocale = pageLocale(props.initialPage);
+
 router.on('success', (event) => {
-    document.documentElement.lang = (event.detail.page.props as PageProps).locale;
+    serverLocale = pageLocale(event.detail.page);
+    document.documentElement.lang = serverLocale;
+});
+
+// Back/Forward restores a page with the props it was saved with.
+router.on('navigate', (event) => {
+    if (pageLocale(event.detail.page) !== serverLocale) {
+        router.reload();
+    }
 });
 ```
 
 Đăng ký một lần trong `setup`, cạnh việc mount `Preloader` / `LoadingOverlay` / `Toaster`.
+
+- `success` chứ không phải `navigate` để cập nhật `<html lang>`: đổi ngôn ngữ quay về cùng URL nên Inertia **replace** history và không bắn `navigate`.
+- Back/Forward: Inertia khôi phục trang từ history với props cũ (`locale`, `translations`), không hỏi server. Trang lưu trước khi đổi ngôn ngữ có `locale` khác `serverLocale` → `router.reload()` lấy lại theo cookie.
 
 ### 4.10. Dịch các page
 
@@ -312,6 +324,8 @@ Thêm mọi key frontend, theo thuật ngữ plan §9.2. `npm run lang:check` ph
 - [ ] Click ra ngoài / Esc → menu đóng.
 - [ ] Đổi ngôn ngữ ở trang Categories đang có filter `?type=income&include_archived=1` → sau khi đổi vẫn giữ URL và filter.
 - [ ] Đổi vi → en → vi: lần về `vi` không tải lại từ điển (DevTools: response không có `translations`).
+- [ ] Ở Dashboard (vi) → sang Categories → đổi English → bấm Back: Dashboard hiện English, `<html lang="en">`.
+- [ ] Tên danh mục có `$&` hoặc `$$` (ví dụ `Tiền $$ nhà`): modal xóa và tooltip hiện đúng nguyên văn tên.
 
 ### Nội dung
 

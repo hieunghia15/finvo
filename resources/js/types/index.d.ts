@@ -36,7 +36,7 @@ export type PageProps<T = Record<string, unknown>> = T & {
     flash?: Flash;
     errors: Record<string, string>;
     locale: Locale;
-    /** Once prop: sent on the first load and after a language switch, then kept by the client. */
+    /** Once prop: sent on the first load, after a language switch and after lang/{locale}.json changes; kept by the client in between. */
     translations: Translations;
 };
 

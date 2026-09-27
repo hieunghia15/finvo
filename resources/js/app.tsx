@@ -5,12 +5,16 @@ import { Toaster } from 'sonner';
 
 import LoadingOverlay from '@/Components/Common/LoadingOverlay';
 import Preloader from '@/Components/Common/Preloader';
-import { PageProps } from '@/types';
+import { Locale, PageProps } from '@/types';
 
 const appName = 'Finvo';
 
 interface PageModule {
     default: ResolvedComponent;
+}
+
+function pageLocale(page: { props: unknown }): Locale {
+    return (page.props as PageProps).locale;
 }
 
 createInertiaApp({
@@ -23,9 +27,21 @@ createInertiaApp({
         const container = el || document.getElementById('app');
         if (container) {
             // Blade only renders <html lang> on the first load; keep it in step
-            // with the language after every Inertia visit, e.g. a switch.
+            // with every server response, e.g. a language switch.
+            let serverLocale = pageLocale(props.initialPage);
+
             router.on('success', (event) => {
-                document.documentElement.lang = (event.detail.page.props as unknown as PageProps).locale;
+                serverLocale = pageLocale(event.detail.page);
+                document.documentElement.lang = serverLocale;
+            });
+
+            // Back/Forward restores a page with the props it was saved with, so
+            // one saved before a language switch would show the old language.
+            // Reload it: the server answers in the language of the cookie.
+            router.on('navigate', (event) => {
+                if (pageLocale(event.detail.page) !== serverLocale) {
+                    router.reload();
+                }
             });
 
             createRoot(container).render(
