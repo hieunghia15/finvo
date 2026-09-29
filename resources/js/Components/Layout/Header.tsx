@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, router } from '@inertiajs/react';
+import LanguageSwitcher from '@/Components/Common/LanguageSwitcher';
+import { useTranslation } from '@/hooks/useTranslation';
 import { User, NotificationItem } from '@/types';
 
 export interface HeaderProps {
@@ -9,6 +11,7 @@ export interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notifications = [] }) => {
+    const { t } = useTranslation();
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
     const handleLogout = () => {
@@ -80,7 +83,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                     <div className="left-header-content">
                         <ul className="d-flex align-items-center ps-0 mb-0 list-unstyled justify-content-center justify-content-sm-start">
                             <li>
-                                <button type="button" className="header-burger-menu bg-transparent p-0 border-0" id="header-burger-menu" onClick={onToggleSidebar} aria-label="Toggle Navigation">
+                                <button type="button" className="header-burger-menu bg-transparent p-0 border-0" id="header-burger-menu" onClick={onToggleSidebar} aria-label={t('Toggle Navigation')}>
                                     <span className="material-symbols-outlined">menu</span>
                                 </button>
                             </li>
@@ -91,7 +94,11 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                 <div className="col-lg-8 col-sm-6">
                     <div className="right-header-content mt-2 mt-sm-0">
                         <ul className="d-flex align-items-center justify-content-center justify-content-sm-end ps-0 mb-0 list-unstyled">
-                            {/* Notification Dropdown */}
+                            <li className="header-right-item">
+                                <LanguageSwitcher />
+                            </li>
+
+                            {/* Notification Dropdown (template demo, not translated: due to be removed) */}
                             <li className="header-right-item">
                                 <div ref={notificationRef} className="dropdown notifications noti position-relative">
                                     <button
@@ -198,7 +205,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                                                 <li>
                                                     <Link className="dropdown-item admin-item-link d-flex align-items-center text-body py-2" href="/account">
                                                         <i className="material-symbols-outlined me-2 fs-18">account_circle</i>
-                                                        <span>Account</span>
+                                                        <span>{t('Account')}</span>
                                                     </Link>
                                                 </li>
                                                 <li>
@@ -243,7 +250,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onToggleSidebar, notificat
                                                         onClick={handleLogout}
                                                     >
                                                         <i className="material-symbols-outlined me-2 fs-18">logout</i>
-                                                        <span>Logout</span>
+                                                        <span>{t('Logout')}</span>
                                                     </button>
                                                 </li>
                                             </ul>

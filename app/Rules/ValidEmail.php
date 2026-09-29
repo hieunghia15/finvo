@@ -18,7 +18,7 @@ class ValidEmail implements ValidationRule
         $regex = '/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,64})+$/';
 
         if (!is_string($value) || !preg_match($regex, $value)) {
-            $fail('The :attribute field must be a valid email address.');
+            $fail(__('The :attribute field must be a valid email address.'));
         }
     }
 }

@@ -23,6 +23,10 @@ class DemoDataSeeder extends Seeder
      */
     public function run(): void
     {
+        // The demo data is Vietnamese whatever APP_LOCALE says; the category
+        // lookups below use the Vietnamese names.
+        app()->setLocale('vi');
+
         $user = User::where('email', AdminUserSeeder::EMAIL)->firstOrFail();
 
         if ($user->transactions()->exists()) {
@@ -34,7 +38,7 @@ class DemoDataSeeder extends Seeder
         DB::transaction(function () use ($user) {
             $this->onboarding->createDefaults($user);
 
-            $bank = $user->wallets()->where('name', UserOnboardingService::DEFAULT_WALLET_NAME)->firstOrFail();
+            $bank = $user->wallets()->where('name', __(UserOnboardingService::DEFAULT_WALLET_NAME))->firstOrFail();
             $bank->update(['initial_balance' => 5_000_000]);
 
             $cash = $user->wallets()->create([

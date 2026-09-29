@@ -69,7 +69,7 @@ class UpdateCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.unique' => 'You already have a category with this name and type.',
+            'name.unique' => __('You already have a category with this name and type.'),
         ];
     }
 
@@ -88,7 +88,7 @@ class UpdateCategoryRequest extends FormRequest
                 if (!$category->status->isEditable()) {
                     $validator->errors()->add(
                         'status',
-                        'An archived category must be restored before it can be edited.',
+                        __('An archived category must be restored before it can be edited.'),
                     );
 
                     return;
@@ -106,7 +106,7 @@ class UpdateCategoryRequest extends FormRequest
                 if ($category->transactions()->exists()) {
                     $validator->errors()->add(
                         'type',
-                        'This category already has transactions, so its type can no longer be changed.',
+                        __('This category already has transactions, so its type can no longer be changed.'),
                     );
                 }
             },
