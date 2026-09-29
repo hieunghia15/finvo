@@ -6,7 +6,8 @@
         "build": "vite build",
         "dev": "vite",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "lang:check": "node scripts/lang-check.mjs"
     },
     "devDependencies": {
         "@types/node": "^26.5.0",

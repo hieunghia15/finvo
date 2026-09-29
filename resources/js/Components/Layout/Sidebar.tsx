@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import { sidebarMenuConfig, MenuItem, MenuGroup } from '@/Config/sidebarMenu';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export interface SidebarProps {
     isOpen?: boolean;
@@ -9,6 +10,7 @@ export interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar, menuConfig = sidebarMenuConfig }) => {
+    const { t } = useTranslation();
     // Track open state for sub-menus (closed by default)
     const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
@@ -28,7 +30,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar
                 <li key={item.id} className={`menu-item ${isOpenMenu ? 'open' : ''} ${isNested ? 'after-sub-menu' : ''}`}>
                     <button type="button" className={`menu-link menu-toggle w-100 text-start border-0 ${isOpenMenu ? 'active' : ''}`} onClick={() => toggleMenu(item.id)}>
                         {item.icon && <span className="material-symbols-outlined menu-icon">{item.icon}</span>}
-                        <span className="title">{item.title}</span>
+                        <span className="title">{t(item.title)}</span>
                     </button>
 
                     {isOpenMenu && item.subItems && <ul className="menu-sub">{item.subItems.map((subItem) => renderMenuItem(subItem, true))}</ul>}
@@ -41,12 +43,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar
                 {item.method ? (
                     <Link href={item.url || '#'} method={item.method} as="button" className="menu-link border-0 w-100 text-start">
                         {item.icon && <span className="material-symbols-outlined menu-icon">{item.icon}</span>}
-                        <span className="title">{item.title}</span>
+                        <span className="title">{t(item.title)}</span>
                     </Link>
                 ) : (
                     <Link href={item.url || '#'} className="menu-link">
                         {item.icon && <span className="material-symbols-outlined menu-icon">{item.icon}</span>}
-                        <span className="title">{item.title}</span>
+                        <span className="title">{t(item.title)}</span>
                     </Link>
                 )}
             </li>
@@ -65,7 +67,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar
                     className="sidebar-burger-menu bg-transparent p-0 border-0 opacity-0 z-n1 position-absolute top-50 end-0 translate-middle-y"
                     id="sidebar-burger-menu"
                     onClick={onToggleSidebar}
-                    aria-label="Toggle Sidebar"
+                    aria-label={t('Toggle Sidebar')}
                 >
                     <span className="material-symbols-outlined">close</span>
                 </button>
@@ -77,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggleSidebar
                         <React.Fragment key={group.id}>
                             {group.title && (
                                 <li className="menu-title small text-uppercase">
-                                    <span className="menu-title-text">{group.title}</span>
+                                    <span className="menu-title-text">{t(group.title)}</span>
                                 </li>
                             )}
                             {group.items.map((item) => renderMenuItem(item))}

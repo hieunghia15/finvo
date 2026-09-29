@@ -19,6 +19,6 @@ class CategoryInUseException extends RuntimeException
      */
     public function __construct(public readonly Category $category)
     {
-        parent::__construct('This category still has transactions and cannot be deleted.');
+        parent::__construct(__('This category still has transactions and cannot be deleted.'));
     }
 }

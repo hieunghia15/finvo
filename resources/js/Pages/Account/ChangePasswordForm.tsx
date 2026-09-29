@@ -6,6 +6,7 @@ import PasswordInput from '@/Components/Form/PasswordInput';
 import { updatePasswordSchema } from '@/Schemas';
 import { fieldError } from '@/lib/fieldError';
 import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
+import { useTranslation } from '@/hooks/useTranslation';
 
 /**
  * Validation errors Laravel sends back. `password_confirmation` is included for
@@ -22,6 +23,7 @@ type PasswordServerErrors = {
  * cleared as soon as the password has been changed.
  */
 export default function ChangePasswordForm() {
+    const { t } = useTranslation();
     const [serverErrors, setServerErrors] = useState<PasswordServerErrors>({});
 
     const form = useForm({
@@ -68,10 +70,10 @@ export default function ChangePasswordForm() {
                 <div className="col-lg-6">
                     <form.Field name="current_password">
                         {(field) => {
-                            const error = fieldError(field.state.meta.errors, serverErrors.current_password);
+                            const error = fieldError(t, field.state.meta.errors, serverErrors.current_password);
 
                             return (
-                                <FormField htmlFor={field.name} label="Current Password" error={error}>
+                                <FormField htmlFor={field.name} label={t('Current Password')} error={error}>
                                     <PasswordInput
                                         id={field.name}
                                         name={field.name}
@@ -82,7 +84,7 @@ export default function ChangePasswordForm() {
                                             field.handleChange(value);
                                         }}
                                         autoComplete="current-password"
-                                        placeholder="Type current password"
+                                        placeholder={t('Type current password')}
                                         isInvalid={Boolean(error)}
                                     />
                                 </FormField>
@@ -94,10 +96,10 @@ export default function ChangePasswordForm() {
                 <div className="col-lg-6">
                     <form.Field name="password">
                         {(field) => {
-                            const error = fieldError(field.state.meta.errors, serverErrors.password);
+                            const error = fieldError(t, field.state.meta.errors, serverErrors.password);
 
                             return (
-                                <FormField htmlFor={field.name} label="New Password" error={error}>
+                                <FormField htmlFor={field.name} label={t('New Password')} error={error}>
                                     <PasswordInput
                                         id={field.name}
                                         name={field.name}
@@ -108,7 +110,7 @@ export default function ChangePasswordForm() {
                                             field.handleChange(value);
                                         }}
                                         autoComplete="new-password"
-                                        placeholder="Type new password"
+                                        placeholder={t('Type new password')}
                                         isInvalid={Boolean(error)}
                                     />
                                 </FormField>
@@ -120,10 +122,10 @@ export default function ChangePasswordForm() {
                 <div className="col-lg-12">
                     <form.Field name="password_confirmation">
                         {(field) => {
-                            const error = fieldError(field.state.meta.errors, serverErrors.password_confirmation);
+                            const error = fieldError(t, field.state.meta.errors, serverErrors.password_confirmation);
 
                             return (
-                                <FormField htmlFor={field.name} label="Confirm Password" error={error}>
+                                <FormField htmlFor={field.name} label={t('Confirm Password')} error={error}>
                                     <PasswordInput
                                         id={field.name}
                                         name={field.name}
@@ -134,7 +136,7 @@ export default function ChangePasswordForm() {
                                             field.handleChange(value);
                                         }}
                                         autoComplete="new-password"
-                                        placeholder="Retype new password"
+                                        placeholder={t('Retype new password')}
                                         isInvalid={Boolean(error)}
                                     />
                                 </FormField>
@@ -146,7 +148,7 @@ export default function ChangePasswordForm() {
                 <div className="col-lg-12">
                     <div className="form-group d-flex gap-3 align-items-center">
                         <button type="submit" className="btn btn-primary py-2 px-4 fw-medium fs-16" disabled={isSubmitting}>
-                            <i className="ri-check-line text-white fw-medium"></i> {isSubmitting ? 'Changing…' : 'Change Password'}
+                            <i className="ri-check-line text-white fw-medium"></i> {isSubmitting ? t('Changing…') : t('Change Password')}
                         </button>
                     </div>
                 </div>

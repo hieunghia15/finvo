@@ -3,10 +3,12 @@ import { useForm, useStore, revalidateLogic } from '@tanstack/react-form';
 import { router, Link } from '@inertiajs/react';
 import { registerSchema, RegisterFormValues } from '@/Schemas';
 import { fieldError } from '@/lib/fieldError';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type RegisterField = keyof RegisterFormValues;
 
 export default function RegisterForm() {
+    const { t } = useTranslation();
     const [serverErrors, setServerErrors] = useState<Partial<Record<RegisterField, string>>>({});
 
     const form = useForm({
@@ -45,12 +47,12 @@ export default function RegisterForm() {
         >
             <form.Field name="name">
                 {(field) => {
-                    const error = fieldError(field.state.meta.errors, serverErrors.name);
+                    const error = fieldError(t, field.state.meta.errors, serverErrors.name);
 
                     return (
                         <div className="form-group mb-3">
                             <label htmlFor={field.name} className="label text-secondary">
-                                Full Name
+                                {t('Full Name')}
                             </label>
                             <input
                                 id={field.name}
@@ -58,7 +60,7 @@ export default function RegisterForm() {
                                 type="text"
                                 className={`form-control h-55${error ? ' is-invalid' : ''}`}
                                 style={error ? { backgroundImage: 'none' } : undefined}
-                                placeholder="Enter your full name"
+                                placeholder={t('Enter your full name')}
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
@@ -75,12 +77,12 @@ export default function RegisterForm() {
 
             <form.Field name="email">
                 {(field) => {
-                    const error = fieldError(field.state.meta.errors, serverErrors.email);
+                    const error = fieldError(t, field.state.meta.errors, serverErrors.email);
 
                     return (
                         <div className="form-group mb-3">
                             <label htmlFor={field.name} className="label text-secondary">
-                                Email Address
+                                {t('Email Address')}
                             </label>
                             <input
                                 id={field.name}
@@ -88,7 +90,7 @@ export default function RegisterForm() {
                                 type="email"
                                 className={`form-control h-55${error ? ' is-invalid' : ''}`}
                                 style={error ? { backgroundImage: 'none' } : undefined}
-                                placeholder="example@trezo.com"
+                                placeholder="example@finvo.com"
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
@@ -105,12 +107,12 @@ export default function RegisterForm() {
 
             <form.Field name="password">
                 {(field) => {
-                    const error = fieldError(field.state.meta.errors, serverErrors.password);
+                    const error = fieldError(t, field.state.meta.errors, serverErrors.password);
 
                     return (
                         <div className="form-group mb-3">
                             <label htmlFor={field.name} className="label text-secondary">
-                                Password
+                                {t('Password')}
                             </label>
                             <input
                                 id={field.name}
@@ -118,7 +120,7 @@ export default function RegisterForm() {
                                 type="password"
                                 className={`form-control h-55${error ? ' is-invalid' : ''}`}
                                 style={error ? { backgroundImage: 'none' } : undefined}
-                                placeholder="Type password"
+                                placeholder={t('Type password')}
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
@@ -135,12 +137,12 @@ export default function RegisterForm() {
 
             <form.Field name="password_confirmation">
                 {(field) => {
-                    const error = fieldError(field.state.meta.errors, serverErrors.password_confirmation);
+                    const error = fieldError(t, field.state.meta.errors, serverErrors.password_confirmation);
 
                     return (
                         <div className="form-group mb-3">
                             <label htmlFor={field.name} className="label text-secondary">
-                                Confirm Password
+                                {t('Confirm Password')}
                             </label>
                             <input
                                 id={field.name}
@@ -148,7 +150,7 @@ export default function RegisterForm() {
                                 type="password"
                                 className={`form-control h-55${error ? ' is-invalid' : ''}`}
                                 style={error ? { backgroundImage: 'none' } : undefined}
-                                placeholder="Retype password"
+                                placeholder={t('Retype password')}
                                 value={field.state.value}
                                 onBlur={field.handleBlur}
                                 onChange={(e) => {
@@ -167,27 +169,27 @@ export default function RegisterForm() {
                 <button type="submit" disabled={isSubmitting} className="btn btn-primary fw-medium py-2 px-3 w-100">
                     <div className="d-flex align-items-center justify-content-center py-1">
                         <i className="material-symbols-outlined text-white fs-20 me-2">person_4</i>
-                        <span>{isSubmitting ? 'Registering…' : 'Register'}</span>
+                        <span>{isSubmitting ? t('Registering…') : t('Register')}</span>
                     </div>
                 </button>
             </div>
 
             <div className="form-group">
                 <p>
-                    By registering, you agree to our{' '}
+                    {t('By registering, you agree to our')}{' '}
                     <a href="#" className="fw-medium text-decoration-none">
-                        Terms of Service
+                        {t('Terms of Service')}
                     </a>{' '}
-                    and that you have read and understood our{' '}
+                    {t('and that you have read and understood our')}{' '}
                     <a href="#" className="fw-medium text-decoration-none">
-                        Privacy Policy
+                        {t('Privacy Policy')}
                     </a>
                     .
                 </p>
                 <p>
-                    Already have an account.{' '}
+                    {t('Already have an account?')}{' '}
                     <Link href="/" className="fw-medium text-primary text-decoration-none">
-                        Log In
+                        {t('Log In')}
                     </Link>
                 </p>
             </div>

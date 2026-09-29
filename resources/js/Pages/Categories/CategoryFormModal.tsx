@@ -7,6 +7,7 @@ import { fieldError } from '@/lib/fieldError';
 import { IN_PLACE_SUBMIT } from '@/lib/inPlaceSubmit';
 import { CATEGORY_TYPE_LABELS } from '@/lib/categoryLabels';
 import { Category, CategoryType } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 /**
  * Validation errors Laravel sends back. `status` is set when the category was
@@ -33,11 +34,12 @@ const TYPE_OPTIONS = Object.entries(CATEGORY_TYPE_LABELS) as [CategoryType, stri
  * because the backend changes it through a separate endpoint.
  */
 export default function CategoryFormModal({ category, defaultType, onClose }: CategoryFormModalProps) {
+    const { t } = useTranslation();
     const formId = useId();
     const [serverErrors, setServerErrors] = useState<CategoryServerErrors>({});
 
     const isEditing = category !== undefined;
-    // plan_phase_1.md §4.4: the type is locked once the category has been used.
+    // docs/phases/phase-1.md §4.4: the type is locked once the category has been used.
     const isTypeLocked = isEditing && category.transactions_count > 0;
 
     const form = useForm({
@@ -75,17 +77,17 @@ export default function CategoryFormModal({ category, defaultType, onClose }: Ca
         setServerErrors((previous) => ({ ...previous, [field]: undefined }));
     };
 
-    const submitLabel = isEditing ? (isSubmitting ? 'Saving…' : 'Save Changes') : isSubmitting ? 'Creating…' : 'Create';
+    const submitLabel = isEditing ? (isSubmitting ? t('Saving…') : t('Save Changes')) : isSubmitting ? t('Creating…') : t('Create');
 
     return (
         <Modal
-            title={isEditing ? 'Edit Category' : 'Add New Category'}
+            title={isEditing ? t('Edit Category') : t('Add New Category')}
             onClose={onClose}
             isCloseDisabled={isSubmitting}
             footer={
                 <>
                     <button type="button" className="btn btn-danger text-white" disabled={isSubmitting} onClick={onClose}>
-                        Cancel
+                        {t('Cancel')}
                     </button>
                     {/* The footer sits outside the <form>, so the button points at it by id. */}
                     <button type="submit" form={formId} className="btn btn-primary text-white" disabled={isSubmitting}>
@@ -110,13 +112,13 @@ export default function CategoryFormModal({ category, defaultType, onClose }: Ca
 
                 <form.Field name="name">
                     {(field) => {
-                        const error = fieldError(field.state.meta.errors, serverErrors.name);
+                        const error = fieldError(t, field.state.meta.errors, serverErrors.name);
                         const inputId = `${formId}-name`;
 
                         return (
                             <div className="form-group mb-4">
                                 <label htmlFor={inputId} className="label text-secondary">
-                                    Name
+                                    {t('Name')}
                                 </label>
                                 <div className="form-group">
                                     <input
@@ -124,7 +126,7 @@ export default function CategoryFormModal({ category, defaultType, onClose }: Ca
                                         name={field.name}
                                         type="text"
                                         className={`form-control text-dark h-55${error ? ' is-invalid' : ''}`}
-                                        placeholder="Enter category name"
+                                        placeholder={t('Enter category name')}
                                         maxLength={100}
                                         value={field.state.value}
                                         onBlur={field.handleBlur}
@@ -144,13 +146,13 @@ export default function CategoryFormModal({ category, defaultType, onClose }: Ca
 
                 <form.Field name="type">
                     {(field) => {
-                        const error = fieldError(field.state.meta.errors, serverErrors.type);
+                        const error = fieldError(t, field.state.meta.errors, serverErrors.type);
                         const inputId = `${formId}-type`;
 
                         return (
                             <div className="form-group mb-2">
                                 <label htmlFor={inputId} className="label text-secondary">
-                                    Type
+                                    {t('Type')}
                                 </label>
                                 <div className="form-group">
                                     <select
@@ -168,12 +170,12 @@ export default function CategoryFormModal({ category, defaultType, onClose }: Ca
                                     >
                                         {TYPE_OPTIONS.map(([value, label]) => (
                                             <option key={value} value={value}>
-                                                {label}
+                                                {t(label)}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
-                                {isTypeLocked && <span className="d-block fs-14 text-secondary mt-1">Type is locked because this category has transactions.</span>}
+                                {isTypeLocked && <span className="d-block fs-14 text-secondary mt-1">{t('Type is locked because this category has transactions.')}</span>}
                                 {error && <div className="invalid-feedback d-block">{error}</div>}
                             </div>
                         );

@@ -65,7 +65,7 @@ class StoreCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.unique' => 'You already have a category with this name and type.',
+            'name.unique' => __('You already have a category with this name and type.'),
         ];
     }
 }

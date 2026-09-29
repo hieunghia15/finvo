@@ -42,6 +42,6 @@ class RegisteredUserController extends Controller
 
         return redirect()
             ->route('login')
-            ->with('status', 'Account created. Please log in.');
+            ->with('status', __('Account created. Please log in.'));
     }
 }

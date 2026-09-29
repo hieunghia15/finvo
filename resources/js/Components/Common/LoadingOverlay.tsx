@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { router } from '@inertiajs/react';
+import { useTranslation } from '@/hooks/useTranslation';
 import { isInPlaceSubmit } from '@/lib/inPlaceSubmit';
 
 /** Keep the spinner up this long so it does not just flash when the server answers fast. */
@@ -10,6 +11,7 @@ const MINIMUM_VISIBLE_MS = 300;
  * IN_PLACE_SUBMIT is being saved. Page navigations show Preloader instead.
  */
 export default function LoadingOverlay() {
+    const { t } = useTranslation();
     const [isVisible, setIsVisible] = useState(false);
     const shownAt = useRef(0);
     const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -66,7 +68,7 @@ export default function LoadingOverlay() {
             aria-busy="true"
         >
             <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
+                <span className="visually-hidden">{t('Loading...')}</span>
             </div>
         </div>
     );

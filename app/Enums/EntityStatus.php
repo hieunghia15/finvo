@@ -7,7 +7,7 @@ use App\Enums\Concerns\HasOptions;
 /**
  * Lifecycle status shared by wallets and categories.
  *
- * The predicates encode the status matrix in plan_phase_1.md §4.2. Every
+ * The predicates encode the status matrix in docs/phases/phase-1.md §4.2. Every
  * status still counts towards balances and statistics, and transitions
  * between statuses are unrestricted.
  */

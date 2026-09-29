@@ -10,13 +10,15 @@ import CategoryTable from './CategoryTable';
 import CategoryFormModal from './CategoryFormModal';
 import CategoryStatusModal from './CategoryStatusModal';
 import DeleteCategoryModal from './DeleteCategoryModal';
+import { useTranslation } from '@/hooks/useTranslation';
+import { trans } from '@/lib/i18n';
 
 type IndexProps = PageProps<{ categories: Category[]; filters: CategoryFilters }>;
 
 type ModalState = { kind: 'none' } | { kind: 'create' } | { kind: 'edit'; category: Category } | { kind: 'status'; category: Category } | { kind: 'delete'; category: Category };
 
 const TYPE_TABS: { type: CategoryType | null; label: string }[] = [
-    { type: null, label: 'All' },
+    { type: null, label: trans('All') },
     { type: 'income', label: CATEGORY_TYPE_LABELS.income },
     { type: 'expense', label: CATEGORY_TYPE_LABELS.expense },
 ];
@@ -42,6 +44,7 @@ function toQuery(filters: CategoryFilters): Record<string, string> {
 }
 
 export default function Index({ categories, filters }: IndexProps) {
+    const { t } = useTranslation();
     const [modal, setModal] = useState<ModalState>({ kind: 'none' });
 
     const closeModal = () => setModal({ kind: 'none' });
@@ -54,13 +57,13 @@ export default function Index({ categories, filters }: IndexProps) {
 
     return (
         <MainLayout>
-            <Head title="Categories" />
+            <Head title={t('Categories')} />
 
             <Breadcrumb
-                title="Categories"
+                title={t('Categories')}
                 items={[
-                    { label: 'Dashboard', url: '/dashboard' },
-                    { label: 'Categories', active: true },
+                    { label: t('Dashboard'), url: '/dashboard' },
+                    { label: t('Categories'), active: true },
                 ]}
             />
 
@@ -82,7 +85,7 @@ export default function Index({ categories, filters }: IndexProps) {
                                                 aria-current={isActive ? 'page' : undefined}
                                                 onClick={() => applyFilters({ ...filters, type: tab.type })}
                                             >
-                                                {tab.label}
+                                                {t(tab.label)}
                                             </button>
                                         </li>
                                     );
@@ -98,14 +101,14 @@ export default function Index({ categories, filters }: IndexProps) {
                                     onChange={(e) => applyFilters({ ...filters, include_archived: e.target.checked })}
                                 />
                                 <label htmlFor="show-archived" className="form-check-label">
-                                    Show archived
+                                    {t('Show archived')}
                                 </label>
                             </div>
                         </div>
 
                         <button type="button" className="btn btn-outline-primary py-1 px-2 px-sm-4 fs-14 fw-medium rounded-3 hover-bg" onClick={() => setModal({ kind: 'create' })}>
                             <span className="py-sm-1 d-block">
-                                <i className="ri-add-line d-none d-sm-inline-block"></i> <span>Add New Category</span>
+                                <i className="ri-add-line d-none d-sm-inline-block"></i> <span>{t('Add New Category')}</span>
                             </span>
                         </button>
                     </div>
