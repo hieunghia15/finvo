@@ -69,7 +69,7 @@ Path-scoped rules, loaded only when working on matching files:
 
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **finvo** (4931 symbols, 12984 relationships, 419 execution flows).
+This project is indexed by GitNexus as **finvo** (5418 symbols, 13673 relationships, 380 execution flows).
 
 > Index stale? Run `node .gitnexus/run.cjs analyze --index-only` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? Bootstrap with `npx`, `bunx`, or `pnpm dlx` — e.g. `bunx gitnexus@latest analyze` (npm 11 npx crash; #1939).
 
