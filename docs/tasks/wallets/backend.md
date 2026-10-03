@@ -486,8 +486,8 @@ tests/Feature/Wallet/UpdateWalletStatusTest.php          (mới)
 
 - `authorize()` gọi `$this->wallet()` để ví của user khác ra 404 trước khi validate.
 - **Không guard nào** (plan §4.2: chuyển tự do mọi chiều, kể cả khi ví đã có giao dịch; Q7: kể cả ví active cuối cùng).
-- Accessor `status(): EntityStatus` giống Categories.
-- `WalletService::updateStatus(Wallet $wallet, EntityStatus $status): Wallet` → controller flash `Wallet status updated.`.
+- **Không** có accessor `status()` (khác Categories): rule `backend-http.md` cấm accessor theo field trong FormRequest mới.
+- `WalletService::updateStatus(Wallet $wallet, array $data): Wallet` nhận `$request->validated()` (`array{status: string}`, cast của model đổi sang `EntityStatus`) → controller flash `Wallet status updated.`.
 
 **Test** (`UpdateWalletStatusTest`)
 

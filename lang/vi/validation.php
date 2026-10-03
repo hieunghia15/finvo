@@ -200,6 +200,9 @@ return [
         'type' => 'loại',
         'status' => 'trạng thái',
         'include_archived' => 'hiển thị đã lưu trữ',
+        'currency_code' => 'tiền tệ',
+        'initial_balance' => 'số dư ban đầu',
+        'description' => 'mô tả',
         'locale' => 'ngôn ngữ',
     ],
 
