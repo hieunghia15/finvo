@@ -33,7 +33,7 @@ docs/
 | Categories | 1     | [Frontend](tasks/categories/frontend.md) | ✅ Đã merge (PR #20)                       |
 | Multi-lang | 1     | [Backend](tasks/multi-lang/backend.md)   | ✅ Đã merge (PR #23)                       |
 | Multi-lang | 1     | [Frontend](tasks/multi-lang/frontend.md) | ✅ Đã merge (PR #23)                       |
-| Wallets    | 1     | [Backend](tasks/wallets/backend.md)      | 📝 Spec xong (6 task), chưa làm            |
+| Wallets    | 1     | [Backend](tasks/wallets/backend.md)      | ✅ Đã xong 6 task, chờ merge PR            |
 | Wallets    | 1     | [Frontend](tasks/wallets/frontend.md)    | 📝 Spec xong (6 task), chưa làm            |
 
 ## Quy ước đặt tên
