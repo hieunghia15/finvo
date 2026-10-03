@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\WalletInUseException;
 use App\Http\Requests\Wallet\IndexWalletRequest;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletStatusRequest;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -77,5 +79,28 @@ class WalletController extends Controller
         $this->walletService->updateStatus($request->wallet(), $request->validated());
 
         return back()->with('status', __('Wallet status updated.'));
+    }
+
+    /**
+     * Delete a wallet that has no transactions.
+     *
+     * The only action without a form request, so it resolves the wallet
+     * itself. A wallet still in use is not a validation failure of any
+     * field, so it comes back as a flashed error rather than an error bag.
+     *
+     * @param  Request  $request  The current request, used for the authenticated user.
+     * @param  string  $wallet  The wallet id from the route.
+     */
+    public function destroy(Request $request, string $wallet): RedirectResponse
+    {
+        $model = $request->user()->wallets()->findOrFail($wallet);
+
+        try {
+            $this->walletService->delete($model);
+        } catch (WalletInUseException $exception) {
+            return back()->with('error', $exception->getMessage());
+        }
+
+        return back()->with('status', __('Wallet deleted.'));
     }
 }

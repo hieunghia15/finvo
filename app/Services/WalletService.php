@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\EntityStatus;
+use App\Exceptions\WalletInUseException;
 use App\Models\Currency;
 use App\Models\User;
 use App\Models\Wallet;
@@ -111,6 +112,26 @@ class WalletService
         $wallet->update(['status' => $data['status']]);
 
         return $wallet;
+    }
+
+    /**
+     * Delete a wallet that is not in use.
+     *
+     * The transactions.wallet_id foreign key is RESTRICT, but that is the
+     * last line of defence rather than the first: it would surface as a
+     * database error instead of a message the user can act on.
+     *
+     * @param  Wallet  $wallet  The wallet to delete.
+     *
+     * @throws WalletInUseException When it still has transactions.
+     */
+    public function delete(Wallet $wallet): void
+    {
+        if ($wallet->transactions()->exists()) {
+            throw new WalletInUseException($wallet);
+        }
+
+        $wallet->delete();
     }
 
     /**

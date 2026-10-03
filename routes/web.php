@@ -42,6 +42,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::patch('/wallets/{wallet}', [WalletController::class, 'update'])->name('wallets.update');
     Route::patch('/wallets/{wallet}/status', [WalletController::class, 'updateStatus'])
         ->name('wallets.status.update');
+    Route::delete('/wallets/{wallet}', [WalletController::class, 'destroy'])->name('wallets.destroy');
 
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
     Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
