@@ -31,13 +31,19 @@ class MoneyPrecision implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // Not a number, or negative: "numeric" and "min" report it. Bailing
+        // Not a number, or signed: "numeric" and "min" report it. Bailing
         // out here also keeps an array from reaching preg_match().
-        if ((!is_string($value) && !is_int($value) && !is_float($value)) || !is_numeric($value) || (float) $value < 0) {
+        if ((!is_string($value) && !is_int($value) && !is_float($value)) || !is_numeric($value)) {
             return;
         }
 
         $number = (string) $value;
+
+        // Checked on the string, not with (float) $value < 0: "-0" is not
+        // below zero, yet it would fail the pattern below as "not a whole number".
+        if (str_starts_with($number, '-')) {
+            return;
+        }
         $places = $this->currency->decimal_places;
 
         // Exponents ("1e3", a float such as 1.0E-5) and bare dots ("10.", ".5") are not amounts.

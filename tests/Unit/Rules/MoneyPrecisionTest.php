@@ -126,6 +126,9 @@ class MoneyPrecisionTest extends TestCase
     {
         return [
             'negative' => ['-5'],
+            // Not below zero, so "min:0" lets it through as the value 0.
+            'negative zero' => ['-0'],
+            'negative zero with decimals' => ['-0.0'],
             'not numeric' => ['abc'],
             'array' => [['1']],
             'null' => [null],
