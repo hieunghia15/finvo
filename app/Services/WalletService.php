@@ -61,6 +61,23 @@ class WalletService
     }
 
     /**
+     * Create a wallet for a user.
+     *
+     * Goes through the relationship so user_id comes from the session and
+     * never from request input. The status is left to the model default, so
+     * $data must not carry one.
+     *
+     * @param  User  $user  The owner of the new wallet.
+     * @param  array{name: string, type: string, currency_code: string, initial_balance: numeric-string|int|float, description?: string|null}  $data  Validated attributes; the model casts turn the type into a WalletType.
+     *
+     * @return Wallet The created wallet.
+     */
+    public function create(User $user, array $data): Wallet
+    {
+        return $user->wallets()->create($data);
+    }
+
+    /**
      * Pick the fields of a listed wallet that the frontend receives.
      *
      * @param  Wallet  $wallet  A wallet loaded with withCurrentBalance() and withCount('transactions').

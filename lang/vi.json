@@ -112,8 +112,11 @@
     "Status": "Trạng thái",
     "Terms of Service": "Điều khoản dịch vụ",
     "The :attribute field must be a valid email address.": "Trường :attribute phải là một địa chỉ email hợp lệ.",
+    "The :attribute may have at most :places decimal places for :currency.": ":Attribute chỉ được có tối đa :places chữ số thập phân với :currency.",
     "The :attribute must be 6–32 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character.": ":Attribute phải dài 6–32 ký tự và có ít nhất một chữ hoa, một chữ thường, một chữ số và một ký tự đặc biệt.",
+    "The :attribute must be a whole number for :currency.": ":Attribute phải là số nguyên với :currency.",
     "The new password must be different from the current password": "Mật khẩu mới phải khác mật khẩu hiện tại",
+    "The selected currency is not available.": "Tiền tệ đã chọn không còn được hỗ trợ.",
     "This category already has transactions, so its type can no longer be changed.": "Danh mục này đã có giao dịch nên không thể đổi loại nữa.",
     "This category still has transactions and cannot be deleted.": "Danh mục này vẫn còn giao dịch nên không thể xóa.",
     "Toggle Navigation": "Mở/đóng thanh điều hướng",
@@ -128,7 +131,9 @@
     "Type new password": "Nhập mật khẩu mới",
     "Type password": "Nhập mật khẩu",
     "Update your personal details here.": "Cập nhật thông tin cá nhân của bạn tại đây.",
+    "Wallet created.": "Đã tạo ví.",
     "Welcome back to Finvo!": "Chào mừng bạn quay lại Finvo!",
     "You already have a category with this name and type.": "Bạn đã có một danh mục cùng tên và cùng loại.",
+    "You already have a wallet with this name.": "Bạn đã có ví với tên này.",
     "and that you have read and understood our": "và xác nhận đã đọc, hiểu"
 }

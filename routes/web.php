@@ -38,6 +38,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
     Route::get('/wallets', [WalletController::class, 'index'])->name('wallets.index');
+    Route::post('/wallets', [WalletController::class, 'store'])->name('wallets.store');
 
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
     Route::patch('/account', [AccountController::class, 'update'])->name('account.update');

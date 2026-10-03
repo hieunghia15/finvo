@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Wallet\IndexWalletRequest;
+use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Services\WalletService;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -37,5 +39,17 @@ class WalletController extends Controller
             'currencies' => $currencies,
             'filters' => $filters,
         ]);
+    }
+
+    /**
+     * Create a wallet for the current user.
+     *
+     * @param  StoreWalletRequest  $request  The validated wallet form submission.
+     */
+    public function store(StoreWalletRequest $request): RedirectResponse
+    {
+        $this->walletService->create($request->user(), $request->validated());
+
+        return back()->with('status', __('Wallet created.'));
     }
 }
