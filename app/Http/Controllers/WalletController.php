@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Wallet\IndexWalletRequest;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
+use App\Http\Requests\Wallet\UpdateWalletStatusRequest;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -64,5 +65,17 @@ class WalletController extends Controller
         $this->walletService->update($request->wallet(), $request->validated());
 
         return back()->with('status', __('Wallet updated.'));
+    }
+
+    /**
+     * Move a wallet to another status.
+     *
+     * @param  UpdateWalletStatusRequest  $request  The validated status change.
+     */
+    public function updateStatus(UpdateWalletStatusRequest $request): RedirectResponse
+    {
+        $this->walletService->updateStatus($request->wallet(), $request->validated());
+
+        return back()->with('status', __('Wallet status updated.'));
     }
 }

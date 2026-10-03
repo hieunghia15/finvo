@@ -97,6 +97,23 @@ class WalletService
     }
 
     /**
+     * Move a wallet to another status.
+     *
+     * Every transition is allowed, including restoring an archived wallet.
+     *
+     * @param  Wallet  $wallet  The wallet to move.
+     * @param  array{status: string}  $data  Validated attributes; the model cast turns the status into an EntityStatus.
+     *
+     * @return Wallet The updated wallet.
+     */
+    public function updateStatus(Wallet $wallet, array $data): Wallet
+    {
+        $wallet->update(['status' => $data['status']]);
+
+        return $wallet;
+    }
+
+    /**
      * Pick the fields of a listed wallet that the frontend receives.
      *
      * @param  Wallet  $wallet  A wallet loaded with withCurrentBalance() and withCount('transactions').
