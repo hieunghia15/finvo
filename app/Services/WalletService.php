@@ -78,6 +78,25 @@ class WalletService
     }
 
     /**
+     * Update a wallet's details.
+     *
+     * The caller must have already rejected an edit to an archived wallet and
+     * a currency or initial balance change on a wallet that has transactions.
+     * The status is changed through updateStatus(), so $data must not carry one.
+     *
+     * @param  Wallet  $wallet  The wallet to update.
+     * @param  array{name: string, type: string, currency_code: string, initial_balance: numeric-string|int|float, description?: string|null}  $data  Validated attributes; the model casts turn the type into a WalletType.
+     *
+     * @return Wallet The updated wallet.
+     */
+    public function update(Wallet $wallet, array $data): Wallet
+    {
+        $wallet->update($data);
+
+        return $wallet;
+    }
+
+    /**
      * Pick the fields of a listed wallet that the frontend receives.
      *
      * @param  Wallet  $wallet  A wallet loaded with withCurrentBalance() and withCount('transactions').

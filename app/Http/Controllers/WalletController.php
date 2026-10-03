@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Wallet\IndexWalletRequest;
 use App\Http\Requests\Wallet\StoreWalletRequest;
+use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Services\WalletService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -51,5 +52,17 @@ class WalletController extends Controller
         $this->walletService->create($request->user(), $request->validated());
 
         return back()->with('status', __('Wallet created.'));
+    }
+
+    /**
+     * Update a wallet's details.
+     *
+     * @param  UpdateWalletRequest  $request  The validated wallet form submission.
+     */
+    public function update(UpdateWalletRequest $request): RedirectResponse
+    {
+        $this->walletService->update($request->wallet(), $request->validated());
+
+        return back()->with('status', __('Wallet updated.'));
     }
 }

@@ -39,6 +39,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::get('/wallets', [WalletController::class, 'index'])->name('wallets.index');
     Route::post('/wallets', [WalletController::class, 'store'])->name('wallets.store');
+    Route::patch('/wallets/{wallet}', [WalletController::class, 'update'])->name('wallets.update');
 
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
     Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
